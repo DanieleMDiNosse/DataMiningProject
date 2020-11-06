@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-
+# modifica a caso
 import math
 
 df = pd.read_csv('Test_HR_Employee_Attrition.csv')
