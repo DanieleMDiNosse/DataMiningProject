@@ -39,7 +39,7 @@ df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 ############ Stastistica ################
 
 statistica = df.describe()
-statistica.to_excel('statistica.xlsx')
+# statistica.to_excel('statistica.xlsx')
 
 
 
