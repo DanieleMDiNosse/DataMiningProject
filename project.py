@@ -9,6 +9,7 @@ df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 # print(df.head(3)) # Print prime 3 righe
 # print(df.tail(3)) # Print ultime 3 righe
 # print(df.columns) # Print attribute
+
 # print(df['Age'][0:5]) # Print una sola colonna e prime 5 righe
 # print(df[['Age', 'JobLevel']]) # Print più colonne
 
@@ -49,40 +50,53 @@ df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 #bins = np.arange(x0, x1 + 1.5) - 0.5 # per centrare i bin
 
 ############# STATISTICA #############
-
 df = df.drop(columns=['StandardHours']) # Rimuovere colonne
+df = df.drop(columns=['Over18'])
+#--------------------------------------------------------------------------------
+#TRASFORMAZIONE DEI DATI NUMERICI IN CATEGORICI(OVVIAMENTE PER QUELLI CHE LO PREVEDONO)
+df.replace({'EnvironmentSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+df.replace({'JobInvolvement':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+df.replace({'JobSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+df.replace({'RelationshipSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+df.replace({'Education':{1 : 'Below College', 2 : 'College', 3 : 'Bachelor', 4 : 'Master', 5 : 'Doctor'}},inplace=True)
+df.replace({'WorkLifeBalance':{1 : 'Bad', 2 : 'Good', 3 : 'Better', 4 : 'Best'}},inplace=True)
+df.replace({'PerformanceRating':{1 : 'Low', 2 : 'Good', 3 : 'Excellent', 4 : 'Outstanding'}},inplace=True)
+# # joblevel valori numerici ma chiaramente categorici, non abbiamo ulteriori informazioni, chiediamo aiuto, per piacere rispondete. stop.
+# # totalworkingyear non ha molto senso a nostro avviso, cioè a 18 anni non puoi aver lavorato una media di 8 anni(QUALITÀ BASSA)
+df.replace({'JobLevel':{1 : '1', 2 : '2', 3 : '3', 4 : '4', 5 : '5'}},inplace=True)
+df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
 
+categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
+numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
+print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
+#-----------------------------MATRICE CORRELLAZIONE-----------------------------
 corrmatrix = df.corr()
-# print(corrmatrix)
+print(corrmatrix)
 for index in range(len(corrmatrix.columns)): # Iteration for each columns
     vecmax = corrmatrix.iloc[index]
     vecmax2 = [i for i in vecmax if i < 1]
     print(max(vecmax2))
 
-# pd.plotting.scatter_matrix(df.iloc[:,0:15], diagonal='kde')
-# plt.show()
-
-
-
-for c in df['Attrition'].unique():
-    dfc = df[df['Attrition'] == c]
-    plt.scatter(dfc['DistanceFromHome'], dfc['HourlyRate'], label=c)
-plt.legend()
+corrmatrix.to_excel('MatriceDiCorrelazione.xlsx') # ESPORTA MATRICE CORRELAZIONE
+pd.plotting.scatter_matrix(df.iloc[:,0:15], diagonal='kde') # PLOT MATRICE SCATTER
 plt.show()
-# print(corrmatrix.min())
-# corrmatrix.to_excel('MatriceDiCorrelazione.xlsx')
-# vecmax = corrmatrix.iloc[i]
-# vecmax2 = [i for i in vecmax if i < 1]
-# print(vecmax)
-# print(max(vecmax2))
-
-
-
+#----------------------------------------------------------------------------
+# SCATTER FOTTUTI PLOT (TUTTI)
+for index_n, columns in numeric.iteritems():
+    if index_n !='Age':
+        for index, columns in categorical.iteritems():
+            for c in categorical[index].unique():
+                    dfc = df[df[index] == c]
+                    plt.scatter(dfc['Age'], dfc[index_n], label=c)
+            plt.legend(bbox_to_anchor=(1,1))
+            plt.xlabel('Age')
+            plt.title('Attribute: '+index)
+            plt.ylabel(index_n)
+            plt.show()
+#----------------------------------------------------------------------------
 # print(df.sort_values(['Age', 'YearsWithCurrManager'], ascending=[1,0])) #sorted data (NaN in coda)
 
 #print(df.describe()) # print count,mean,std,min,25%,50%,75%,max
-
-#--------------------------------------------------------------------------
 
 #Stampa minimo e massimo dei valori nelle singole colonne e i loro range:
 # 1° modo
@@ -91,9 +105,10 @@ plt.show()
 #    print(f' {l[i]} : min e max di {df.columns[l[i]]} sono {min(df.values[:,l[i]])} e {max(df.values[:,l[i]])}. Range --> {max(df.values[:,l[i]])-min(df.values[:,l[i]])}.')
 
 # 2° modo
-# print(df.max())
-# print(df.min())
-
+print(df.min())
+print(numeric.max() - numeric.min())
+print((numeric.max() - numeric.min()).idxmax())
+print(df[(numeric.max() - numeric.min()).idxmax()])
 #--------------------------------------------------------------------------
 
 # statistica = df.describe()
