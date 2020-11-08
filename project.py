@@ -1,9 +1,12 @@
+#!pip install outlier_utils
+
 import math
 import re # regular expression
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from outliers import smirnov_grubbs as grubbs
 
 df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 # print(df.head(3)) # Print prime 3 righe
@@ -16,9 +19,6 @@ df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 # df_xlsx = pd.read_excel('name of file', delimiter='\t) # Importare da file excel con delimiter tra i record
 # print(df.iloc[1:4]) # Stampa intere righe (ultima esclusa)
 # print(df.iloc[1,1]) # Stampa un elemento preciso in questo caso riga 1 colonna 1
-
-# for index, row in df.iterrows(): # Iteration for each row
-#     print(index, row)            # alternativa print(index, row['Age']) 
 
 # print(df.loc[df['Attrition'] == 'Yes']) # Finding a specific value for the attribute in a dataset
 # print(df.loc[df['Attrition'].str.contains('Yes|no', flags=re.I, regex=True)])
@@ -37,7 +37,6 @@ df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 # labels=['1 Low','2 Medium','3 High','4 Very high']
 # plt.legend(handles,labels, edgecolor='w', loc='upper left')
 
-
 #sub plot organizzati in matrici, una sola figura più plot
 # figure, axes = plt.subplots(4, 4)
 # # df['Age'].plot(ax=axes[0])
@@ -45,11 +44,10 @@ df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 #     for j in range(0,4):
 #         df['Age'].plot(ax=axes[i,j])
 
-# plt.show()
-
 #bins = np.arange(x0, x1 + 1.5) - 0.5 # per centrare i bin
-
 ############# STATISTICA #############
+# statistica = df.describe()
+# statistica.to_excel('statistica.xlsx') #esporta la tabella in excel
 df = df.drop(columns=['StandardHours']) # Rimuovere colonne
 df = df.drop(columns=['Over18'])
 #--------------------------------------------------------------------------------
@@ -69,6 +67,11 @@ df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
 categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
 numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
 print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
+#----------------------------------------------------------------------------------------------------------------------
+# RICERCA OUTLIERS NELLE COLONNE CON UN PACCHETTINO IMPORTATO SOPRA E ALPHA CHE NON SAPPIAMO COME SCEGLIERNE IL VALORE
+for index, columns in numeric.iteritems():
+    outremove = grubbs.test(numeric[index], alpha=0.05)
+    print(numeric.shape, outremove.shape)
 #-----------------------------MATRICE CORRELLAZIONE-----------------------------
 corrmatrix = df.corr()
 print(corrmatrix)
@@ -76,9 +79,8 @@ for index in range(len(corrmatrix.columns)): # Iteration for each columns
     vecmax = corrmatrix.iloc[index]
     vecmax2 = [i for i in vecmax if i < 1]
     print(max(vecmax2))
-
 corrmatrix.to_excel('MatriceDiCorrelazione.xlsx') # ESPORTA MATRICE CORRELAZIONE
-pd.plotting.scatter_matrix(df.iloc[:,0:15], diagonal='kde') # PLOT MATRICE SCATTER
+pd.plotting.scatter_matrix(df.iloc[:,:], diagonal='kde') # PLOT MATRICE SCATTER
 plt.show()
 #----------------------------------------------------------------------------
 # SCATTER FOTTUTI PLOT (TUTTI)
@@ -93,6 +95,12 @@ for index_n, columns in numeric.iteritems():
             plt.title('Attribute: '+index)
             plt.ylabel(index_n)
             plt.show()
+for index, columns in categorical.iteritems():
+    for c in categorical[index].unique():
+        dfc = df[df[index] == c]
+        plt.scatter(dfc['YearsInCurrentRole'], dfc['YearsWithCurrManager'], label=c)
+    plt.legend(bbox_to_anchor=(1,1))
+    plt.show()
 #----------------------------------------------------------------------------
 # print(df.sort_values(['Age', 'YearsWithCurrManager'], ascending=[1,0])) #sorted data (NaN in coda)
 
@@ -105,16 +113,10 @@ for index_n, columns in numeric.iteritems():
 #    print(f' {l[i]} : min e max di {df.columns[l[i]]} sono {min(df.values[:,l[i]])} e {max(df.values[:,l[i]])}. Range --> {max(df.values[:,l[i]])-min(df.values[:,l[i]])}.')
 
 # 2° modo
-print(df.min())
-print(numeric.max() - numeric.min())
-print((numeric.max() - numeric.min()).idxmax())
-print(df[(numeric.max() - numeric.min()).idxmax()])
-#--------------------------------------------------------------------------
-
-# statistica = df.describe()
-# statistica.to_excel('statistica.xlsx') #esporta la tabella in excel
-
-#--------------------------------------------------------------------------
+# print(df.min())
+# print(numeric.max() - numeric.min())
+# print((numeric.max() - numeric.min()).idxmax())
+# print(df[(numeric.max() - numeric.min()).idxmax()])
 
 # etamin = (df[(df['Age'] > 17) & (df['Age'] < 19)]) #seleziona solo le righe con valori di età >17 & < 19
 # print(etamin)
