@@ -1,4 +1,4 @@
-#!pip install outlier_utils
+##!pip install outlier_utils
 
 import math
 import re # regular expression
@@ -7,6 +7,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from outliers import smirnov_grubbs as grubbs
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.cluster import DBSCAN
+from scipy.spatial.distance import pdist, squareform
 
 df = pd.read_csv('Test_HR_Employee_Attrition.csv')
 # print(df.head(3)) # Print prime 3 righe
@@ -79,6 +82,33 @@ categorical = categorical.fillna('MISSING')
 # for index, columns in numeric.iteritems():
 #     outremove = grubbs.test(numeric[index], alpha=0.05)
 #     print(numeric.shape, outremove.shape)
+#----------------------------------------------------------------------------------------------------------------------
+# RICERCA OUTLIERS NELLE COLONNE CON UN DBSCAN (NEL FARLO SI SONO ELIMINTATI I VALORI NaN)
+categorical = categorical.dropna()
+numeric = numeric.dropna()
+scaler = MinMaxScaler()
+X = scaler.fit_transform(numeric)
+dbscan = DBSCAN(eps=1.09, min_samples=5)
+dbscan.fit(X)
+print(np.unique(dbscan.labels_, return_counts=True))
+plt.scatter(numeric['Age'], numeric['YearsInCurrentRole'], c=dbscan.labels_)
+plt.show()
+
+dist = pdist(X, 'euclidean') #pair wise distance
+dist = squareform(dist) #distance matrix given the vector dist
+
+k = 5
+kth_distances = list()
+for d in dist:
+    index_kth_distance = np.argsort(d)[k]
+    kth_distances.append(d[index_kth_distance])
+
+
+plt.plot(range(0, len(kth_distances)), sorted(kth_distances))
+plt.ylabel('dist from %sth neighbor' % k)
+plt.xlabel('sorted distances')
+plt.show()
+
 #-----------------------------MATRICE CORRELLAZIONE-----------------------------
 # corrmatrix = df.corr()
 # print(corrmatrix)
