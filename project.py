@@ -66,9 +66,14 @@ df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
 
 categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
 numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
-categorical = categorical.dropna()
-numeric = numeric.dropna()
 # print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
+
+#-------------------------------------------------------------------------------
+# NUOVO DATAFRAME SENZA MISSING (PER ORA SOLO NEGLI ATTRIBUTI CATEGORICI)
+categorical = categorical.fillna('MISSING')
+
+
+
 #----------------------------------------------------------------------------------------------------------------------
 # RICERCA OUTLIERS NELLE COLONNE CON UN PACCHETTINO IMPORTATO SOPRA E ALPHA CHE NON SAPPIAMO COME SCEGLIERNE IL VALORE
 # for index, columns in numeric.iteritems():
@@ -105,35 +110,36 @@ numeric = numeric.dropna()
 #     plt.show()
 #----------------------------------------------------------------------------
 # BOX PLOT
-# for element in numeric.columns:
-#     plt.figure()
-#     df.boxplot(element)
+for element in numeric.columns:
+    plt.figure()
+    df.boxplot(element)
 #---------------------------------------------------------------------------   
-# Principal Component Analysis
-# from sklearn.decomposition import PCA
-# from sklearn.preprocessing import StandardScaler
-# fig=plt.figure()
-# ax=fig.add_subplot(111,projection='3d')
+# PRINCIPAL COMPONENT ANALYSIS
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+fig=plt.figure()
+ax=fig.add_subplot(111,projection='3d')
 
-# x0 = numeric.values
-# x1 = StandardScaler().fit_transform(x0)
-# pca = PCA(n_components = 3) 
-# principalComponents = pca.fit_transform(x1)
-# principalDf = pd.DataFrame(data = principalComponents
-#              , columns = ['principal component 1', 'principal component 2', 'principal component 3'])
-# finalDf = pd.concat([principalDf, df[['Attrition']]], axis = 1)
-# targets = ['Yes', 'No']
-# colors = ['r','b']
-# for target, color in zip(targets,colors):
-#     indicesToKeep = finalDf['Attrition'] == target
-#     ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
-#                , finalDf.loc[indicesToKeep, 'principal component 2'],
-#                finalDf.loc[indicesToKeep, 'principal component 3'],
-#                c=color, s=50)
-# plt.legend(targets)
-# print(pca.explained_variance_ratio_)
+x0 = numeric.values
+x1 = StandardScaler().fit_transform(x0)
+pca = PCA(n_components = 3) 
+principalComponents = pca.fit_transform(x1)
+principalDf = pd.DataFrame(data = principalComponents
+              , columns = ['principal component 1', 'principal component 2', 'principal component 3'])
+finalDf = pd.concat([principalDf, df[['Attrition']]], axis = 1)
+targets = ['Yes', 'No']
+colors = ['r','b']
+for target, color in zip(targets,colors):
+    indicesToKeep = finalDf['Attrition'] == target
+    ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+                , finalDf.loc[indicesToKeep, 'principal component 2'],
+                finalDf.loc[indicesToKeep, 'principal component 3'],
+                c=color, s=50)
+plt.legend(targets)
+print(pca.explained_variance_ratio_)
 #---------------------------------------------------------------------------
  
+df['TrainingTimesLastYear'].value_counts(normalize=True) * 100 # percentuale degli attributi categorici
 # print(df.sort_values(['Age', 'YearsWithCurrManager'], ascending=[1,0])) #sorted data (NaN in coda)
 
 #print(df.describe()) # print count,mean,std,min,25%,50%,75%,max
