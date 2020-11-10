@@ -66,42 +66,74 @@ df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
 
 categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
 numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
-print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
+categorical = categorical.dropna()
+numeric = numeric.dropna()
+# print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
 #----------------------------------------------------------------------------------------------------------------------
 # RICERCA OUTLIERS NELLE COLONNE CON UN PACCHETTINO IMPORTATO SOPRA E ALPHA CHE NON SAPPIAMO COME SCEGLIERNE IL VALORE
-for index, columns in numeric.iteritems():
-    outremove = grubbs.test(numeric[index], alpha=0.05)
-    print(numeric.shape, outremove.shape)
+# for index, columns in numeric.iteritems():
+#     outremove = grubbs.test(numeric[index], alpha=0.05)
+#     print(numeric.shape, outremove.shape)
 #-----------------------------MATRICE CORRELLAZIONE-----------------------------
-corrmatrix = df.corr()
-print(corrmatrix)
-for index in range(len(corrmatrix.columns)): # Iteration for each columns
-    vecmax = corrmatrix.iloc[index]
-    vecmax2 = [i for i in vecmax if i < 1]
-    print(max(vecmax2))
-corrmatrix.to_excel('MatriceDiCorrelazione.xlsx') # ESPORTA MATRICE CORRELAZIONE
-pd.plotting.scatter_matrix(df.iloc[:,:], diagonal='kde') # PLOT MATRICE SCATTER
-plt.show()
+# corrmatrix = df.corr()
+# print(corrmatrix)
+# for index in range(len(corrmatrix.columns)): # Iteration for each columns
+#     vecmax = corrmatrix.iloc[index]
+#     vecmax2 = [i for i in vecmax if i < 1]
+#     print(max(vecmax2))
+# corrmatrix.to_excel('MatriceDiCorrelazione.xlsx') # ESPORTA MATRICE CORRELAZIONE
+# pd.plotting.scatter_matrix(df.iloc[:,:], diagonal='kde') # PLOT MATRICE SCATTER
+# plt.show()
 #----------------------------------------------------------------------------
 # SCATTER FOTTUTI PLOT (TUTTI)
-for index_n, columns in numeric.iteritems():
-    if index_n !='Age':
-        for index, columns in categorical.iteritems():
-            for c in categorical[index].unique():
-                    dfc = df[df[index] == c]
-                    plt.scatter(dfc['Age'], dfc[index_n], label=c)
-            plt.legend(bbox_to_anchor=(1,1))
-            plt.xlabel('Age')
-            plt.title('Attribute: '+index)
-            plt.ylabel(index_n)
-            plt.show()
-for index, columns in categorical.iteritems():
-    for c in categorical[index].unique():
-        dfc = df[df[index] == c]
-        plt.scatter(dfc['YearsInCurrentRole'], dfc['YearsWithCurrManager'], label=c)
-    plt.legend(bbox_to_anchor=(1,1))
-    plt.show()
+# for index_n, columns in numeric.iteritems():
+#     if index_n !='Age':
+#         for index, columns in categorical.iteritems():
+#             for c in categorical[index].unique():
+#                     dfc = df[df[index] == c]
+#                     plt.scatter(dfc['Age'], dfc[index_n], label=c)
+#             plt.legend(bbox_to_anchor=(1,1))
+#             plt.xlabel('Age')
+#             plt.title('Attribute: '+index)
+#             plt.ylabel(index_n)
+#             plt.show()
+# for index, columns in categorical.iteritems():
+#     for c in categorical[index].unique():
+#         dfc = df[df[index] == c]
+#         plt.scatter(dfc['YearsInCurrentRole'], dfc['YearsWithCurrManager'], label=c)
+#     plt.legend(bbox_to_anchor=(1,1))
+#     plt.show()
 #----------------------------------------------------------------------------
+# BOX PLOT
+# for element in numeric.columns:
+#     plt.figure()
+#     df.boxplot(element)
+#---------------------------------------------------------------------------   
+# Principal Component Analysis
+# from sklearn.decomposition import PCA
+# from sklearn.preprocessing import StandardScaler
+# fig=plt.figure()
+# ax=fig.add_subplot(111,projection='3d')
+
+# x0 = numeric.values
+# x1 = StandardScaler().fit_transform(x0)
+# pca = PCA(n_components = 3) 
+# principalComponents = pca.fit_transform(x1)
+# principalDf = pd.DataFrame(data = principalComponents
+#              , columns = ['principal component 1', 'principal component 2', 'principal component 3'])
+# finalDf = pd.concat([principalDf, df[['Attrition']]], axis = 1)
+# targets = ['Yes', 'No']
+# colors = ['r','b']
+# for target, color in zip(targets,colors):
+#     indicesToKeep = finalDf['Attrition'] == target
+#     ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+#                , finalDf.loc[indicesToKeep, 'principal component 2'],
+#                finalDf.loc[indicesToKeep, 'principal component 3'],
+#                c=color, s=50)
+# plt.legend(targets)
+# print(pca.explained_variance_ratio_)
+#---------------------------------------------------------------------------
+ 
 # print(df.sort_values(['Age', 'YearsWithCurrManager'], ascending=[1,0])) #sorted data (NaN in coda)
 
 #print(df.describe()) # print count,mean,std,min,25%,50%,75%,max
