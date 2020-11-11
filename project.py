@@ -70,7 +70,8 @@ df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
 categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
 numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
 # print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
-
+categorical = categorical.dropna()
+numeric = numeric.dropna()
 #-------------------------------------------------------------------------------
 # NUOVO DATAFRAME SENZA MISSING (PER ORA SOLO NEGLI ATTRIBUTI CATEGORICI)
 categorical = categorical.fillna('MISSING')
@@ -84,8 +85,7 @@ categorical = categorical.fillna('MISSING')
 #     print(numeric.shape, outremove.shape)
 #----------------------------------------------------------------------------------------------------------------------
 # RICERCA OUTLIERS NELLE COLONNE CON UN DBSCAN (NEL FARLO SI SONO ELIMINTATI I VALORI NaN)
-categorical = categorical.dropna()
-numeric = numeric.dropna()
+
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric)
 dbscan = DBSCAN(eps=1.09, min_samples=5)
