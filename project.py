@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-df = pd.read_csv('Test_HR_Employee_Attrition.csv')
+df = pd.read_csv('Train+Test.csv')
 # print(df.head(3)) # Print prime 3 righe
 # print(df.tail(3)) # Print ultime 3 righe
 # print(df.columns) # Print attribute
@@ -65,7 +65,7 @@ df.replace({'PerformanceRating':{1 : 'Low', 2 : 'Good', 3 : 'Excellent', 4 : 'Ou
 # # joblevel valori numerici ma chiaramente categorici, non abbiamo ulteriori informazioni, chiediamo aiuto, per piacere rispondete. stop.
 # # totalworkingyear non ha molto senso a nostro avviso, cioè a 18 anni non puoi aver lavorato una media di 8 anni(QUALITÀ BASSA)
 df.replace({'JobLevel':{1 : '1', 2 : '2', 3 : '3', 4 : '4', 5 : '5'}},inplace=True)
-df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
+# df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
 
 categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
 numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
