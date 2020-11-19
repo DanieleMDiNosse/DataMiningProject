@@ -11,7 +11,74 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-df = pd.read_csv('Train+Test.csv')
+# df = pd.read_csv('TrasformedDataFrameWM.csv', index=0)
+df=pd.read_csv('TrasfAttributeFraction.csv')
+# print(df.describe())
+
+numeric=df.select_dtypes('number')
+categorical=df.select_dtypes(exclude='number')
+
+print(numeric.iloc[0])
+
+#_____________________________________________________________________________________
+
+#  KMEANS
+from scipy.stats import mode
+from scipy.spatial.distance import pdist
+from scipy.cluster.hierarchy import linkage, dendrogram
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.cluster import DBSCAN
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+
+df=df[['NumCompaniesWorked','PercentSalaryHike','FractionYearsAtCompany','Age']]
+numeric = df.select_dtypes('number')
+scaler = MinMaxScaler()
+X = scaler.fit_transform(numeric.values)
+
+KM=True
+knee=False
+
+if KM:
+    kmeans = KMeans(n_clusters = 3, n_init = 5, max_iter=300, init='k-means++')
+    kmeans.fit(X)
+    # np.unique(kmeans.labels_, return_counts=True) # grandezza di ogni cluster
+    hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
+    # print(dict(zip(bins, hist))) 
+    i = 0
+    for index, columns in numeric.iteritems():
+        for index_n, columns in numeric.iteritems():
+            if index != index_n:
+                #print(np.unique(dbscan.labels_, return_counts = True))
+                plt.scatter(numeric[index_n], numeric[index], c=kmeans.labels_, s=30)
+                plt.xlabel(index_n)
+                plt.ylabel(index)
+                i += 1
+                plt.show()
+                print(i)
+    centers = kmeans.cluster_centers_
+    print(centers)
+    plt.scatter(numeric['PercentSalaryHike'], numeric['FractionYearsAtCompany'], c = kmeans.labels_, s=20)
+    plt.scatter(centers[:, 0], centers[:, 1], s = 200, marker='*', c='k')
+    plt.show()  
+
+if knee:
+    sse_list = list()
+    max_k = 50
+    for k in range(2, max_k + 1):
+        kmeans = KMeans(n_clusters=k, n_init=10, max_iter=100)
+        kmeans.fit(X)
+        
+        sse = kmeans.inertia_
+        sse_list.append(sse)
+        
+    plt.plot(range(2, len(sse_list) + 2), sse_list)
+    plt.ylabel('SSE', fontsize=22)
+    plt.xlabel('K', fontsize=22)
+    plt.show()
+#__________________________________________________________________________-
+
 # print(df.head(3)) # Print prime 3 righe
 # print(df.tail(3)) # Print ultime 3 righe
 # print(df.columns) # Print attribute
@@ -51,63 +118,63 @@ df = pd.read_csv('Train+Test.csv')
 ############# STATISTICA #############
 # statistica = df.describe()
 # statistica.to_excel('statistica.xlsx') #esporta la tabella in excel
-df = df.drop(columns=['StandardHours']) # Rimuovere colonne
-df = df.drop(columns=['Over18'])
-#--------------------------------------------------------------------------------
-#TRASFORMAZIONE DEI DATI NUMERICI IN CATEGORICI(OVVIAMENTE PER QUELLI CHE LO PREVEDONO)
-df.replace({'EnvironmentSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
-df.replace({'JobInvolvement':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
-df.replace({'JobSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
-df.replace({'RelationshipSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
-df.replace({'Education':{1 : 'Below College', 2 : 'College', 3 : 'Bachelor', 4 : 'Master', 5 : 'Doctor'}},inplace=True)
-df.replace({'WorkLifeBalance':{1 : 'Bad', 2 : 'Good', 3 : 'Better', 4 : 'Best'}},inplace=True)
-df.replace({'PerformanceRating':{1 : 'Low', 2 : 'Good', 3 : 'Excellent', 4 : 'Outstanding'}},inplace=True)
-# # joblevel valori numerici ma chiaramente categorici, non abbiamo ulteriori informazioni, chiediamo aiuto, per piacere rispondete. stop.
-# # totalworkingyear non ha molto senso a nostro avviso, cioè a 18 anni non puoi aver lavorato una media di 8 anni(QUALITÀ BASSA)
-df.replace({'JobLevel':{1 : '1', 2 : '2', 3 : '3', 4 : '4', 5 : '5'}},inplace=True)
-# df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
+# df = df.drop(columns=['StandardHours']) # Rimuovere colonne
+# df = df.drop(columns=['Over18'])
+# #--------------------------------------------------------------------------------
+# #TRASFORMAZIONE DEI DATI NUMERICI IN CATEGORICI(OVVIAMENTE PER QUELLI CHE LO PREVEDONO)
+# df.replace({'EnvironmentSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+# df.replace({'JobInvolvement':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+# df.replace({'JobSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+# df.replace({'RelationshipSatisfaction':{1 : 'Low', 2 : 'Medium', 3 : 'High', 4 : 'Very High'}},inplace=True)
+# df.replace({'Education':{1 : 'Below College', 2 : 'College', 3 : 'Bachelor', 4 : 'Master', 5 : 'Doctor'}},inplace=True)
+# df.replace({'WorkLifeBalance':{1 : 'Bad', 2 : 'Good', 3 : 'Better', 4 : 'Best'}},inplace=True)
+# df.replace({'PerformanceRating':{1 : 'Low', 2 : 'Good', 3 : 'Excellent', 4 : 'Outstanding'}},inplace=True)
+# # # joblevel valori numerici ma chiaramente categorici, non abbiamo ulteriori informazioni, chiediamo aiuto, per piacere rispondete. stop.
+# # # totalworkingyear non ha molto senso a nostro avviso, cioè a 18 anni non puoi aver lavorato una media di 8 anni(QUALITÀ BASSA)
+# df.replace({'JobLevel':{1 : '1', 2 : '2', 3 : '3', 4 : '4', 5 : '5'}},inplace=True)
+# # df.to_excel('nuovo.xlsx') # NUOVO DATA FRAME MODIFICATO
 
-categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
-numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
-# print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
-categorical = categorical.dropna()
-numeric = numeric.dropna()
-#-------------------------------------------------------------------------------
-# NUOVO DATAFRAME SENZA MISSING (PER ORA SOLO NEGLI ATTRIBUTI CATEGORICI)
-categorical = categorical.fillna('MISSING')
-
-
-
-#----------------------------------------------------------------------------------------------------------------------
-# RICERCA OUTLIERS NELLE COLONNE CON UN PACCHETTINO IMPORTATO SOPRA E ALPHA CHE NON SAPPIAMO COME SCEGLIERNE IL VALORE
-# for index, columns in numeric.iteritems():
-#     outremove = grubbs.test(numeric[index], alpha=0.05)
-#     print(numeric.shape, outremove.shape)
-#----------------------------------------------------------------------------------------------------------------------
-# RICERCA OUTLIERS NELLE COLONNE CON UN DBSCAN (NEL FARLO SI SONO ELIMINTATI I VALORI NaN)
-
-scaler = MinMaxScaler()
-X = scaler.fit_transform(numeric)
-dbscan = DBSCAN(eps=1.09, min_samples=5)
-dbscan.fit(X)
-print(np.unique(dbscan.labels_, return_counts=True))
-plt.scatter(numeric['Age'], numeric['YearsInCurrentRole'], c=dbscan.labels_)
-plt.show()
-
-dist = pdist(X, 'euclidean') #pair wise distance
-dist = squareform(dist) #distance matrix given the vector dist
-
-k = 5
-kth_distances = list()
-for d in dist:
-    index_kth_distance = np.argsort(d)[k]
-    kth_distances.append(d[index_kth_distance])
+# categorical = df.select_dtypes(exclude='number') # SELEZIONA SOLO LE COLONNE CATEGORICHE
+# numeric = df.select_dtypes('number') # SELEZIONA SOLO LE COLONNE NUMERICHE
+# # print(categorical.iloc[0]) # PRINT DELLA PRIMA RIGA DI CATEGORICAL
+# categorical = categorical.dropna()
+# numeric = numeric.dropna()
+# #-------------------------------------------------------------------------------
+# # NUOVO DATAFRAME SENZA MISSING (PER ORA SOLO NEGLI ATTRIBUTI CATEGORICI)
+# categorical = categorical.fillna('MISSING')
 
 
-plt.plot(range(0, len(kth_distances)), sorted(kth_distances))
-plt.ylabel('dist from %sth neighbor' % k)
-plt.xlabel('sorted distances')
-plt.show()
+
+# #----------------------------------------------------------------------------------------------------------------------
+# # RICERCA OUTLIERS NELLE COLONNE CON UN PACCHETTINO IMPORTATO SOPRA E ALPHA CHE NON SAPPIAMO COME SCEGLIERNE IL VALORE
+# # for index, columns in numeric.iteritems():
+# #     outremove = grubbs.test(numeric[index], alpha=0.05)
+# #     print(numeric.shape, outremove.shape)
+# #----------------------------------------------------------------------------------------------------------------------
+# # RICERCA OUTLIERS NELLE COLONNE CON UN DBSCAN (NEL FARLO SI SONO ELIMINTATI I VALORI NaN)
+
+# scaler = MinMaxScaler()
+# X = scaler.fit_transform(numeric)
+# dbscan = DBSCAN(eps=1.09, min_samples=5)
+# dbscan.fit(X)
+# print(np.unique(dbscan.labels_, return_counts=True))
+# plt.scatter(numeric['Age'], numeric['YearsInCurrentRole'], c=dbscan.labels_)
+# plt.show()
+
+# dist = pdist(X, 'euclidean') #pair wise distance
+# dist = squareform(dist) #distance matrix given the vector dist
+
+# k = 5
+# kth_distances = list()
+# for d in dist:
+#     index_kth_distance = np.argsort(d)[k]
+#     kth_distances.append(d[index_kth_distance])
+
+
+# plt.plot(range(0, len(kth_distances)), sorted(kth_distances))
+# plt.ylabel('dist from %sth neighbor' % k)
+# plt.xlabel('sorted distances')
+# plt.show()
 
 #-----------------------------MATRICE CORRELLAZIONE-----------------------------
 # corrmatrix = df.corr()
@@ -140,37 +207,37 @@ plt.show()
 #     plt.show()
 #----------------------------------------------------------------------------
 # BOX PLOT
-for element in numeric.columns:
-    plt.figure()
-    df.boxplot(element)
-#---------------------------------------------------------------------------   
-# PRINCIPAL COMPONENT ANALYSIS
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-fig=plt.figure()
-ax=fig.add_subplot(111,projection='3d')
+# for element in numeric.columns:
+#     plt.figure()
+#     df.boxplot(element)
+# #---------------------------------------------------------------------------   
+# # PRINCIPAL COMPONENT ANALYSIS
+# from sklearn.decomposition import PCA
+# from sklearn.preprocessing import StandardScaler
+# fig=plt.figure()
+# ax=fig.add_subplot(111,projection='3d')
 
-x0 = numeric.values
-x1 = StandardScaler().fit_transform(x0)
-pca = PCA(n_components = 3) 
-principalComponents = pca.fit_transform(x1)
-principalDf = pd.DataFrame(data = principalComponents
-              , columns = ['principal component 1', 'principal component 2', 'principal component 3'])
-finalDf = pd.concat([principalDf, df[['Attrition']]], axis = 1)
-targets = ['Yes', 'No']
-colors = ['r','b']
-for target, color in zip(targets,colors):
-    indicesToKeep = finalDf['Attrition'] == target
-    ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
-                , finalDf.loc[indicesToKeep, 'principal component 2'],
-                finalDf.loc[indicesToKeep, 'principal component 3'],
-                c=color, s=50)
-plt.legend(targets)
-print(pca.explained_variance_ratio_)
-#---------------------------------------------------------------------------
+# x0 = numeric.values
+# x1 = StandardScaler().fit_transform(x0)
+# pca = PCA(n_components = 3) 
+# principalComponents = pca.fit_transform(x1)
+# principalDf = pd.DataFrame(data = principalComponents
+#               , columns = ['principal component 1', 'principal component 2', 'principal component 3'])
+# finalDf = pd.concat([principalDf, df[['Attrition']]], axis = 1)
+# targets = ['Yes', 'No']
+# colors = ['r','b']
+# for target, color in zip(targets,colors):
+#     indicesToKeep = finalDf['Attrition'] == target
+#     ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+#                 , finalDf.loc[indicesToKeep, 'principal component 2'],
+#                 finalDf.loc[indicesToKeep, 'principal component 3'],
+#                 c=color, s=50)
+# plt.legend(targets)
+# print(pca.explained_variance_ratio_)
+# #---------------------------------------------------------------------------
  
-df['TrainingTimesLastYear'].value_counts(normalize=True) * 100 # percentuale degli attributi categorici
-# print(df.sort_values(['Age', 'YearsWithCurrManager'], ascending=[1,0])) #sorted data (NaN in coda)
+# df['TrainingTimesLastYear'].value_counts(normalize=True) * 100 # percentuale degli attributi categorici
+# # print(df.sort_values(['Age', 'YearsWithCurrManager'], ascending=[1,0])) #sorted data (NaN in coda)
 
 #print(df.describe()) # print count,mean,std,min,25%,50%,75%,max
 
