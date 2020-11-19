@@ -11,33 +11,40 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-df=pd.read_csv('TrasfAttributeFraction.csv')
+df=pd.read_csv('TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome.csv')
 # print(df.describe())
+print(df.head())
+# df['RateIncome']=np.sqrt(df['RateIncome'])
+# df.to_csv('TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome.csv',index=False)
+# print(df.head())
+# numeric=df.select_dtypes('number')
+# categorical=df.select_dtypes(exclude='number')
 
-numeric=df.select_dtypes('number')
-categorical=df.select_dtypes(exclude='number')
+# df['MonthlyIncome']=np.exp(df['MonthlyIncome'])
+# df['MonthlyRate']=(df['MonthlyRate']**2)
+# df.insert(20, 'RateIncome', df['MonthlyIncome']/df['MonthlyRate'], True)
+# #Income=log, #MontlyRate=sqrt
+# # print(df[['MonthlyIncome','MonthlyRate','RateIncome']])
 
-df['MonthlyIncome']=np.exp(df['MonthlyIncome'])
-df['MonthlyRate']=(df['MonthlyRate']**2)
-df.insert(20, 'RateIncome', df['MonthlyIncome']/df['MonthlyRate'], True)
-#Income=log, #MontlyRate=sqrt
-# print(df[['MonthlyIncome','MonthlyRate','RateIncome']])
+# for vak in df['RateIncome']:
+#     fil = (df['RateIncome'] >= 1)
+#     df.drop(list(df.index[fil == True]), inplace=True)
 
+# df['MonthlyIncome']=np.log(df['MonthlyIncome'])
+# df['MonthlyRate']=np.sqrt(df['MonthlyRate'])
 
-for vak in df['RateIncome']:
-    fil = (df['RateIncome'] >= 1)
-    df.drop(list(df.index[fil == True]), inplace=True)
+# print(df['RateIncome'].mean(), df['RateIncome'].std(), df['RateIncome'].skew())
+# df['RateIncome']=np.sqrt(df['RateIncome'])
+# print(df['RateIncome'].mean(), df['RateIncome'].std(), df['RateIncome'].skew())
+# plt.figure()
+# plt.hist(df['RateIncome'])
+# plt.show()
+#_____________________________________________________________________________________
+KM=False
+knee=True
+kM_3d=True
 
-df['MonthlyIncome']=np.log(df['MonthlyIncome'])
-df['MonthlyRate']=np.sqrt(df['MonthlyRate'])
-
-print(df['RateIncome'].mean(), df['RateIncome'].std(), df['RateIncome'].skew())
-df['RateIncome']=np.sqrt(df['RateIncome'])
-print(df['RateIncome'].mean(), df['RateIncome'].std(), df['RateIncome'].skew())
-plt.figure()
-plt.hist(df['RateIncome'])
-plt.show()
-
+correlazione=False
 #_____________________________________________________________________________________
 
 #  KMEANS
@@ -51,18 +58,17 @@ from sklearn.metrics import silhouette_score
 
 numeric = df.select_dtypes('number')
 print(numeric.iloc[0])
-df=df[['RateIncome','FractionYearsAtCompany','Age','DistanceFromHome']]
+df=df[['RateIncome','FractionYearsAtCompany','TrainingTimesLastYear','JobLevel','YearsInCurrentRole']]
 numeric = df.select_dtypes('number')
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric.values)
 
-KM=True
-knee=False
-kM_3d=False
-
 if KM:
-    kmeans = KMeans(n_clusters = 3, n_init = 100, max_iter=300, init='k-means++')
+    kmeans = KMeans(n_clusters = 4, n_init = 100, max_iter=300, init='k-means++')
     kmeans.fit(X)
+
+    print('SSE %s' % kmeans.inertia_)
+    print('Silhouette %s' % silhouette_score(X, kmeans.labels_))
     # np.unique(kmeans.labels_, return_counts=True) # grandezza di ogni cluster
     hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
     # print(dict(zip(bins, hist))) 
@@ -102,8 +108,11 @@ if kM_3d:
     scaler = MinMaxScaler()
     X = scaler.fit_transform(df.values)
     
-    kmeans = KMeans(init = 'k-means++', n_clusters = 3, n_init = 100, max_iter=300)
+    kmeans = KMeans(init = 'k-means++', n_clusters = 4, n_init = 100, max_iter=300)
     kmeans.fit(X)
+
+    print('SSE %s' % kmeans.inertia_)
+    print('Silhouette %s' % silhouette_score(X, kmeans.labels_))
     # np.unique(kmeans.labels_, return_counts=True) # grandezza di ogni cluster
     hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
     # print(dict(zip(bins, hist))) 
@@ -122,7 +131,17 @@ if kM_3d:
                             ax.set_ylabel(index)
                             ax.set_zlabel(idx)
                             plt.show()
+        
 #__________________________________________________________________________
+
+#____________________________________________________________________________
+#CORRELAZIONE
+if correlazione:
+    import seaborn as sns
+    plt.figure(figsize=(20,12))
+    plt.subplots_adjust(bottom=0.2)
+    heatmap = sns.heatmap(df.corr(), annot = True)
+    plt.savefig('MCHeatMap_final.png', dpi=1000)
 
 # print(df.head(3)) # Print prime 3 righe
 # print(df.tail(3)) # Print ultime 3 righe
