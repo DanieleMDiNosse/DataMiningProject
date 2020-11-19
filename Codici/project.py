@@ -11,14 +11,32 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-# df = pd.read_csv('TrasformedDataFrameWM.csv', index=0)
 df=pd.read_csv('TrasfAttributeFraction.csv')
 # print(df.describe())
 
 numeric=df.select_dtypes('number')
 categorical=df.select_dtypes(exclude='number')
 
-print(numeric.iloc[0])
+df['MonthlyIncome']=np.exp(df['MonthlyIncome'])
+df['MonthlyRate']=(df['MonthlyRate']**2)
+df.insert(20, 'RateIncome', df['MonthlyIncome']/df['MonthlyRate'], True)
+#Income=log, #MontlyRate=sqrt
+# print(df[['MonthlyIncome','MonthlyRate','RateIncome']])
+
+
+for vak in df['RateIncome']:
+    fil = (df['RateIncome'] >= 1)
+    df.drop(list(df.index[fil == True]), inplace=True)
+
+df['MonthlyIncome']=np.log(df['MonthlyIncome'])
+df['MonthlyRate']=np.sqrt(df['MonthlyRate'])
+
+print(df['RateIncome'].mean(), df['RateIncome'].std(), df['RateIncome'].skew())
+df['RateIncome']=np.sqrt(df['RateIncome'])
+print(df['RateIncome'].mean(), df['RateIncome'].std(), df['RateIncome'].skew())
+plt.figure()
+plt.hist(df['RateIncome'])
+plt.show()
 
 #_____________________________________________________________________________________
 
@@ -31,17 +49,19 @@ from sklearn.cluster import DBSCAN
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
-
-df=df[['NumCompaniesWorked','PercentSalaryHike','FractionYearsAtCompany','Age']]
+numeric = df.select_dtypes('number')
+print(numeric.iloc[0])
+df=df[['RateIncome','FractionYearsAtCompany','Age','DistanceFromHome']]
 numeric = df.select_dtypes('number')
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric.values)
 
 KM=True
 knee=False
+kM_3d=False
 
 if KM:
-    kmeans = KMeans(n_clusters = 3, n_init = 5, max_iter=300, init='k-means++')
+    kmeans = KMeans(n_clusters = 3, n_init = 100, max_iter=300, init='k-means++')
     kmeans.fit(X)
     # np.unique(kmeans.labels_, return_counts=True) # grandezza di ogni cluster
     hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
@@ -60,7 +80,7 @@ if KM:
     centers = kmeans.cluster_centers_
     print(centers)
     plt.scatter(numeric['PercentSalaryHike'], numeric['FractionYearsAtCompany'], c = kmeans.labels_, s=20)
-    plt.scatter(centers[:, 0], centers[:, 1], s = 200, marker='*', c='k')
+    plt.scatter(centers[:, 0], centers[:, 1], s = 100, marker='*', c='k')
     plt.show()  
 
 if knee:
@@ -77,7 +97,32 @@ if knee:
     plt.ylabel('SSE', fontsize=22)
     plt.xlabel('K', fontsize=22)
     plt.show()
-#__________________________________________________________________________-
+
+if kM_3d:
+    scaler = MinMaxScaler()
+    X = scaler.fit_transform(df.values)
+    
+    kmeans = KMeans(init = 'k-means++', n_clusters = 3, n_init = 100, max_iter=300)
+    kmeans.fit(X)
+    # np.unique(kmeans.labels_, return_counts=True) # grandezza di ogni cluster
+    hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
+    # print(dict(zip(bins, hist))) 
+    i = 0
+    for idx, columns in df.iteritems():
+        for index, columns in df.iteritems():
+            for index_n, columns in df.iteritems():
+                if idx != index:
+                    if index != index_n:
+                        if idx != index_n:
+                    #print(np.unique(dbscan.labels_, return_counts = True))
+                            fig = plt.figure()
+                            ax = fig.add_subplot(111, projection='3d')
+                            ax.scatter(df[index_n], df[index], df[idx], c=kmeans.labels_, s=30)
+                            ax.set_xlabel(index_n)
+                            ax.set_ylabel(index)
+                            ax.set_zlabel(idx)
+                            plt.show()
+#__________________________________________________________________________
 
 # print(df.head(3)) # Print prime 3 righe
 # print(df.tail(3)) # Print ultime 3 righe
