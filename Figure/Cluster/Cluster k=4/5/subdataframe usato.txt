@@ -1,4 +1,4 @@
 df=df[['RateIncome','FractionYearsAtCompany','Age','DistanceFromHome']]
 
-SSE 152.7189629425688
-Silhouette 0.23850407546159497
+SSE 129.12198630449095
+Silhouette 0.24591984122132612
