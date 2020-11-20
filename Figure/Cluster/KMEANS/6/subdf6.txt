@@ -1,0 +1,3 @@
+df=df[['DistanceFromHome','FractionYearsAtCompany','TrainingTimesLastYear','PercentSalaryHike','YearsInCurrentRole']]
+SSE 182.18208688450417
+Silhouette 0.19956026710257635
