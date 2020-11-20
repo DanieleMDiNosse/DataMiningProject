@@ -1,0 +1,4 @@
+dfprova = df[['DistanceFromHome','FractionYearsAtCompany','PercentSalaryHike','JobLevel','Age']]
+
+SSE 271.408772079173
+Silhouette 0.18744685405048425

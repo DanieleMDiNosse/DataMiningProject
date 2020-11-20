@@ -1,0 +1,4 @@
+dfprova = df[['StockOptionLevel','FractionYearsAtCompany','YearsInCurrentRole','JobLevel','NumCompaniesWorked']]
+
+SSE 281.38188492094537
+Silhouette 0.2103672318610447
