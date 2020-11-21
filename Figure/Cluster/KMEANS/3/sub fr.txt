@@ -1,0 +1,3 @@
+df = df[['Age','FractionYearsAtCompany','PercentSalaryHike','StockOptionLevel','TrainingTimesLastYear']]
+SSE 177.16004615259493
+Silhouette 0.22962804434016307

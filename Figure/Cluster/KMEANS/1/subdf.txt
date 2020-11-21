@@ -1,4 +1,0 @@
-dfprova = df[['NumCompaniesWorked','FractionYearsAtCompany','PercentSalaryHike','JobLevel','Age']]
-
-SSE 263.4148720239615
-Silhouette 0.17640798811609923
