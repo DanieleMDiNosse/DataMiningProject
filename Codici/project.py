@@ -11,9 +11,9 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-df=pd.read_csv('TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome.csv')
+df=pd.read_csv('TrasfAttributeFraction_RateIncome.csv')
 # print(df.describe())
-print(df.head())
+# print(df.head())
 # df['RateIncome']=np.sqrt(df['RateIncome'])
 # df.to_csv('TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome.csv',index=False)
 # print(df.head())
@@ -42,7 +42,7 @@ print(df.head())
 #_____________________________________________________________________________________
 KM=False
 knee=True
-kM_3d=True
+kM_3d=False
 
 correlazione=False
 #_____________________________________________________________________________________
@@ -58,51 +58,11 @@ from sklearn.metrics import silhouette_score
 
 numeric = df.select_dtypes('number')
 print(numeric.iloc[0])
-df=df[['RateIncome','FractionYearsAtCompany','TrainingTimesLastYear','JobLevel','YearsInCurrentRole']]
+df = df[['PercentSalaryHike','DistanceFromHome','RateIncome','YearsInCurrentRole','NumCompaniesWorked']]
 numeric = df.select_dtypes('number')
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric.values)
 
-if KM:
-    kmeans = KMeans(n_clusters = 4, n_init = 100, max_iter=300, init='k-means++')
-    kmeans.fit(X)
-
-    print('SSE %s' % kmeans.inertia_)
-    print('Silhouette %s' % silhouette_score(X, kmeans.labels_))
-    # np.unique(kmeans.labels_, return_counts=True) # grandezza di ogni cluster
-    hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
-    # print(dict(zip(bins, hist))) 
-    i = 0
-    for index, columns in numeric.iteritems():
-        for index_n, columns in numeric.iteritems():
-            if index != index_n:
-                #print(np.unique(dbscan.labels_, return_counts = True))
-                plt.scatter(numeric[index_n], numeric[index], c=kmeans.labels_, s=30)
-                plt.xlabel(index_n)
-                plt.ylabel(index)
-                i += 1
-                plt.show()
-                print(i)
-    centers = kmeans.cluster_centers_
-    print(centers)
-    plt.scatter(numeric['PercentSalaryHike'], numeric['FractionYearsAtCompany'], c = kmeans.labels_, s=20)
-    plt.scatter(centers[:, 0], centers[:, 1], s = 100, marker='*', c='k')
-    plt.show()  
-
-if knee:
-    sse_list = list()
-    max_k = 50
-    for k in range(2, max_k + 1):
-        kmeans = KMeans(n_clusters=k, n_init=10, max_iter=100)
-        kmeans.fit(X)
-        
-        sse = kmeans.inertia_
-        sse_list.append(sse)
-        
-    plt.plot(range(2, len(sse_list) + 2), sse_list)
-    plt.ylabel('SSE', fontsize=22)
-    plt.xlabel('K', fontsize=22)
-    plt.show()
 
 if kM_3d:
     scaler = MinMaxScaler()
@@ -130,7 +90,82 @@ if kM_3d:
                             ax.set_xlabel(index_n)
                             ax.set_ylabel(index)
                             ax.set_zlabel(idx)
-                            plt.show()
+                            # plt.show()
+
+    centers=scaler.inverse_transform(kmeans.cluster_centers_)
+
+    plt.figure()
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(df['DistanceFromHome'], df['PercentSalaryHike'], df['NumCompaniesWorked'], c=kmeans.labels_, s=30)
+    ax.scatter(centers[:,1],centers[:,0],centers[:,4],s=500,marker='*',c='crimson',edgecolor='k')
+    ax.set_xlabel('DistanceFormHome')
+    ax.set_ylabel('PercentSalaryHike')
+    ax.set_zlabel('NumCompaniesWorked')
+    # plt.show()  
+
+    plt.figure('paralle cor centroids')
+    print(centers)
+
+    plt.plot(centers[2], marker='o',label='Cluster 2', c='teal')
+    plt.plot(centers[0], marker='o',label='Cluster 0', c='gold')
+    plt.plot(centers[1], marker='o',label='Cluster 1', c='purple')
+    plt.plot(centers[3], marker='o',label='Cluster 3', c='mediumaquamarine')
+    plt.legend()
+    plt.show()
+    
+if KM:
+    kmeans = KMeans(n_clusters = 3, n_init = 100, max_iter=300, init='k-means++')
+    kmeans.fit(X)
+
+    print('SSE %s' % kmeans.inertia_)
+    print('Silhouette %s' % silhouette_score(X, kmeans.labels_))
+    # np.unique(kmeans.labels_, return_counts=True) # grandezza di ogni cluster
+    hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
+    # print(dict(zip(bins, hist))) 
+    i = 0
+    for index, columns in numeric.iteritems():
+        for index_n, columns in numeric.iteritems():
+            if index != index_n:
+                #print(np.unique(dbscan.labels_, return_counts = True))
+                # plt.scatter(numeric[index_n], numeric[index], c=kmeans.labels_, s=30)
+                # plt.xlabel(index_n)
+                #  plt.ylabel(index)
+                i += 1
+                # plt.show()
+                print(i)
+    centers=scaler.inverse_transform(kmeans.cluster_centers_)
+    plt.figure()
+    plt.scatter(df['DistanceFromHome'], df['FractionYearsAtCompany'],s=20,c=kmeans.labels_)
+    plt.scatter(centers[:,3],centers[:,1],s=200,marker='*',c='crimson')
+    plt.xlabel('DistanceFromHome')
+    plt.ylabel('FractionYearsAtCompany')
+    # plt.show()  
+
+    plt.figure()
+    print(centers)
+
+    plt.plot(centers[2], marker='o',label='Cluster 2', c='teal')
+    plt.plot(centers[0], marker='o',label='Cluster 0', c='gold')
+    plt.plot(centers[1], marker='o',label='Cluster 1', c='purple')
+    plt.legend()
+    plt.show()
+
+if knee:
+    sse_list = list()
+    max_k = 50
+    for k in range(2, max_k + 1):
+        kmeans = KMeans(n_clusters=k, n_init=10, max_iter=100)
+        kmeans.fit(X)
+        
+        sse = kmeans.inertia_
+        sse_list.append(sse)
+        
+    plt.plot(range(2, len(sse_list) + 2), sse_list)
+    plt.ylabel('SSE', fontsize=22)
+    plt.xlabel('K', fontsize=22)
+    plt.show()
+
         
 #__________________________________________________________________________
 
