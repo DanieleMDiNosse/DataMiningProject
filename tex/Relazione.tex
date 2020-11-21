@@ -178,7 +178,7 @@ Si vuole precisare che per la visualizzazione dei clusters è stato utilizzato u
 Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati migliori sono:\\
 
 \begin{enumerate}
-\item PercentSalaryHike, FractionYearsAtCompany, YearsInCurrentRole, RateIncome, NumCompaniesWorked(1)
+\item PercentSalaryHike, FractionYearsAtCompany, YearsInCurrentRole, RateIncome, NumCompaniesWorked
 \item DistanceFromHome, FractionYearsAtCompany, RateIncome, YearsInCurrentRole, TrainingTimesLastYear(2)
 \item PercentSalaryHike, DistanceFromHome, RateIncome, YearsInCurrentRole, NumCompaniesWorked(4)
 \item DistanceFromHome, FractionYearsAtCompany, TrainingTimesLastYear, PercentSalaryHike, YearsInCurrentRole(6)
@@ -189,7 +189,8 @@ Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati mig
 \captionof{figure}{SSE in funzione di $K$}
 \end{center}
 
-La scelta del numero di cluster $K$ è stata presa osservando l'andamento del SSE in funzione di $K$ (Figura $12$), simile in tutti e quattro i casi esaminati; con lo scopo di aver un buon compromesso fra i due l'algoritmo è stato eseguito per $K$ uguale a 3, 4 e 5. Dai risultati ottenuti si evince che, sebbene con $K=5$ il valore delle SSE è minore rispetto agli altri due casi, non si apprezzano cluster evidenti: ve ne sono sempre due eccessivamente mescolati. Con $K=3$ la divisione fra i cluster è sicuramente ben evidente ma, con $K=4$, si ottengono comunque buoni risultati con il vantaggio di un SSE minore.  
+La scelta del numero di cluster $K$ è stata presa osservando l'andamento del SSE in funzione di $K$ (Figura $12$), simile in tutti e quattro i casi esaminati; con lo scopo di aver un buon compromesso fra i due l'algoritmo è stato eseguito per $K$ uguale a 3, 4 e 5. Dai risultati ottenuti si evince che, sebbene con $K=5$ il valore delle SSE è minore rispetto agli altri due casi, non si apprezzano cluster evidenti: ve ne sono sempre due eccessivamente mescolati. Con $K=3$ la divisione fra i clusters è sicuramente ben evidente ma, con $K=4$, si ottengono comunque buoni risultati con il vantaggio di un SSE minore. \\
+Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere più chiara la posizione dei centroidi, sono riportate anche le loro cordinate organizzate in parallelo per ciascun sottoinsieme usato.
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.47\textwidth}
@@ -201,13 +202,58 @@ La scelta del numero di cluster $K$ è stata presa osservando l'andamento del SS
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
 \includegraphics[scale=0.6]{numcompan_Fraction_percentCENTROIDI.png}
-\caption{Cluster sottoinsime 1 }
+\caption{Cluster sottoinsime 3 }
 \label{etichetta2}
 \end{minipage}
 \end{figure}
 
+\begin{figure}[H]
+\begin{minipage}[b]{0.47\textwidth}
+\centering
+\includegraphics[width=\textwidth]{par_cor2.png}
+\caption{Parallel coordinates dei centroidi}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.55\textwidth}
+\includegraphics[scale=0.6]{rate_fraction_distance2.png}
+\caption{Cluster sottoinsime 2 }
+\label{etichetta2}
+\end{minipage}
+\end{figure}
 
+\begin{figure}[H]
+\begin{minipage}[b]{0.47\textwidth}
+\centering
+\includegraphics[width=\textwidth]{parr_corr4.png}
+\caption{Parallel coordinates dei centroidi}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.55\textwidth}
+\includegraphics[scale=0.6]{Percent_distance_numcompanie4.png}
+\caption{Cluster sottoinsime 3 }
+\label{etichetta2}
+\end{minipage}
+\end{figure}
 
+\begin{figure}[H]
+\begin{minipage}[b]{0.47\textwidth}
+\centering
+\includegraphics[width=\textwidth]{parr cor frac6.png}
+\caption{Parallel coordinates dei centroidi}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.55\textwidth}
+\includegraphics[scale=0.6]{FractionYear_Distance_Percent_CENTROIDI6.png}
+\caption{Cluster sottoinsime 4 }
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+
+\subsection{DB-Scan}
 
 \section{Conclusioni}
 \end{document}
+
