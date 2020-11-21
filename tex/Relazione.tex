@@ -19,9 +19,14 @@
 \usepackage{upgreek}
 \usepackage[a4paper, total={7.7in, 10.5in}]{geometry}
 \begin{document}
-\title{TITOLO:RELAZIONE DI DATA MINING}
-\author{Daniele Maria Di Nosse, Angelo Lasala, Raffaele Paradiso}
-\date{21/11/2020\newpage}
+\title{Relazione del Progetto di Data Mining}
+\title{%
+  Relazione del Progetto di Data Mining \\
+  \large Corso di Laurea Magistrale in Fisica \\
+    Esame di Data Mining A.A. 2020/2021}
+\author{Gruppo 33: Daniele Maria Di Nosse, Angelo Lasala, Raffaele Paradiso}
+\maketitle
+\newpage
 
 \maketitle
 \tableofcontents{}
@@ -29,12 +34,10 @@
 \newpage
 
 \section{Introduzione}
-Determinare le possibili relazioni che intercorrono fra caratteristiche dei dipendenti di un'azienda può risultare di grande utilità per predire i possibili scenari lavorativi che posso verificarsi e gestire di conseguenza l'organizzazione del personale in maniera ottimale. Nel presente progetto ci si pone l'obiettivo di valutare tali legami tramite un approccio di data mining. Le informazioni che si sono utilizzate sono relative ad un data frame fittizio (leggermente modificato) generato da IBM e presente sul portale Kaggle(URL \url{https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset}). Non ci si è posto un obiettivo principale, ovvero la determinazione di legami, correlazioni e classificazioni relativi ad un singolo attributo rispetto a tutti gli altri, ma si è proceduto in maniera più generale ricoprendo uno spettro più ampio di possibili relazioni fra tutte le variabili.
-
-Sebbene i dati a disposizione siano stati divisi in due sotto insiemi, uno di Train ed uno di Test, si è deciso di utilizzare l'intero insieme di records per tutti i tasks che non concernono algoritmi di Machine Learning
+Determinare le possibili relazioni che intercorrono fra le caratteristiche dei dipendenti di un'azienda può risultare di grande utilità per predire i possibili scenari lavorativi che posso verificarsi e gestire di conseguenza l'organizzazione del personale in maniera ottimale. Nel presente progetto ci si è posto l'obiettivo di valutare tali legami tramite un approccio di data mining. Le informazioni che si sono utilizzate sono relative ad un data frame fittizio (leggermente modificato) generato da IBM e presente sul portale Kaggle(URL \url{https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset}). Non ci si è posto un obiettivo principale, ovvero la determinazione di legami, correlazioni e classificazioni relativi ad un singolo attributo rispetto a tutti gli altri, ma si è proceduto in maniera più generale ricoprendo uno spettro più ampio di possibili relazioni fra tutte le variabili.
 \section{Data Understanding}
 \subsection{Data Semantics}
-Nella prima fase dell'elaborazione si è studiato il data frame nella sua forma originale (Train + Test), valutando il numero degli attributi, la loro natura e dominio. 
+Nella prima fase dell'elaborazione si è studiato il data frame, valutando il numero degli attributi, la loro natura e dominio. 
 
 %\begin{center}
 %\includegraphics[scale=0.5]{DFhead(10).png}
@@ -42,7 +45,7 @@ Nella prima fase dell'elaborazione si è studiato il data frame nella sua forma 
 %\end{center}
 % trim=2cm 0 0 0cm
 
-Il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come, ad esempio, Education o EnviromentSatisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti uguaglianze 
+Il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come Education o EnviromentSatisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti relazioni: 
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -76,16 +79,16 @@ PerformanceRating & RelationshipSatisfaction&WorkLifeBalance  &   \quad\quad&\qu
 
 %\end{table}
 
-Di conseguenza, il dominio di tali attributi è di tipo categorico od ordinale e non numerico(un attributo ordinale è effettivamente una sottocategoria categorica, si è scelto comunque di elencarli separatamente). Inoltre, sebbene non si abbiano informazioni dettagliate sulle classi relative agli attributi JobLevel e  StockOptionLevel, per la loro stessa natura si è deciso di trattarli come attributi ordinali. Organizzando tutte le variabili per la loro tipologia, si ottiene quindi che
+Di conseguenza, il dominio di tali attributi è di tipo categorico od ordinale e non numerico (un attributo ordinale è effettivamente una sottocategoria categorica, si è scelto comunque di elencarli separatamente). Inoltre, sebbene non si abbiano informazioni dettagliate sulle classi relative agli attributi JobLevel e  StockOptionLevel, per la loro stessa natura si è deciso di trattarli come attributi ordinali. Organizzando tutte le variabili per la loro tipologia, si ottiene quindi la seguente suddivisione:
 
 \begin{center}
 \includegraphics[scale=0.50]{semantics.png}
 \captionof{figure}{Domini degli attributi}
 \end{center}
-Per quanto riguarda il range di valori degli attributi risulta essere molto più discretizzato per gli attributi ordinali che per gli attributi numerici. Inoltre differisce molto da attributo ad attributo (anche di 4 ordini di grandezza), cosa che sottolinea sin da questo punto l'importanza di una trasformazione delle variabili.
+Per quanto riguarda il range di valori degli attributi risulta essere molto più discretizzato per gli attributi ordinali che per gli attributi numerici. Inoltre differisce molto da attributo ad attributo (anche di 4 ordini di grandezza), cosa che sottolinea sin da  ora l'importanza di una trasformazione delle variabili.
 
 \subsection{Analisi statistica}
-Le frequenze degli attributi categorici e le relative mode sono riportate nelle seguenti tabelle
+Le frequenze degli attributi categorici e le relative mode sono riportate nelle seguenti tabelle.
 
 \begin{center}
 \includegraphics[scale=1.28]{frequenza attributi nominali.png}
@@ -98,7 +101,7 @@ Le frequenze degli attributi categorici e le relative mode sono riportate nelle 
 \end{center}
  
  
-mentre le distribuzioni degli attributi ordinali e numerici con alcuni indici statistici sono rappresentate di seguito.
+Le distribuzioni degli attributi ordinali e numerici con alcuni indici statistici sono rappresentate di seguito.
 Si può notare la forte asimmetria di molte distribuzioni ed un varianza molto grande in alcuni attributi. Tali problematiche dovranno essere sanate con opportune trasformazioni.
 
 \begin{center}
@@ -117,8 +120,8 @@ Si può notare la forte asimmetria di molte distribuzioni ed un varianza molto g
 \end{center}
 
 \subsection{Data Quality : Outliers e Missing values}
-La qualità dei dati è fortemente influenzata, negativamente, dalla presenza di outliers e di missing values. Algoritmi di clustering e correlazioni fra gli attributi possono restituire risultati falsificati se non si gestiscono in maniera appropriata tali valori. 
-Nel data frame utilizzato la loro presenza è evidente, infatti
+La qualità dei dati è fortemente influenzata negativamente dalla presenza di outliers e di missing values. Algoritmi di clustering e correlazioni fra gli attributi possono restituire risultati falsificati se non si gestiscono in maniera appropriata tali valori. 
+Nel data frame utilizzato la loro presenza è evidente, infatti si ha che:
 
 \begin{center}
 \includegraphics[scale=1.5]{missingvalues.png}
@@ -127,17 +130,17 @@ Nel data frame utilizzato la loro presenza è evidente, infatti
 Gli attributi StandardHours ed Over18 presentano una qualità molto scarsa: nel primo circa la metà dei records sono mancanti e la restante parte ha un unico valore, mentre il secondo, oltre a contenere anch'esso una quantità significativa di missing values, non rappresenta in ogni caso un attributo di grande importanza, considerando che la stragrande maggioranza dei dipendenti di un'azienda sono maggiorenni. Per tali motivi, si è deciso di eliminare questi due attributi.
 
 Per la determinazione degli outliers sono stati utilizzati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot, Principal Component Analysis e scatter plot). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
-Il Principal Component Analysis, d'altro canto, è uno dei metodi maggiormente utilizzati nella ricerca di outliers in situazioni alto-dimensionali. Proiettando lo spazio n-dimensionale in uno spazio q-dimensionale ($q<n$) costruito tramite i vettori normalizzati della matrice di correlazione, si cerca di mantenere il più intatta possibile la varianza negli attributi. Nel caso in esame, la frazione di varianza conservata non risulta essere significativa (circa $0.4$), inficiando inevitabilmente i risultati ottenuti.
+Il Principal Component Analysis, d'altro canto, è uno dei metodi maggiormente utilizzati nella ricerca di outliers in situazioni alto-dimensionali. Proiettando lo spazio n-dimensionale in uno spazio q-dimensionale ($q<n$), costruito tramite i vettori normalizzati della matrice di correlazione, si cerca di mantenere il più intatta possibile la varianza negli attributi. Nel caso in esame, la frazione di varianza conservata non risulta essere significativa (circa $0.4$), inficiando inevitabilmente i risultati ottenuti.
 Anche la visualizzazione degli scatter plot confrontati con gli attributi categorici non ha evidenziato alcun punto identificabile come outlier.
-L'unico metodo che ha avuto successo per la determinazione degli outliers è stata la visualizzazione dei Box Plot per i singoli attributi. Si è proceduto quindi alla loro rimozione tramite eliminazione delle righe corrispondenti.
+L'unico metodo che ha avuto successo per la loro determinazione è stata la visualizzazione dei Box Plot per i singoli attributi. Si è proceduto quindi alla loro rimozione tramite eliminazione delle righe corrispondenti.
 
 \section{Data Preparation}
 In questa fase del lavoro ci si è posto l'obiettivo di trasformare e preparare il set di dati all'analisi successiva. I problemi precedentemente evidenziati sono stati qui risolti.\\
 
 Come primo task sono stati gestiti i missing values.
-L'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi presenti nel data frame. Per quanto riguarda quella con i numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p$$ value $>$ 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
-Per quanto riguarda PerformanceRating, si è aggiunta una nuova classe 'MISSING', poiché si è notato che la granulosità dell'attributo non ricopre tutto lo spettro plausibile. Si presuppone che i valori MISSING possano appartenere ad una classe di ordine inferiore ad Excellent.\\
-Queste due considerazioni non sono applicabile all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione del campione.\\
+L'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi nel data frame. Per quanto riguarda quella con i numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p value > 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
+Per quanto riguarda PerformanceRating, si è aggiunta una nuova classe 'MISSING', poiché si è notato che la granulosità dell'attributo in questo caso non ricopre tutto lo spettro plausibile. Si presuppone che i valori `MISSING' possano appartenere ad una classe di ordine inferiore ad `Excellent'.\\
+Queste due considerazioni non sono applicabili all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione del campione.\\
 Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi.\\ %(che al mercato mio padre comprò, nda).\\
 Come secondo task sono stati valutati gli outliers.\\
 Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outliers solo in tre attributi numerici: TrainingTimeLastYear, TotalWorkingYears, YearsAtCompany
@@ -146,7 +149,7 @@ Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outli
 \captionof{figure}{Box Plot degli attributi che presentano outliers}
 \end{center}
  Il data frame dopo questa prima preparazione risulta contenere il $36\%$ di dati in meno rispetto a quello di partenza.\\
-Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni, quali l'asimettrie e un valore spropositato della deviazione standar. In particolre è stata applicata la radice quadrata ad DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece ad MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . Di seguito sono riportate alcune distribuzioni delle variabili trasformate.\\
+Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni, quali l'asimettrie e un valore spropositato della deviazione standar. In particolare è stata applicata la radice quadrata a DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece a MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . Di seguito sono riportate alcune distribuzioni delle variabili trasformate.\\
 
 \begin{center}
 \includegraphics[scale=0.35]{trasformer.png}
@@ -154,17 +157,16 @@ Funzioni di trasformazione sono state applicate ad attributi numerici con lo sco
 \end{center}
 
 Come terzo task sono stati eliminati ed aggiunti nuovi attributi.\\
-
-In luogo di TotalWorkingYears e YearsAtCompany si è scelto di introdurre il loro rapporto, denominato FractionAtCompany che rappresenta la frazione di anni lavorativi del singolo dipendente nell'azienda; analogamente si è proceduto per MonthlyIncome e MonthlyRate sostituiti da RateIncome, indice di quanto l'azienda spende per un impegato in rapporto al suo stipendio. Inoltre, siccome DailyRate e HourlyRate contengono la stessa informazione di MonthlyRate, si sono eliminati.\\
-Inoltre, YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion sono caratterizzati da una correlazione significativa e quindi si è deciso di mantenere solamente YearsInCurrentRole all'analisi a seguire.
-
-Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del $p$ $value$  ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.\\
-Si può notare come il $p$ $value$ per la maggioranza dei casi è maggiore di $0.05$, valore scelto come soglia; questo significa che l'ipotesi nulla (non c'è relazione tra i due attributi) non può essere scartata. Nel'altra situazione invece l'evidenza empirica è fortemente contraria all'ipotesi nulla, ciò significa che una la presenza di una dipendenza tra gli attributi è statisticamente plausibile, come ad esempio avviene tra Attrition (quanto un impiegato è "logorato") e MaritialStatus (condizione sentimentale dell'impiegato).\\
+In luogo di TotalWorkingYears e YearsAtCompany si è scelto di introdurre il loro rapporto, denominato FractionAtCompany che rappresenta la frazione di anni lavorativi del singolo dipendente nell'azienda. Tramite l'introduzione di tale attributo è stato possibile notare l'inconsistenza di alcuni records per cui tale rapporto risultava essere maggiore di 1. Tali valori sono stati eliminati. Analogamente si è proceduto per MonthlyIncome e MonthlyRate sostituiti da RateIncome, indice di quanto l'azienda spende per un impiegato in rapporto al suo stipendio. Anche in questo caso sono stati eliminati i valori inconsistenti.\\ 
+DailyRate e HourlyRate contengono la stessa informazione di MonthlyRate, quindi sono stati eliminati.\\
+Inoltre, YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion sono caratterizzati da una correlazione significativa e quindi si è deciso di mantenere solamente YearsInCurrentRole nell'analisi a seguire.\\
+Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del $p $ $value$  ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.\\
+Si può notare come il $p$ $ value$ per la maggioranza dei casi è maggiore di $0.05$, valore scelto come soglia; questo significa che l'ipotesi nulla (non c'è relazione tra i due attributi) non può essere scartata. Nell'altra situazione invece l'evidenza empirica è fortemente contraria all'ipotesi nulla, ciò significa che la presenza di una dipendenza tra gli attributi è statisticamente plausibile, come ad esempio avviene tra Attrition (quanto un impiegato è "logorato") e MaritialStatus (condizione sentimentale dell'impiegato).\\
 Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono presenti corelazioni significative.
 
 \begin{center}
 \includegraphics[scale=1.2]{mccat.png}
-\captionof{figure}{Matrice dei p value per gli attributi categorici}
+\captionof{figure}{Matrice dei $p$ $value$ per gli attributi categorici}
 \end{center}
 
 \begin{center}
@@ -173,16 +175,16 @@ Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono 
 \end{center}
 
 \section{Clustering}
-Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means e DB Scan. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 4-5 dimensionali di attributi alla ricerca un qualche tipo di clusterizzazione. Come metrica è stata usata la distanza euclidea.\\
-Si vuole precisare che per la visualizzazione dei clusters è stato utilizzato uno spazio tridimensionale poichè, soprattutto nel K-Means, una visualizzazione bidimensionale portava ad un mixing eccesivo dei cluster stessi.
+Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means e DB Scan. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 4-5 dimensionali alla ricerca un qualche tipo di clusterizzazione. Come metrica è stata usata la distanza euclidea.\\
+Si vuole precisare che per la visualizzazione dei clusters è stato utilizzato uno spazio tridimensionale poichè, soprattutto nel K-Means, una visualizzazione bidimensionale portava ad un mixing eccesivo dei clusters stessi.
 \subsection{K-Means}
 Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati migliori sono:\\
 
 \begin{enumerate}
 \item PercentSalaryHike, FractionYearsAtCompany, YearsInCurrentRole, RateIncome, NumCompaniesWorked
-\item DistanceFromHome, FractionYearsAtCompany, RateIncome, YearsInCurrentRole, TrainingTimesLastYear(2)
-\item DistanceFromHome, RateIncome, Age, FractionYearsAtCompany(8)
-\item DistanceFromHome, FractionYearsAtCompany, TrainingTimesLastYear, PercentSalaryHike, YearsInCurrentRole(6)
+\item DistanceFromHome, FractionYearsAtCompany, RateIncome, YearsInCurrentRole, TrainingTimesLastYear
+\item DistanceFromHome, RateIncome, Age, FractionYearsAtCompany
+\item DistanceFromHome, FractionYearsAtCompany, TrainingTimesLastYear, PercentSalaryHike, YearsInCurrentRole
 \end{enumerate}
 
 
@@ -192,7 +194,7 @@ Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati mig
 \end{center}
 
 La scelta del numero di cluster $K$ è stata presa osservando l'andamento del SSE in funzione di $K$ (Figura $12$), simile in tutti e quattro i casi esaminati; con lo scopo di aver un buon compromesso fra i due l'algoritmo è stato eseguito per $K$ uguale a 3, 4 e 5. Dai risultati ottenuti si evince che, sebbene con $K=5$ il valore delle SSE è minore rispetto agli altri due casi, non si apprezzano cluster evidenti: ve ne sono sempre due eccessivamente mescolati. Con $K=3$ la divisione fra i clusters è sicuramente ben evidente ma, con $K=4$, si ottengono comunque buoni risultati con il vantaggio di un SSE minore. \\
-Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere più chiara la posizione dei centroidi, sono riportate anche le loro cordinate organizzate in parallelo per ciascun sottoinsieme usato.
+Nei seguenti grafici sono mostrati i risultati ottenuti e per redendere più chiara la posizione dei centroidi, sono riportate anche le loro cordinate organizzate in parallelo per ciascun sottoinsieme usato.
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.47\textwidth}
@@ -227,13 +229,13 @@ Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere p
 \begin{figure}[H]
 \begin{minipage}[b]{0.47\textwidth}
 \centering
-\includegraphics[width=\textwidth]{parr_corr4.png}
+\includegraphics[width=\textwidth]{par_cor_centroid8.png}
 \caption{Parallel coordinates dei centroidi}
 \label{etichetta1}
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
-\includegraphics[scale=0.6]{Percent_distance_numcompanie4.png}
+\includegraphics[scale=0.6]{rate_frac_dist8.png}
 \caption{Cluster sottoinsime 3: SSE$=129$; silhouette$=0.25$}
 \label{etichetta2}
 \end{minipage}
@@ -255,16 +257,67 @@ Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere p
 \end{figure}
 
 Dalla divisione in cluster è possibile classificare gli impiegati in base ad alcune caratteristiche comuni.
-Ad esempio il cluster giallo nella Figura $14$  esprime l'irrilevanza dell'esperienza lavorativa al di fuori dell'azienda relativamente all'umento di stipendio. Infatti chi è stato assunto da poco (rispetto alla vita lavorativa), sebbene abbia maturato esperienza in altre aziende, ha un percent salary hike basso.
-D'altro canto, al cluster viola è plausibile associare i lavoratori la cui esperienza è costituita quasi eslusivamente da ruoli indipendeti da compagnie. Anche in questo caso, il percent salary hike è relativamente basso.
-Il cluster blu può essere considerato il gruppo di lavoratori la cui esperienza non è stata influenzata da altri impieghi nel passato. Infatti si nota che in questo caso l'aumento dello stipendio percentuale è indipendente dal numero di compagnie precedenti.
-Infine il cluster verde può essere visto come il gruppo di persone che hanno acqusitio competenze utili all'azienda (ciò è evidente dalla percentuale di aumento di stipendio molto alta rispetto a tutti gli altri gruppi) in altri ambienti.
-La classificazione fatta non è certamente da considerarsi assoluta, poiché dai valori della silhouette non elevati, si capische che la distinzione tra i cluster non è netta: mescolamente tra di essi sono molto plausibili.
+Ad esempio il cluster giallo nella Figura $13$  esprime l'irrilevanza dell'esperienza lavorativa al di fuori dell'azienda relativamente all'aumento di stipendio. Infatti chi è stato assunto da poco (rispetto alla vita lavorativa), sebbene abbia maturato esperienza in altre aziende, ha un percent salary hike basso.
+D'altro canto, al cluster viola è plausibile associare i lavoratori la cui esperienza è costituita quasi esclusivamente da ruoli indipendenti da compagnie. Anche in questo caso, il percent salary hike è relativamente basso.
+Il cluster blu può essere considerato il gruppo di lavoratori la cui esperienza non è stata influenzata da altri impieghi nel passato. Infatti si nota che in questo caso l'aumento percentuale dello stipendio è indipendente dal numero di compagnie precedenti.
+Infine il cluster verde può essere visto come il gruppo di persone che hanno acquisito competenze utili all'azienda (ciò è evidente dalla percentuale di aumento di stipendio molto alta rispetto a tutti gli altri gruppi) in altri ambienti.\\
+La classificazione fatta non è certamente da considerarsi assoluta, poiché dai valori della silhouette non elevati, si capisce che la distinzione tra i cluster non è netta: mescolamenti tra di essi sono molto plausibili.
 Ragionamenti simili possono essere applicati agli altri grafici.
 
 
 \subsection{DB-Scan}
+Per quanto riguarda il DB-Scan i sottoinsiemi che sono stati utilizzati :\\
+\begin{enumerate}
+\item PercentSalaryHike, FractionYearsAtCompany, YearsInCurrentRole, RateIncome
+\item PercentSalaryHike, FractionYearsAtCompany, RateIncome, YearsInCurrentRole, NumCompaniesWorked
+\item DistanceFromHome, FractionYearsAtCompany, RateIncome, YearsInCurrentRole, TrainingTimesLastYear
+\end{enumerate}
 
-\section{Conclusioni}
+La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata rispetto al K-Means. L'approccio utilizzato è stato quello di far variare il numero di min samples tra $5$ e $20$ e, attraverso il grafico dell'elbow curve, è stato scelto il valore di $eps$ in prossimità del gomito. Successivamente è stato fatto variare il valore di $eps$ su una scala molto fine in un suo intorno.
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Figure_1.png}
+\caption{Elbow curve con min samples =  8 }
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Figure_24.png}
+\caption{eps = 0.750 , silhoutte = 0.26 }
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{2.png}
+\caption{Elbow curve con min samples =  8}
+\label{etichetta1}
+\centering
+\includegraphics[width=\textwidth]{5 (1).png}
+\caption{Elbow curve con min samples =  15}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{22.png}
+\caption{eps = 0.950, silhoutte = 0.12 }
+\label{etichetta2}
+\centering
+\includegraphics[width=\textwidth]{5 (2).png}
+\caption{eps = 1.20, silhoutte = 0.02}
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+
+Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un diverso numero di cluster ed un certo numero di noise points (punti viola). Questo è essenzialmente dovuto alla distribuzione dei valori nello spazio tridimensionale: essi formano infatti delle slices molto dense a valori fissati di uno dei tre attributi, come si può ad esempio osservare nella Figura  25. In questo caso inoltre si nota che il valore della silhoutte è praticamente nullo e ciò implica che la divisione ottenuta è totalmente inconsistente. Per tali motivi non è stato possibile associare ai cluster alcun significato.
+
+%\section{Conclusioni}
 \end{document}
 
