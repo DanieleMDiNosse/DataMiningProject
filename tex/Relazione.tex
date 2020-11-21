@@ -36,13 +36,13 @@ Sebbene i dati a disposizione siano stati divisi in due sotto insiemi, uno di Tr
 \subsection{Data Semantics}
 Nella prima fase dell'elaborazione si è studiato il data frame nella sua forma originale (Train + Test), valutando il numero degli attributi, la loro natura e dominio. 
 
-\begin{center}
-\includegraphics[scale=0.5]{DFhead(10).png}
-\captionof{figure}{Primi 10 valori di ogni attributo}
-\end{center}
+%\begin{center}
+%\includegraphics[scale=0.5]{DFhead(10).png}
+%\captionof{figure}{Primi 10 valori di ogni attributo}
+%\end{center}
 % trim=2cm 0 0 0cm
 
-Come si può notare dalla tabella precedente, il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come, ad esempio, Education o Enviroment Satisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti uguaglianze 
+Il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come, ad esempio, Education o Enviroment Satisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti uguaglianze 
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -93,7 +93,7 @@ Le frequenze degli attributi categorici e le relative mode sono riportate nelle 
 \end{center}
 
 \begin{center}
-\includegraphics[scale=1.28]{modacategoriciordinali.png}
+\includegraphics[scale=1]{modacategoriciordinali.png}
 \captionof{figure}{Mode}
 \end{center}
  
@@ -102,16 +102,17 @@ mentre le distribuzioni degli attributi ordinali e numerici con alcuni indici st
 Si può notare la forte asimmetria di molte distribuzioni ed un varianza molto grande in alcuni attributi. Tali problematiche dovranno essere sanate con opportune trasformazioni.
 
 \begin{center}
-\includegraphics[scale=1.3]{statistica.png}
+\includegraphics[scale=1.1]{statistica.png}
 \captionof{figure}{Indici statistici per gli attributi numerici}
 \end{center}
 
 \begin{center}
-\includegraphics[scale=0.9,trim=0.5cm 0 0 0cm]{Istogrammi1.png}
+\includegraphics[scale=0.82,trim=0cm 0 0 0cm]{Istogrammi1.png}
 \end{center}
 
+
 \begin{center}
-\includegraphics[scale=1,trim=1cm 0 0 0cm]{Istogrammi2.png}
+\includegraphics[scale=0.82,trim=0cm 0 0 0cm]{Istogrammi2.png}
 \captionof{figure}{Istogrammi attributi numerici ed ordinali}
 \end{center}
 
@@ -125,22 +126,19 @@ Nel data frame utilizzato la loro presenza è evidente, infatti
 \end{center}
 Gli attributi StandardHours ed Over18 presentano una qualità molto scarsa: nel primo circa la metà dei records sono mancanti e la restante parte ha un unico valore, mentre il secondo, oltre a contenere anch'esso una quantità significativa di missing values, non rappresenta in ogni caso un attributo di grande importanza, considerando che la stragrande maggioranza dei dipendenti di un'azienda sono maggiorenni. Per tali motivi, si è deciso di eliminare questi due attributi.
 
-Per la determinazione degli outliers si sono valutati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot e Principal Component Analysis). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
+Per la determinazione degli outliers si sono valutati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot, Principal Component Analysis e scatter plot). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
 Il Principal Component Analysis, d'altro canto, è uno dei metodi maggiormente utilizzati nella ricerca di outliers in situazioni alto-dimensionali. Proiettando lo spazio n-dimensionale in uno spazio q-dimensionale ($q<n$) costruito tramite i vettori normalizzati della matrice di correlazione, si cerca di mantenere il più intatta possibile la varianza negli attributi. Nel caso in esame, la frazione di varianza conservata non risulta essere significativa (circa $0.4$), inficiando inevitabilmente i risultati ottenuti.
+Anche la visualizzazione degli scatter plot confrontati con gli attributi categorici non ha evidenziato alcun punto identificabile con un outlier.
 L'unico metodo che ha avuto successo per la determinazione degli outliers è stata la visualizzazione dei Box Plot per i singoli attributi. Si è proceduto quindi alla loro rimozione tramite eliminazione delle righe corrispondenti.
 
 \section{Data Preparation}
 In questa fase del lavoro ci si è posto l'obiettivo di trasformare e preparare il set di dati all'analisi successiva. I problemi precedentemente evidenziati sono stati qui risolti.\\
 
-Come primo task sono stati gestiti i missing values.\\
+Come primo task sono stati gestiti i missing values.
 Nell'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi presenti nel data frame. Per quanto riguarda quella con gli numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p value $>$ 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
-
 Per quanto riguarda PerformanceRating, si è aggiunta una nuova classe 'MISSING', poiché si è notato che la granulosità dell'attributo non ricopre tutto lo spettro plausibile. Si presuppone che i valori MISSING possano appartenere ad una classe di ordine inferiore ad Excellent.\\
-
 Queste due considerazioni non sono applicabile all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione nota.\\
-
 Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi.\\ %(che al mercato mio padre comprò, nda).\\
-
 Come secondo task sono stati valutati gli outliers.\\
 Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outliers solo in tre attributi numerici: TrainingTimeLastYear, TotalWorkingYears, YearsAtCompany
 \begin{center}
@@ -148,28 +146,67 @@ Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outli
 \captionof{figure}{Box Plot degli attributi che presentano outliers}
 \end{center}
  Il data frame dopo questa prima preparazione risulta contienere il $36\%$ di dati in meno rispetto a quello di partenza.\\
-
 Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni quali l'asimettrie e un valore spropositato della deviazione standar. In particolre è stata applicata la radice quadrata ad DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece ad MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . Di seguito sono riportate alcune distribuzioni delle variabili trasformate.
 
 \begin{center}
-\includegraphics[scale=0.7]{trasformer.png}
+\includegraphics[scale=0.3]{trasformer.png}
 \captionof{figure}{Alcune delle trasformazioni effettuate}
 \end{center}
 
 Come terzo task sono stati eliminati ed aggiunti nuovi attributi.\\
 In luogo di TotalWorkingYears e YearsAtCompany si è scelto di introdurre il loro rapporto, denominato FractionAtCompany che rappresenta la frazione di anni lavorativi del singolo dipendente nell'azienda; analogamente si è proceduto per MonthlyIncome e MonthlyRate sostituiti da RateIncome, indice di quanto l'azienda spende per un impegato in rapporto al suo stipendio. Inoltre, siccome DailyRate e HourlyRate contengono la stessa informazione di MonthlyRate, si sono eliminati.\\
+Inoltre, YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion sono caratterizzati da una correlazione significativa e quindi si è deciso di mantenere solamente YearsInCurrentRole ell'analisi a seguire.
+\begin{center}
+\includegraphics[scale=0.7]{years.png}
+\captionof{figure}{Correlazione tra YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion}
+\end{center}
 Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del p value ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.
 \begin{center}
-\includegraphics[scale=0.7]{CatHeatMap.png}
+\includegraphics[scale=1.2]{mccat.png}
 \captionof{figure}{Matrice dei p value per gli attributi categorici}
 \end{center}
-\section{Clustering}
 
 \begin{center}
-\includegraphics[scale=0.7]{MCHeatMap_final.png}
+\includegraphics[scale=1.2]{macnum.png}
 \captionof{figure}{Matrice dei p value per gli attributi categorici}
 \end{center}
+
 \section{Clustering}
+Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means e DB Scan. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 4-5 dimensionali di attributi alla ricerca un qualche tipo di clusterizzazione. Come metrica è stata usata la distanza euclidea.\\
+Si vuole precisare che per la visualizzazione dei clusters è stato utilizzato uno spazio tridimensionale poichè, soprattutto nel K-Means, una visualizzazione bidimensionale portava ad un mixing eccesivo dei cluster stessi.
+\subsection{K-Means}
+Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati migliori sono:\\
+
+\begin{enumerate}
+\item PercentSalaryHike, FractionYearsAtCompany, YearsInCurrentRole, RateIncome, NumCompaniesWorked(1)
+\item DistanceFromHome, FractionYearsAtCompany, RateIncome, YearsInCurrentRole, TrainingTimesLastYear(2)
+\item PercentSalaryHike, DistanceFromHome, RateIncome, YearsInCurrentRole, NumCompaniesWorked(4)
+\item DistanceFromHome, FractionYearsAtCompany, TrainingTimesLastYear, PercentSalaryHike, YearsInCurrentRole(6)
+\end{enumerate}
+
+\begin{center}
+\includegraphics[scale=0.6]{SSEsub1.png}
+\captionof{figure}{SSE in funzione di $K$}
+\end{center}
+
+La scelta del numero di cluster $K$ è stata presa osservando l'andamento del SSE in funzione di $K$ (Figura $12$), simile in tutti e quattro i casi esaminati; con lo scopo di aver un buon compromesso fra i due l'algoritmo è stato eseguito per $K$ uguale a 3, 4 e 5. Dai risultati ottenuti si evince che, sebbene con $K=5$ il valore delle SSE è minore rispetto agli altri due casi, non si apprezzano cluster evidenti: ve ne sono sempre due eccessivamente mescolati. Con $K=3$ la divisione fra i cluster è sicuramente ben evidente ma, con $K=4$, si ottengono comunque buoni risultati con il vantaggio di un SSE minore.  
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.47\textwidth}
+\centering
+\includegraphics[width=\textwidth]{parallelsub1.png}
+\caption{Parallel coordinates dei centroidi}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.55\textwidth}
+\includegraphics[scale=0.6]{numcompan_Fraction_percentCENTROIDI.png}
+\caption{Cluster sottoinsime 1 }
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+
+
 
 
 \section{Conclusioni}
