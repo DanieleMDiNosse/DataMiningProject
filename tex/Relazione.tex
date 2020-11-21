@@ -120,7 +120,7 @@ La qualità dei dati è fortemente influenzata, negativamente, dalla presenza di
 Nel data frame utilizzato la loro presenza è evidente, infatti
 
 \begin{center}
-\includegraphics[scale=1]{missingvalues.png}
+\includegraphics[scale=1.5]{missingvalues.png}
 \captionof{figure}{Count dei missing values}
 \end{center}
 Gli attributi StandardHours ed Over18 presentano una qualità molto scarsa: nel primo circa la metà dei records sono mancanti e la restante parte ha un unico valore, mentre il secondo, oltre a contenere anch'esso una quantità significativa di missing values, non rappresenta in ogni caso un attributo di grande importanza, considerando che la stragrande maggioranza dei dipendenti di un'azienda sono maggiorenni. Per tali motivi, si è deciso di eliminare questi due attributi.
@@ -141,16 +141,36 @@ Queste due considerazioni non sono applicabile all'attributo Gender per il quale
 
 Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi.\\ %(che al mercato mio padre comprò, nda).\\
 
-Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outliers solo in tre attributi numerici: TreningTimeLastYear, TotalWorkingYears, YearsAtCompany
+Come secondo task sono stati valutati gli outliers.\\
+Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outliers solo in tre attributi numerici: TrainingTimeLastYear, TotalWorkingYears, YearsAtCompany
 \begin{center}
 \includegraphics[scale=1]{boxplot.png}
 \captionof{figure}{Box Plot degli attributi che presentano outliers}
 \end{center}
- Il data freme  dopo questa prima preparazione risulta contienere il $36\%$ di dati in meno rispetto a quello di partenza.\\
+ Il data frame dopo questa prima preparazione risulta contienere il $36\%$ di dati in meno rispetto a quello di partenza.\\
 
-Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni quali l'asimettrie e un valore spropositato della deviazione standar. In particolre è stata applicata la radice quadrata ad DistanceFromHome, NumCompaniesWorked, PercentSalaryHike, TotalWorkingYears, YearsAtCompany, YearsInCurrentRole, YearsSinceLastPromotion e YearsWithCurrManager; invece ad MonthlyIncome è stato applicato il logaritmo naturale. Di seguito sono riportate alcune distribuzione delle variabili trasformate.
+Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni quali l'asimettrie e un valore spropositato della deviazione standar. In particolre è stata applicata la radice quadrata ad DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece ad MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . Di seguito sono riportate alcune distribuzioni delle variabili trasformate.
 
+\begin{center}
+\includegraphics[scale=0.7]{trasformer.png}
+\captionof{figure}{Alcune delle trasformazioni effettuate}
+\end{center}
+
+Come terzo task sono stati eliminati ed aggiunti nuovi attributi.\\
+In luogo di TotalWorkingYears e YearsAtCompany si è scelto di introdurre il loro rapporto, denominato FractionAtCompany che rappresenta la frazione di anni lavorativi del singolo dipendente nell'azienda; analogamente si è proceduto per MonthlyIncome e MonthlyRate sostituiti da RateIncome, indice di quanto l'azienda spende per un impegato in rapporto al suo stipendio. Inoltre, siccome DailyRate e HourlyRate contengono la stessa informazione di MonthlyRate, si sono eliminati.\\
+Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del p value ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.
+\begin{center}
+\includegraphics[scale=0.7]{CatHeatMap.png}
+\captionof{figure}{Matrice dei p value per gli attributi categorici}
+\end{center}
 \section{Clustering}
+
+\begin{center}
+\includegraphics[scale=0.7]{MCHeatMap_final.png}
+\captionof{figure}{Matrice dei p value per gli attributi categorici}
+\end{center}
+\section{Clustering}
+
 
 \section{Conclusioni}
 \end{document}
