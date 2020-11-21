@@ -131,6 +131,7 @@ L'unico metodo che ha avuto successo per la determinazione degli outliers è sta
 
 \section{Data Preparation}
 In questa fase del lavoro ci si è posto l'obiettivo di trasformare e preparare il set di dati all'analisi successiva. I problemi precedentemente evidenziati sono stati qui risolti.\\
+
 Come primo task sono stati gestiti i missing values.\\
 Nell'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi presenti nel data frame. Per quanto riguarda quella con gli numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p value $>$ 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
 
@@ -138,12 +139,17 @@ Per quanto riguarda PerformanceRating, si è aggiunta una nuova classe 'MISSING'
 
 Queste due considerazioni non sono applicabile all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione nota.\\
 
-Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi %(che al mercato mio padre comprò, nda).
+Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi.\\ %(che al mercato mio padre comprò, nda).\\
 
+Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outliers solo in tre attributi numerici: TreningTimeLastYear, TotalWorkingYears, YearsAtCompany
 \begin{center}
 \includegraphics[scale=1]{boxplot.png}
 \captionof{figure}{Box Plot degli attributi che presentano outliers}
 \end{center}
+ Il data freme  dopo questa prima preparazione risulta contienere il $36\%$ di dati in meno rispetto a quello di partenza.\\
+
+Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni quali l'asimettrie e un valore spropositato della deviazione standar. In particolre è stata applicata la radice quadrata ad DistanceFromHome, NumCompaniesWorked, PercentSalaryHike, TotalWorkingYears, YearsAtCompany, YearsInCurrentRole, YearsSinceLastPromotion e YearsWithCurrManager; invece ad MonthlyIncome è stato applicato il logaritmo naturale. Di seguito sono riportate alcune distribuzione delle variabili trasformate.
+
 \section{Clustering}
 
 \section{Conclusioni}
