@@ -1,0 +1,6 @@
+dfprova = df[['PercentSalaryHike','FractionYearsAtCompany','RateIncome','YearsInCurrentRole']]
+
+Clusters esistenti:{0, 1, -1} con eps = 0.800 
+(array([-1,  0,  1], dtype=int64), array([  3, 784, 112], dtype=int64))
+3 Clusters  con 3 noise points
+0.2633784495033764

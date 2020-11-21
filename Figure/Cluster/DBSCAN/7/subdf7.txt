@@ -1,3 +1,0 @@
-df=df[['RateIncome','FractionYearsAtCompany','TrainingTimesLastYear','JobLevel','YearsInCurrentRole']]
-
-Silhouette 0.12638054012353184

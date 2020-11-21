@@ -1,3 +1,0 @@
-df=df[['DistanceFromHome','FractionYearsAtCompany','PercentSalaryHike']]
-
-Silhouette 0.09387091058269349

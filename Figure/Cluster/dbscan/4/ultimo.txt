@@ -1,0 +1,4 @@
+Clusters esistenti:{0, 1, -1} con eps = 0.800 
+(array([-1,  0,  1], dtype=int64), array([  4, 784, 111], dtype=int64))
+3 Clusters  con 4 noise points
+0.23474814424387533

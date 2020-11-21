@@ -1,0 +1,7 @@
+dfprova = df[['DistanceFromHome','FractionYearsAtCompany','RateIncome','YearsInCurrentRole','TrainingTimesLastYear']]
+
+
+Clusters esistenti:{0, 1, 2, 3, -1} con eps = 1.000 
+(array([-1,  0,  1,  2,  3], dtype=int64), array([225, 281, 302,  42,  49], dtype=int64))
+5 Clusters  con 225 noise points
+0.012573527230609727
