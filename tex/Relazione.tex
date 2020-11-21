@@ -6,6 +6,10 @@
 \usepackage{subcaption}
 \usepackage{caption}
 \usepackage{gensymb}
+\usepackage{colortbl}
+\usepackage{multicol}
+\usepackage{wrapfig}
+
 \usepackage{amsmath,bm}
 \usepackage{siunitx}
 \usepackage{float}
@@ -13,7 +17,7 @@
 \captionsetup{tableposition=top,figureposition=bottom,font=footnotesize}
 \renewcommand{\vec}{\mathbf}
 \usepackage{upgreek}
-\usepackage[a4paper, total={7in, 8in}]{geometry}
+\usepackage[a4paper, total={7in, 10in}]{geometry}
 \begin{document}
 \title{TITOLO:RELAZIONE DI DATA MINING}
 \author{Daniele Maria Di Nosse, Angelo Lasala, Raffaele Paradiso}
@@ -30,259 +34,116 @@ Determinare le possibili relazioni che intercorrono fra caratteristiche dei dipe
 Sebbene i dati a disposizione siano stati divisi in due sotto insiemi, uno di Train ed uno di Test, si è deciso di utilizzare l'intero insieme di records per tutti i tasks che non concernono algoritmi di Machine Learning
 \section{Data Understanding}
 \subsection{Data Semantics}
-Nella prima fase dell'elaborazione si è studiato il data frame nella sua forma originale (Train $+$ Test), valutando il numero degli attributi, la loro natura e dominio. 
+Nella prima fase dell'elaborazione si è studiato il data frame nella sua forma originale (Train + Test), valutando il numero degli attributi, la loro natura e dominio. 
 
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.55]{DFhead(10).png}
-\caption{Primi 10 valori di tutti gli attributi}
-\end{figure}
+\begin{center}
+\includegraphics[scale=0.5]{DFhead(10).png}
+\captionof{figure}{Primi 10 valori di ogni attributo}
+\end{center}
+% trim=2cm 0 0 0cm
 
 Come si può notare dalla tabella precedente, il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come, ad esempio, Education o Enviroment Satisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti uguaglianze 
 
-Education
-
-1 : 'Below College'
-
-2 : 'College'
-
-3 : 'Bachelor'
-
-4 : 'Master'
-
-5 : 'Doctor'
-
-
-EnvironmentSatisfaction
-
-1 : 'Low'
-
-2 : 'Medium'
-
-3 : 'High'
-
-4 : 'Very High'
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\arrayrulecolor{white}\hline
+Education & EnvironmentSatisfaction & JobInvolvement & JobSatisfaction \\
+\arrayrulecolor{white}\hline
+1 : 'Below College' & 1 : 'Low'  & 1 : 'Low'& 1 : 'Low' \\
+2 : 'College'  & 2 : 'Medium' & 2 : 'Medium'& 2 : 'Medium'\\
+3 : 'Bachelor'    &3 : 'High' & 3 : 'High'& 3 : 'High'  \\
+4 : 'Master'    &4 : 'Very High' & 4 : 'Very High' & 4 : 'Very High' \\
+5 : 'Doctor'  &  & &\\
+\hline
+\end{tabular}
+\end{center}
 
 
-JobInvolvement
+%\begin{table}{I}{0.7\linewidth}
+%\centering
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\arrayrulecolor{white}\hline
+PerformanceRating & RelationshipSatisfaction&WorkLifeBalance  &   \quad\quad&\quad\quad    &\quad\quad      \\
+\arrayrulecolor{white}\hline
+1 : `Low' & 1 : `Low' & 1 : `Bad'&&&\\
+2 : `Good' & 2 : 'Medium'& 2 : `Good'&&&\\
+3 : `Excellent'& 3 : 'High' & 3 : `Better'&&&\\
+4 : `Outstanding'& 4 : 'Very High' &4 : `Best'&&&\\
+\hline
+\end{tabular}
+\end{center}
 
-1 : 'Low'
+%\end{table}
 
-2 : 'Medium'
+Di conseguenza, il dominio di tali attributi è di tipo categorico od ordinale e non numerico(un attributo ordinale è effettivamente una sottocategoria categorica. Si è scelto comunque di elencarli separatamente). Inoltre, sebbene non si abbiano informazioni dettagliate sulle classi relative agli attributi JobLevel e  StockOptionLevel, per la loro stessa natura si è deciso di trattarli come attributi ordinali. Organizzando tutte le variabili per la loro tipologia, si ottiene quindi che
 
-3 : 'High'
+\begin{center}
+\includegraphics[scale=0.50]{semantics.png}
+\captionof{figure}{Domini degli attributi}
+\end{center}
+Per quanto riguarda il range di valori degli attributi risulta essere molto più discretizzato per gli attributi ordinali che per gli attributi numerici. Inoltre differisce molto da attributo ad attributo (anche di 4 ordini di grandezza), cosa che sottolinea sin da questo punto l'importanza di una trasformazione delle variabili.
 
-4 : 'Very High'
+\subsection{Analisi statistica}
+Le frequenze degli attributi categorici e le relative mode sono riportate nelle seguenti tabelle
 
-JobSatisfaction
+\begin{center}
+\includegraphics[scale=1.28]{frequenza attributi nominali.png}
+\captionof{figure}{Frequenze degli attributi categorici}
+\end{center}
 
-1 : 'Low'
+\begin{center}
+\includegraphics[scale=1.28]{modacategoriciordinali.png}
+\captionof{figure}{Mode}
+\end{center}
+ 
+ 
+mentre le distribuzioni degli attributi ordinali e numerici con alcuni indici statistici sono rappresentate di seguito.
+Si può notare la forte asimmetria di molte distribuzioni ed un varianza molto grande in alcuni attributi. Tali problematiche dovranno essere sanate con opportune trasformazioni.
 
-2 : 'Medium'
+\begin{center}
+\includegraphics[scale=1.3]{statistica.png}
+\captionof{figure}{Indici statistici per gli attributi numerici}
+\end{center}
 
-3 : 'High'
+\begin{center}
+\includegraphics[scale=0.9,trim=0.5cm 0 0 0cm]{Istogrammi1.png}
+\end{center}
 
-4 : 'Very High'
+\begin{center}
+\includegraphics[scale=1,trim=1cm 0 0 0cm]{Istogrammi2.png}
+\captionof{figure}{Istogrammi attributi numerici ed ordinali}
+\end{center}
 
+\subsection{Data Quality : Outliers e Missing values}
+La qualità dei dati è fortemente influenzata, negativamente, dalla presenza di outliers e di missing values. Algoritmi di clustering e correlazioni fra gli attributi possono restituire risultati falsificati se non si gestiscono in maniera appropriata tali valori. 
+Nel data frame utilizzato la loro presenza è evidente, infatti
 
-PerformanceRating
+\begin{center}
+\includegraphics[scale=1]{missingvalues.png}
+\captionof{figure}{Count dei missing values}
+\end{center}
+Gli attributi StandardHours ed Over18 presentano una qualità molto scarsa: nel primo circa la metà dei records sono mancanti e la restante parte ha un unico valore, mentre il secondo, oltre a contenere anch'esso una quantità significativa di missing values, non rappresenta in ogni caso un attributo di grande importanza, considerando che la stragrande maggioranza dei dipendenti di un'azienda sono maggiorenni. Per tali motivi, si è deciso di eliminare questi due attributi.
 
-1 : 'Low'
+Per la determinazione degli outliers si sono valutati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot e Principal Component Analysis). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
+Il Principal Component Analysis, d'altro canto, è uno dei metodi maggiormente utilizzati nella ricerca di outliers in situazioni alto-dimensionali. Proiettando lo spazio n-dimensionale in uno spazio q-dimensionale ($q<n$) costruito tramite i vettori normalizzati della matrice di correlazione, si cerca di mantenere il più intatta possibile la varianza negli attributi. Nel caso in esame, la frazione di varianza conservata non risulta essere significativa (circa $0.4$), inficiando inevitabilmente i risultati ottenuti.
+L'unico metodo che ha avuto successo per la determinazione degli outliers è stata la visualizzazione dei Box Plot per i singoli attributi. Si è proceduto quindi alla loro rimozione tramite eliminazione delle righe corrispondenti.
 
-2 : 'Good'
+\section{Data Preparation}
+In questa fase del lavoro ci si è posto l'obiettivo di trasformare e preparare il set di dati all'analisi successiva. I problemi precedentemente evidenziati sono stati qui risolti.\\
+Come primo task sono stati gestiti i missing values.\\
+Nell'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi presenti nel data frame. Per quanto riguarda quella con gli numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p value $>$ 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
 
-3 : 'Excellent'
+Per quanto riguarda PerformanceRating, si è aggiunta una nuova classe 'MISSING', poiché si è notato che la granulosità dell'attributo non ricopre tutto lo spettro plausibile. Si presuppone che i valori MISSING possano appartenere ad una classe di ordine inferiore ad Excellent.\\
 
-4 : 'Outstanding'
+Queste due considerazioni non sono applicabile all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione nota.\\
 
+Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi %(che al mercato mio padre comprò, nda).
 
-RelationshipSatisfaction
-
-1 : 'Low'
-
-2 : 'Medium'
-
-3 : 'High'
-
-4 : 'Very High'
-
-
-WorkLifeBalance
-
-1 : 'Bad'
-
-2 : 'Good'
-
-3 : 'Better'
-
-4 : 'Best'
-\\ Di conseguenza, il dominio di tali attributi è di tipo categorico od ordinale e non numerico. Organizzando tutte le variabili per la loro tipologia, si ottiene che
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.55]{semantics.png}
-\caption{Classificazione degli attributi}
-\end{figure}
-
-Per quanto riguarda il range di valori degli attributi risulta essere, come è possibile aspettarsi da quanto detto, molto più discretizzato per gli attributi ordinali che per gli attributi numerici. Inoltre, differisce molto da attributo ad attributo (anche di 4 ordini di grandezza), cosa che sottolinea sin da questo punto l'importanza di una trasformazione delle variabili.
-
-\begin{figure} [h]
-\centering
-\begin{subfigure}{.5\textwidth}
-\centering
-  \includegraphics[width=.5\linewidth]{age.png}
-  \caption{Age}
-  \label{fig:sfig1}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-\centering
-  \includegraphics[width=.5\linewidth]{dailyrate.png}
-  \caption{Daily Rate}
-  \label{fig:sfig2}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{DistanceFromHome.png}
-  \caption{DistanceFromHome}
-  \label{fig:sfig3}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{Education.png}
-  \caption{Education}
-  \label{fig:sfig4}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{Enviroment Satisfaction.png}
-  \caption{Enviroment Satisfaction}
-  \label{fig:sfig5}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{HourlyRate.png}
-  \caption{Hourly Rate}
-  \label{fig:sfig6}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{JobInvolvement.png}
-  \caption{Job Involvement}
-  \label{fig:sfig7}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{joblevel.png}
-  \caption{Job Level}
-  \label{fig:sfig8}
-\end{subfigure}
-\end{figure}
-
-\newpage
-\begin{figure} [h]
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{JobSatisfaction.png}
-  \caption{Job Satisfaction}
-  \label{fig:sfig9}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{MonthlyIncome.png}
-  \caption{Montlhy Income}
-  \label{fig:sfig10}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{MonthlyRate.png}
-  \caption{MonthlyRate}
-  \label{fig:sfig11}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{numcompanieswork.png}
-  \caption{Num Companies Worked}
-  \label{fig:sfig12}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{PercentSalaryHike.png}
-  \caption{Percent Salary Hike}
-  \label{fig:sfig13}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{Performance Rating.png}
-  \caption{Performance Rating}
-  \label{fig:sfig14}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{Relationship Satisfaction.png}
-  \caption{Relationship Satisfaction}
-  \label{fig:sfig15}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{Standard Hours.png}
-  \caption{Standard Hours}
-  \label{fig:sfig16}
-\end{subfigure}
-\end{figure}
-
-\newpage
-\begin{figure} [h]
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{Stock Option Level.png}
-  \caption{Stock Option Level}
-  \label{fig:sfig17}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{Total Working Years.png}
-  \caption{Total Working Years}
-  \label{fig:sfig18}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{Training Time Last Year.png}
-  \caption{Training Time Last Year}
-  \label{fig:sfig19}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{Work Life Balance.png}
-  \caption{Work Life Balance}
-  \label{fig:sfig20}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{YearsAtCompany.png}
-  \caption{Years At Company}
-  \label{fig:sfig21}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{YearsInCurrentRole.png}
-  \caption{Years In Current Role}
-  \label{fig:sfig22}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{YearsSinceLastPromotion.png}
-  \caption{Years Since Last Promotion}
-  \label{fig:sfig23}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{YearsWithCurrManager.png}
-  \caption{Years With Current Manager}
-  \label{fig:sfig24}
-\end{subfigure}
-\end{figure}
-
+\begin{center}
+\includegraphics[scale=1]{boxplot.png}
+\captionof{figure}{Box Plot degli attributi che presentano outliers}
+\end{center}
 \section{Clustering}
 
 \section{Conclusioni}
