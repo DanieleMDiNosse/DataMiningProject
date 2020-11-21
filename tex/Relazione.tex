@@ -1,4 +1,4 @@
-\documentclass[english]{article}
+\documentclass[a4paper,9pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
@@ -17,7 +17,7 @@
 \captionsetup{tableposition=top,figureposition=bottom,font=footnotesize}
 \renewcommand{\vec}{\mathbf}
 \usepackage{upgreek}
-\usepackage[a4paper, total={7in, 10in}]{geometry}
+\usepackage[a4paper, total={7.7in, 10.5in}]{geometry}
 \begin{document}
 \title{TITOLO:RELAZIONE DI DATA MINING}
 \author{Daniele Maria Di Nosse, Angelo Lasala, Raffaele Paradiso}
@@ -42,7 +42,7 @@ Nella prima fase dell'elaborazione si è studiato il data frame nella sua forma 
 %\end{center}
 % trim=2cm 0 0 0cm
 
-Il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come, ad esempio, Education o Enviroment Satisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti uguaglianze 
+Il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come, ad esempio, Education o EnviromentSatisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti uguaglianze 
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -76,7 +76,7 @@ PerformanceRating & RelationshipSatisfaction&WorkLifeBalance  &   \quad\quad&\qu
 
 %\end{table}
 
-Di conseguenza, il dominio di tali attributi è di tipo categorico od ordinale e non numerico(un attributo ordinale è effettivamente una sottocategoria categorica. Si è scelto comunque di elencarli separatamente). Inoltre, sebbene non si abbiano informazioni dettagliate sulle classi relative agli attributi JobLevel e  StockOptionLevel, per la loro stessa natura si è deciso di trattarli come attributi ordinali. Organizzando tutte le variabili per la loro tipologia, si ottiene quindi che
+Di conseguenza, il dominio di tali attributi è di tipo categorico od ordinale e non numerico(un attributo ordinale è effettivamente una sottocategoria categorica, si è scelto comunque di elencarli separatamente). Inoltre, sebbene non si abbiano informazioni dettagliate sulle classi relative agli attributi JobLevel e  StockOptionLevel, per la loro stessa natura si è deciso di trattarli come attributi ordinali. Organizzando tutte le variabili per la loro tipologia, si ottiene quindi che
 
 \begin{center}
 \includegraphics[scale=0.50]{semantics.png}
@@ -126,18 +126,18 @@ Nel data frame utilizzato la loro presenza è evidente, infatti
 \end{center}
 Gli attributi StandardHours ed Over18 presentano una qualità molto scarsa: nel primo circa la metà dei records sono mancanti e la restante parte ha un unico valore, mentre il secondo, oltre a contenere anch'esso una quantità significativa di missing values, non rappresenta in ogni caso un attributo di grande importanza, considerando che la stragrande maggioranza dei dipendenti di un'azienda sono maggiorenni. Per tali motivi, si è deciso di eliminare questi due attributi.
 
-Per la determinazione degli outliers si sono valutati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot, Principal Component Analysis e scatter plot). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
+Per la determinazione degli outliers sono stati utilizzati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot, Principal Component Analysis e scatter plot). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
 Il Principal Component Analysis, d'altro canto, è uno dei metodi maggiormente utilizzati nella ricerca di outliers in situazioni alto-dimensionali. Proiettando lo spazio n-dimensionale in uno spazio q-dimensionale ($q<n$) costruito tramite i vettori normalizzati della matrice di correlazione, si cerca di mantenere il più intatta possibile la varianza negli attributi. Nel caso in esame, la frazione di varianza conservata non risulta essere significativa (circa $0.4$), inficiando inevitabilmente i risultati ottenuti.
-Anche la visualizzazione degli scatter plot confrontati con gli attributi categorici non ha evidenziato alcun punto identificabile con un outlier.
+Anche la visualizzazione degli scatter plot confrontati con gli attributi categorici non ha evidenziato alcun punto identificabile come outlier.
 L'unico metodo che ha avuto successo per la determinazione degli outliers è stata la visualizzazione dei Box Plot per i singoli attributi. Si è proceduto quindi alla loro rimozione tramite eliminazione delle righe corrispondenti.
 
 \section{Data Preparation}
 In questa fase del lavoro ci si è posto l'obiettivo di trasformare e preparare il set di dati all'analisi successiva. I problemi precedentemente evidenziati sono stati qui risolti.\\
 
 Come primo task sono stati gestiti i missing values.
-Nell'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi presenti nel data frame. Per quanto riguarda quella con gli numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p value $>$ 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
+L'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi presenti nel data frame. Per quanto riguarda quella con i numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p$$ value $>$ 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
 Per quanto riguarda PerformanceRating, si è aggiunta una nuova classe 'MISSING', poiché si è notato che la granulosità dell'attributo non ricopre tutto lo spettro plausibile. Si presuppone che i valori MISSING possano appartenere ad una classe di ordine inferiore ad Excellent.\\
-Queste due considerazioni non sono applicabile all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione nota.\\
+Queste due considerazioni non sono applicabile all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione del campione.\\
 Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi.\\ %(che al mercato mio padre comprò, nda).\\
 Come secondo task sono stati valutati gli outliers.\\
 Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outliers solo in tre attributi numerici: TrainingTimeLastYear, TotalWorkingYears, YearsAtCompany
@@ -145,25 +145,21 @@ Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outli
 \includegraphics[scale=1]{boxplot.png}
 \captionof{figure}{Box Plot degli attributi che presentano outliers}
 \end{center}
- Il data frame dopo questa prima preparazione risulta contienere il $36\%$ di dati in meno rispetto a quello di partenza.\\
-Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni quali l'asimettrie e un valore spropositato della deviazione standar. In particolre è stata applicata la radice quadrata ad DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece ad MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . Di seguito sono riportate alcune distribuzioni delle variabili trasformate.
+ Il data frame dopo questa prima preparazione risulta contenere il $36\%$ di dati in meno rispetto a quello di partenza.\\
+Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni, quali l'asimettrie e un valore spropositato della deviazione standar. In particolre è stata applicata la radice quadrata ad DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece ad MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . Di seguito sono riportate alcune distribuzioni delle variabili trasformate.\\
 
 \begin{center}
-\includegraphics[scale=0.3]{trasformer.png}
-\captionof{figure}{Alcune delle trasformazioni effettuate}
+\includegraphics[scale=0.35]{trasformer.png}
+\captionof{figure}{Distribuzione di alcune variabili trasformate}
 \end{center}
 
 Come terzo task sono stati eliminati ed aggiunti nuovi attributi.\\
+
 In luogo di TotalWorkingYears e YearsAtCompany si è scelto di introdurre il loro rapporto, denominato FractionAtCompany che rappresenta la frazione di anni lavorativi del singolo dipendente nell'azienda; analogamente si è proceduto per MonthlyIncome e MonthlyRate sostituiti da RateIncome, indice di quanto l'azienda spende per un impegato in rapporto al suo stipendio. Inoltre, siccome DailyRate e HourlyRate contengono la stessa informazione di MonthlyRate, si sono eliminati.\\
-Inoltre, YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion sono caratterizzati da una correlazione significativa e quindi si è deciso di mantenere solamente YearsInCurrentRole ell'analisi a seguire.
-\begin{center}
-\includegraphics[scale=0.7]{years.png}
-\captionof{figure}{Correlazione tra YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion}
-\end{center}
-Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del p value ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.\\
+Inoltre, YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion sono caratterizzati da una correlazione significativa e quindi si è deciso di mantenere solamente YearsInCurrentRole all'analisi a seguire.
 
-Si può notare come il $p$ $value$ per la maggioranza dei casi è maggiore di $0.05$, valore scelto come soglia; questo significa che l'ipotesi nulla (non c'è relazione tra i due attributi) non può essere scartata. Nel'altra situazione invece l'evidenza empirica è fortemente contraria all'ipotesi nulla, ciò significa che è possibile una relazione tra gli attributi. Ad esempio si evidenza una relazione tra Attrition (quanto uin impiegato è "logorato" e il MaritialStatus ( condizione sentimentale dell'impiegato).\\
-
+Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del $p$ $value$  ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.\\
+Si può notare come il $p$ $value$ per la maggioranza dei casi è maggiore di $0.05$, valore scelto come soglia; questo significa che l'ipotesi nulla (non c'è relazione tra i due attributi) non può essere scartata. Nel'altra situazione invece l'evidenza empirica è fortemente contraria all'ipotesi nulla, ciò significa che una la presenza di una dipendenza tra gli attributi è statisticamente plausibile, come ad esempio avviene tra Attrition (quanto un impiegato è "logorato") e MaritialStatus (condizione sentimentale dell'impiegato).\\
 Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono presenti corelazioni significative.
 
 \begin{center}
@@ -173,7 +169,7 @@ Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono 
 
 \begin{center}
 \includegraphics[scale=1.2]{macnum.png}
-\captionof{figure}{Matrice dei p value per gli attributi categorici}
+\captionof{figure}{Matrice di correlazione per gli attributi numerici}
 \end{center}
 
 \section{Clustering}
@@ -188,6 +184,7 @@ Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati mig
 \item DistanceFromHome, RateIncome, Age, FractionYearsAtCompany(8)
 \item DistanceFromHome, FractionYearsAtCompany, TrainingTimesLastYear, PercentSalaryHike, YearsInCurrentRole(6)
 \end{enumerate}
+
 
 \begin{center}
 \includegraphics[scale=0.6]{SSEsub1.png}
@@ -257,7 +254,14 @@ Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere p
 \end{minipage}
 \end{figure}
 
-Dalla divisione in cluster è possibile classificare gli impiegati in base ad alcune caratteristiche comuni
+Dalla divisione in cluster è possibile classificare gli impiegati in base ad alcune caratteristiche comuni.
+Ad esempio il cluster giallo nella Figura $14$  esprime l'irrilevanza dell'esperienza lavorativa al di fuori dell'azienda relativamente all'umento di stipendio. Infatti chi è stato assunto da poco (rispetto alla vita lavorativa), sebbene abbia maturato esperienza in altre aziende, ha un percent salary hike basso.
+D'altro canto, al cluster viola è plausibile associare i lavoratori la cui esperienza è costituita quasi eslusivamente da ruoli indipendeti da compagnie. Anche in questo caso, il percent salary hike è relativamente basso.
+Il cluster blu può essere considerato il gruppo di lavoratori la cui esperienza non è stata influenzata da altri impieghi nel passato. Infatti si nota che in questo caso l'aumento dello stipendio percentuale è indipendente dal numero di compagnie precedenti.
+Infine il cluster verde può essere visto come il gruppo di persone che hanno acqusitio competenze utili all'azienda (ciò è evidente dalla percentuale di aumento di stipendio molto alta rispetto a tutti gli altri gruppi) in altri ambienti.
+La classificazione fatta non è certamente da considerarsi assoluta, poiché dai valori della silhouette non elevati, si capische che la distinzione tra i cluster non è netta: mescolamente tra di essi sono molto plausibili.
+Ragionamenti simili possono essere applicati agli altri grafici.
+
 
 \subsection{DB-Scan}
 
