@@ -160,7 +160,12 @@ Inoltre, YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion sono ca
 \includegraphics[scale=0.7]{years.png}
 \captionof{figure}{Correlazione tra YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion}
 \end{center}
-Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del p value ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.
+Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del p value ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.\\
+
+Si può notare come il $p$ $value$ per la maggioranza dei casi è maggiore di $0.05$, valore scelto come soglia; questo significa che l'ipotesi nulla (non c'è relazione tra i due attributi) non può essere scartata. Nel'altra situazione invece l'evidenza empirica è fortemente contraria all'ipotesi nulla, ciò significa che è possibile una relazione tra gli attributi. Ad esempio si evidenza una relazione tra Attrition (quanto uin impiegato è "logorato" e il MaritialStatus ( condizione sentimentale dell'impiegato).\\
+
+Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono presenti corelazioni significative.
+
 \begin{center}
 \includegraphics[scale=1.2]{mccat.png}
 \captionof{figure}{Matrice dei p value per gli attributi categorici}
@@ -180,7 +185,7 @@ Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati mig
 \begin{enumerate}
 \item PercentSalaryHike, FractionYearsAtCompany, YearsInCurrentRole, RateIncome, NumCompaniesWorked
 \item DistanceFromHome, FractionYearsAtCompany, RateIncome, YearsInCurrentRole, TrainingTimesLastYear(2)
-\item PercentSalaryHike, DistanceFromHome, RateIncome, YearsInCurrentRole, NumCompaniesWorked(4)
+\item DistanceFromHome, RateIncome, Age, FractionYearsAtCompany(8)
 \item DistanceFromHome, FractionYearsAtCompany, TrainingTimesLastYear, PercentSalaryHike, YearsInCurrentRole(6)
 \end{enumerate}
 
@@ -202,7 +207,7 @@ Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere p
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
 \includegraphics[scale=0.6]{numcompan_Fraction_percentCENTROIDI.png}
-\caption{Cluster sottoinsime 3 }
+\caption{Cluster sottoinsime 1: SSE$=187$; silhouette$=0.18$}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -217,7 +222,7 @@ Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere p
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
 \includegraphics[scale=0.6]{rate_fraction_distance2.png}
-\caption{Cluster sottoinsime 2 }
+\caption{Cluster sottoinsime 2: SSE$=177$; silhouette$=0.21$}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -232,7 +237,7 @@ Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere p
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
 \includegraphics[scale=0.6]{Percent_distance_numcompanie4.png}
-\caption{Cluster sottoinsime 3 }
+\caption{Cluster sottoinsime 3: SSE$=129$; silhouette$=0.25$}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -247,10 +252,12 @@ Nei seguenti grafici sono mostrati i risultati ottenuti inoltre, per redendere p
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
 \includegraphics[scale=0.6]{FractionYear_Distance_Percent_CENTROIDI6.png}
-\caption{Cluster sottoinsime 4 }
+\caption{Cluster sottoinsime 4: SSE$=182$; silhouette$=0.20$}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
+
+Dalla divisione in cluster è possibile classificare gli impiegati in base ad alcune caratteristiche comuni
 
 \subsection{DB-Scan}
 
