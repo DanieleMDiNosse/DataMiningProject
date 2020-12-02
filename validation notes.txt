@@ -1,0 +1,14 @@
+NOTE PER LA VALIDAZIONE:
+
+-Metodo statistico per la validzione dei clusters K mean:
+generare 500 data frame random prendendo come attributi quelli usati per i clastering
+esempio: 'Age' -> prendere il range (18-60) e sparare numeri random interipari al numero di raconds	
+fare il k mean su questi data frame fittizzi e valutare la distribuzione dell' SSE
+fare la media piu o meno qualche deviazione standard.
+confrantare quanto fatto conm il valore del SSE calcolato con il data frame vero.
+
+-Metodo statistico per la validzione dei clusters db scann:
+fare le stesse cose stesse cose, generare so stesso numero di data frame fittizi come prima
+e valutare in questo caso un altro indice invece della SSE
+supponiamo a questo punto di usare la silouette.
+
