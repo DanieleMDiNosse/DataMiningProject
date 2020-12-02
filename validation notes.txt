@@ -14,3 +14,6 @@ fare le stesse cose stesse cose, generare so stesso numero di data frame fittizi
 e valutare in questo caso un altro indice invece della SSE
 supponiamo a questo punto di usare la silouette.
 correlazione tra la matrice di correlazione tra i dati e la matrice di 0 e 1
+
+
+richioooooooooo
