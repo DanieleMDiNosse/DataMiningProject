@@ -10,82 +10,84 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
 
-# == RANDOM ATTRIBUTES ==================================
 
-def random_attributes(min_val,max_val,integer=None):
+
+
+#== PARAMETERS ===============================================================================
+num_records=899         #numer of records for each attributes (see random_attributes)
+validation_times=10    #numer of random data frame (see ciclo for)
+#============================================================================================
+
+#== IF CHECK =================================================================================
+kmean_validation= True
+# ===========================================================================================
+
+
+
+# == DEF FUNCTIONS: RANDOM ATTRIBUTES - RANDOM DATAFRAME==================================
+def random_attributes(name,min_val,max_val,integer=None):
     """
-    Build a list of random uniform variables
+    Build a dict of random uniform variables {'name'= [list_value]}
     name: str, name of the attributes
     min_val: float, min values
     max_val: float, max values
     integer: bool (opt), if true the values are integer
     """ 
-    name=list()
-    for i in range(899):
+    list_value=list()
+    for i in range(num_records):
         if integer:    
-            name.append(int(random.uniform(min_val,max_val)))
+            list_value.append(int(random.uniform(min_val,max_val)))
         else:
-            name.append(random.uniform(min_val,max_val))
-    return name
+            list_value.append(random.uniform(min_val,max_val))
+    dictionary={name:list_value}
+    return dictionary
 
-DistanceFromHome=random_attributes(1.0,5.3851)
-Age=random_attributes(18,60,integer=True)
-RateIncome=random_attributes(0.044,0.997)
-FractionYearAtCompany=random_attributes(0.0,1.0)
-
-#== DATA FRAME ====================================================
-
-def random_dataframe(list_att,nomi_att):
+def random_dataframe(list_att):
     """
-    From attibutes return the data frame
+    From list of dictonary return the data frame
     """
     dic={}
-    for a,d in zip(nomi_att, list_att):
-        dic.update({a:d})
+    for a in list_att:
+        dic.update(a)
     dataframe=pd.DataFrame(dic)
     return dataframe
+# ======================================================================= 
+# 
 
-df=random_dataframe([DistanceFromHome,Age,RateIncome,FractionYearAtCompany],('DistanceFromHome','Age','RateIncome','FractionYearAtCompany',))
-# print(df.head())
-# ===============================================================
+# K MEANS CICLO FOR VALIDATION==================================================
+if kmean_validation:
 
-# K MEANS==================================================
+    ist_sse=[]
+    for time in range(validation_times):
+        
+        Age=random_attributes('Age',18,60,integer=True)
+        DistanceFromHome=random_attributes('DistanceFromHome',1.0,5.3851)
+        RateIncome=random_attributes('RateIncome',0.044,0.997)
+        FractionYearAtCompany=random_attributes('FractionYearAtCompany',0.0,1.0)
 
-scaler = MinMaxScaler()
-X = scaler.fit_transform(df.values)
-kmeans=KMeans(init='k-means++', n_clusters=4, n_init=100, max_iter=300)
-kmeans.fit(X)
-sse=kmeans.inertia_
-# print(sse)
-# ============================================================= 
+        df=random_dataframe([DistanceFromHome,Age,RateIncome,FractionYearAtCompany])
 
-# CICLO FOR ==================================================
-ist_sse=[]
-for time in range(500):
-    DistanceFromHome=random_attributes(1.0,5.3851)
-    Age=random_attributes(18,60,integer=True)
-    RateIncome=random_attributes(0.044,0.997)
-    FractionYearAtCompany=random_attributes(0.0,1.0)
+        scaler = MinMaxScaler()
+        X = scaler.fit_transform(df.values)
+        kmeans=KMeans(init='k-means++', n_clusters=4, n_init=100, max_iter=300)
+        kmeans.fit(X)
+        sse=kmeans.inertia_
+        print(time, sse)
+        ist_sse.append(sse)
 
-    df=random_dataframe([DistanceFromHome,Age,RateIncome,FractionYearAtCompany],('DistanceFromHome','Age','RateIncome','FractionYearAtCompany',))
-
-    scaler = MinMaxScaler()
-    X = scaler.fit_transform(df.values)
-    kmeans=KMeans(init='k-means++', n_clusters=4, n_init=100, max_iter=300)
-    kmeans.fit(X)
-    sse=kmeans.inertia_
-    print(time, sse)
-    ist_sse.append(sse)
-
-ist_sse=np.array(ist_sse)
-print(f'meam = {ist_sse.mean()}')
-print(f'meam = {ist_sse.std()}') 
-plt.hist(ist_sse)
-plt.show()
-
-
-
-
-
-
-
+    ist_sse=np.array(ist_sse)
+    with open("validation_kmeans_3.txt",'w', encoding='utf-8') as f:
+        f.write(f'DATA FRAME\n')
+        f.write(f'{df.head()}\n')
+        f.write(f'\n')
+        f.write(f'number of values for each attributes: {num_records}\n')
+        f.write(f'number of random data frames: {validation_times}\n')
+        f.write(f'_____________________________________________________________\n')
+        f.write(f'\n')
+        f.write(f'STATISTIC\n')
+        f.write(f'mean (SSE): {ist_sse.mean()}\n')
+        f.write(f'std (SSE): {ist_sse.std()}\n')
+    
+    plt.hist(ist_sse, bins=int((np.log2(num_records)+1)), edgecolor='k')
+    plt.xlabel('SSE')
+    plt.show()
