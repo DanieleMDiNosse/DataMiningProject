@@ -1,0 +1,17 @@
+DATA FRAME
+   DistanceFromHome  ...  YearsInCurrentRole
+0          2.112575  ...            3.963853
+1          4.454011  ...            2.349316
+2          4.623644  ...            4.019085
+3          4.957799  ...            2.116271
+4          3.340058  ...            1.185038
+
+[5 rows x 5 columns]
+
+number of values for each attributes: 899
+number of random data frames: 500
+_____________________________________________________________
+
+STATISTIC
+mean (SSE): 249.67404725671827
+std (SSE): 3.47163659748145

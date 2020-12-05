@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 #== PARAMETERS ===============================================================================
 num_records=899         #numer of records for each attributes (see random_attributes)
-validation_times=10    #numer of random data frame (see ciclo for)
+validation_times=500    #numer of random data frame (see ciclo for)
 #============================================================================================
 
 #== IF CHECK =================================================================================
@@ -60,12 +60,13 @@ if kmean_validation:
     ist_sse=[]
     for time in range(validation_times):
         
-        Age=random_attributes('Age',18,60,integer=True)
-        DistanceFromHome=random_attributes('DistanceFromHome',1.0,5.3851)
-        RateIncome=random_attributes('RateIncome',0.044,0.997)
-        FractionYearAtCompany=random_attributes('FractionYearAtCompany',0.0,1.0)
+        DistanceFromHome = random_attributes('DistanceFromHome',1.0,5.3851)
+        FractionYearsAtCompany = random_attributes('FractionYearsAtCompany',0.0,1.0)
+        TrainingTimesLastYear = random_attributes('TrainingTimesLastYear', 0.0, 6.0)
+        PercentSalaryHike = random_attributes('PercentSalaryHike', 3.316, 5.0)
+        YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0.0, 4.242)
 
-        df=random_dataframe([DistanceFromHome,Age,RateIncome,FractionYearAtCompany])
+        df = random_dataframe([DistanceFromHome,FractionYearsAtCompany,TrainingTimesLastYear,PercentSalaryHike,YearsInCurrentRole])
 
         scaler = MinMaxScaler()
         X = scaler.fit_transform(df.values)
@@ -76,7 +77,7 @@ if kmean_validation:
         ist_sse.append(sse)
 
     ist_sse=np.array(ist_sse)
-    with open("validation_kmeans_3.txt",'w', encoding='utf-8') as f:
+    with open("validation_kmeans_4.txt",'w', encoding='utf-8') as f:
         f.write(f'DATA FRAME\n')
         f.write(f'{df.head()}\n')
         f.write(f'\n')

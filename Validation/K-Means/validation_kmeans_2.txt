@@ -1,0 +1,17 @@
+DATA FRAME
+   DistanceFromHome  ...  TrainingTimesLastYear
+0          5.289215  ...               0.846660
+1          1.365329  ...               4.416370
+2          5.134580  ...               4.864819
+3          1.783409  ...               0.204590
+4          4.241766  ...               3.472529
+
+[5 rows x 5 columns]
+
+number of values for each attributes: 899
+number of random data frames: 500
+_____________________________________________________________
+
+STATISTIC
+mean (SSE): 249.60121099478994
+std (SSE): 3.4829106819596825
