@@ -1,0 +1,15 @@
+DATA FRAME
+   DistanceFromHome  Age  RateIncome  FractionYearAtCompany
+0          2.740637   42    0.868870               0.805749
+1          4.001579   32    0.226946               0.255728
+2          1.373645   34    0.646966               0.747449
+3          2.271568   40    0.739533               0.560467
+4          1.497425   44    0.345354               0.215354
+
+number of values for each attributes: 899
+number of random data frames: 500
+_____________________________________________________________
+
+STATISTIC
+mean (SSE): 178.32642971923818
+std (SSE): 2.885168178563962
