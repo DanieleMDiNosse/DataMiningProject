@@ -60,13 +60,13 @@ if kmean_validation:
     ist_sse=[]
     for time in range(validation_times):
         
-        DistanceFromHome = random_attributes('DistanceFromHome',1.0,5.3851)
+        PercentSalaryHike = random_attributes('PercentSalaryHike', 3.316, 5.0)
         FractionYearsAtCompany = random_attributes('FractionYearsAtCompany',0.0,1.0)
         TrainingTimesLastYear = random_attributes('TrainingTimesLastYear', 0.0, 6.0)
-        PercentSalaryHike = random_attributes('PercentSalaryHike', 3.316, 5.0)
-        YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0.0, 4.242)
+        RateIncome = random_attributes('RateIncome', 0.044, 0.997)
+        NumCompaniesWorked = random_attributes('NumCompaniesWorked', 0.0, 3.0)
 
-        df = random_dataframe([DistanceFromHome,FractionYearsAtCompany,TrainingTimesLastYear,PercentSalaryHike,YearsInCurrentRole])
+        df = random_dataframe([PercentSalaryHike,FractionYearsAtCompany,TrainingTimesLastYear,RateIncome,NumCompaniesWorked])
 
         scaler = MinMaxScaler()
         X = scaler.fit_transform(df.values)
@@ -77,7 +77,7 @@ if kmean_validation:
         ist_sse.append(sse)
 
     ist_sse=np.array(ist_sse)
-    with open("validation_kmeans_4.txt",'w', encoding='utf-8') as f:
+    with open("validation_kmeans_1.txt",'w', encoding='utf-8') as f:
         f.write(f'DATA FRAME\n')
         f.write(f'{df.head()}\n')
         f.write(f'\n')

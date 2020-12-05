@@ -1,0 +1,17 @@
+DATA FRAME
+   PercentSalaryHike  FractionYearsAtCompany  ...  RateIncome  NumCompaniesWorked
+0           4.811885                0.565074  ...    0.867811            2.534430
+1           4.051549                0.257672  ...    0.413704            0.595472
+2           3.491888                0.118346  ...    0.652909            1.991022
+3           4.011998                0.534394  ...    0.655088            1.976152
+4           4.688052                0.454875  ...    0.496918            1.552334
+
+[5 rows x 5 columns]
+
+number of values for each attributes: 899
+number of random data frames: 500
+_____________________________________________________________
+
+STATISTIC
+mean (SSE): 249.79636659271114
+std (SSE): 3.610825044958832
