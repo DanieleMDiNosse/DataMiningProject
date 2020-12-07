@@ -9,7 +9,7 @@ confrantare quanto fatto conm il valore del SSE calcolato con il data frame vero
 Dividere i cluster che hanno un SSE molto alta e unire quelli con un SSE molto bassa e sono vicini
 
 
--Metodo statistico per la validzione dei clusters db scann:
+-Metodo statistico per la validazione dei clusters db scann:
 fare le stesse cose stesse cose, generare so stesso numero di data frame fittizi come prima
 e valutare in questo caso un altro indice invece della SSE
 supponiamo a questo punto di usare la silouette.
