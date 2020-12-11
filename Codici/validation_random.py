@@ -19,7 +19,8 @@ validation_times=500    #numer of random data frame (see ciclo for)
 #============================================================================================
 
 #== IF CHECK =================================================================================
-kmean_validation= True
+kmean_validation= False
+hierarchical_validation= True
 # ===========================================================================================
 
 
@@ -52,7 +53,6 @@ def random_dataframe(list_att):
     dataframe=pd.DataFrame(dic)
     return dataframe
 # ======================================================================= 
-# 
 
 # K MEANS CICLO FOR VALIDATION==================================================
 if kmean_validation:
@@ -92,3 +92,23 @@ if kmean_validation:
     plt.hist(ist_sse, bins=int((np.log2(num_records)+1)), edgecolor='k')
     plt.xlabel('SSE')
     plt.show()
+
+
+# == HIERARCHICAL ================================================================
+
+if hierarchical_validation:
+    PercentSalaryHike = random_attributes('PercentSalaryHike', 3.316, 5.0)
+    FractionYearsAtCompany = random_attributes('FractionYearsAtCompany',0.0,1.0)
+    TrainingTimesLastYear = random_attributes('TrainingTimesLastYear', 0.0, 6.0)
+    RateIncome = random_attributes('RateIncome', 0.044, 0.997)
+    NumCompaniesWorked = random_attributes('NumCompaniesWorked', 0.0, 3.0)
+
+    df = random_dataframe([PercentSalaryHike,FractionYearsAtCompany,TrainingTimesLastYear,RateIncome,NumCompaniesWorked])
+
+    scaler = MinMaxScaler()
+    X = scaler.fit_transform(df)
+
+    data_dist = pdist(X, metric='euclidean')
+    data_link = linkage(data_dist, method='average', metric='euclidean', optimal_ordering = True)
+    res = dendrogram(data_link, color_threshold=7.8)   
+    plt.show() 
