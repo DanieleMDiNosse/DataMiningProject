@@ -58,7 +58,7 @@ from sklearn.metrics import silhouette_score
 
 numeric = df.select_dtypes('number')
 print(numeric.iloc[0])
-df = df[['Age','DistanceFromHome','RateIncome','FractionYearsAtCompany']]
+df = df[['PercentSalaryHike', 'FractionYearsAtCompany', 'YearsInCurrentRole', 'RateIncome', 'NumCompaniesWorked']]
 numeric = df.select_dtypes('number')
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric.values)
