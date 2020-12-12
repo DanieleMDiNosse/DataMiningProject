@@ -109,14 +109,15 @@ if hierarchical_validation:
         MonthlyRate = random_attributes('MonthlyRate', 45.9, 164.4)
         MonthlyIncome = random_attributes('MonthlyIncome', 6.915, 9.905)
 
-        df = random_dataframe([TrainingTimesLastYear,Age,StockOptionLevel])
+        df = random_dataframe([TrainingTimesLastYear,MonthlyIncome,StockOptionLevel,Age])
 
         scaler = MinMaxScaler()
         X = scaler.fit_transform(df)
 
-        n_clu=3
+        n_clu=2
+        meth='ward'
         data_dist = pdist(X, metric='euclidean')
-        data_link = linkage(data_dist, method='ward', metric='euclidean', optimal_ordering = True)
+        data_link = linkage(data_dist, method=meth, metric='euclidean', optimal_ordering = True)
         fclu = fcluster(data_link, n_clu, criterion="maxclust")
         # res = dendrogram(data_link, color_threshold=7.8)   
         sil = silhouette_score(X, fclu, metric='euclidean')
@@ -130,8 +131,10 @@ if hierarchical_validation:
         f.write(f'\n')
         f.write(f'number of values for each attributes: {num_records}\n')
         f.write(f'number of random data frames: {validation_times}\n')
+        f.write(f'\n')
         f.write(f'number of clusters: {n_clu}\n')
-        f.write(f'_____________________________________________________________\n')
+        f.write(f'method: {meth}\n')
+        f.write(f'________________________________________________________________________\n')
         f.write(f'\n')
         f.write(f'STATISTIC\n')
         f.write(f'mean (silhouette): {silhouette_list.mean()}\n')
