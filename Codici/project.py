@@ -11,7 +11,8 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-df=pd.read_csv('TrasfAttributeFraction_RateIncome.csv')
+df=pd.read_csv('TrasfAttributeFraction_RateIncome.csv',index_col = 0)
+print(df.columns)
 # print(df.describe())
 # print(df.head())
 # df['RateIncome']=np.sqrt(df['RateIncome'])
@@ -41,7 +42,7 @@ df=pd.read_csv('TrasfAttributeFraction_RateIncome.csv')
 # plt.show()
 #_____________________________________________________________________________________
 KM=False
-knee=True
+knee=False
 kM_3d=False
 
 correlazione=False
@@ -57,7 +58,6 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 numeric = df.select_dtypes('number')
-print(numeric.iloc[0])
 df = df[['PercentSalaryHike', 'FractionYearsAtCompany', 'YearsInCurrentRole', 'RateIncome', 'NumCompaniesWorked']]
 numeric = df.select_dtypes('number')
 scaler = MinMaxScaler()
