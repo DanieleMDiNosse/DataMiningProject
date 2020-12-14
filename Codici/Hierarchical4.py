@@ -45,7 +45,7 @@ data_link = linkage(data_dist, method='ward', metric='w', optimal_ordering = Tru
 # plt.figure()
 # plt.title('DF3 sil: 0.375, method: median, clusters: 4')
 res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=6.5)
-fclu = fcluster(data_link, 4, criterion="maxclust")
+fclu = fcluster(data_link, 2, criterion="maxclust")
 a = silhouette_score(X, fclu, metric='euclidean')
 print(f'DF3 sil: {a}')
 

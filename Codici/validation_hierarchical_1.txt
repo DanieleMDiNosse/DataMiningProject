@@ -1,5 +1,5 @@
 DATA FRAME
-Index(['DistanceFromHome', 'Age', 'MonthlyIncome'], dtype='object')
+Index(['PercentSalaryHike', 'Age', 'MonthlyIncome', 'TrainingTimesLastYear'], dtype='object')
 
 number of values for each attributes: 899
 number of random data frames: 500
@@ -9,5 +9,5 @@ method: ward
 ________________________________________________________________________
 
 STATISTIC
-mean (silhouette): 0.21727558480819106
-std (silouette): 0.015867020003195374
+mean (silhouette): 0.15307977463879474
+std (silouette): 0.012958432102868508
