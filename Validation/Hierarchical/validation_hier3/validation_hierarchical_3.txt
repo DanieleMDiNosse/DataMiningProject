@@ -1,0 +1,13 @@
+DATA FRAME
+Index(['PercentSalaryHike', 'TrainingTimesLastYear', 'MonthlyIncome', 'Age'], dtype='object')
+
+number of values for each attributes: 899
+number of random data frames: 500
+
+number of clusters: 4
+method: median
+________________________________________________________________________
+
+STATISTIC
+mean (silhouette): 0.02683203462304852
+std (silouette): 0.05462014791774311

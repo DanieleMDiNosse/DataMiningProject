@@ -1,0 +1,13 @@
+DATA FRAME
+Index(['TrainingTimesLastYear', 'StockOptionLevel', 'MonthlyIncome', 'Age'], dtype='object')
+
+number of values for each attributes: 899
+number of random data frames: 500
+
+number of clusters: 2
+method: ward
+________________________________________________________________________
+
+STATISTIC
+mean (silhouette): 0.26273870690239404
+std (silouette): 0.016408019674977993
