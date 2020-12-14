@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 #== PARAMETERS ===============================================================================
 num_records=899         #numer of records for each attributes (see random_attributes)
-validation_times=20    #numer of random data frame (see ciclo for)
+validation_times = 500    #numer of random data frame (see ciclo for)
 #============================================================================================
 
 #== IF CHECK =================================================================================
@@ -108,8 +108,8 @@ if hierarchical_validation:
         StockOptionLevel = random_attributes('StockOptionLevel', 0, 3 , integer=True)
         MonthlyRate = random_attributes('MonthlyRate', 45.9, 164.4)
         MonthlyIncome = random_attributes('MonthlyIncome', 6.915, 9.905)
-
-        df = random_dataframe([TrainingTimesLastYear,MonthlyIncome,StockOptionLevel,Age])
+        YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0, 18, integer = True)
+        df = random_dataframe([TrainingTimesLastYear, StockOptionLevel, MonthlyIncome, Age])
 
         scaler = MinMaxScaler()
         X = scaler.fit_transform(df)
@@ -120,9 +120,10 @@ if hierarchical_validation:
         data_link = linkage(data_dist, method=meth, metric='euclidean', optimal_ordering = True)
         fclu = fcluster(data_link, n_clu, criterion="maxclust")
         # res = dendrogram(data_link, color_threshold=7.8)   
-        sil = silhouette_score(X, fclu, metric='euclidean')
-        print(f'{time+1}) silhouette: {sil}')
-        silhouette_list.append(sil)
+        if len(np.unique(fclu))>1:
+            sil = silhouette_score(X, fclu, metric='euclidean')
+            print(f'{time+1}) silhouette: {sil}')
+            silhouette_list.append(sil)
     
     silhouette_list=np.array(silhouette_list)
     with open("validation_hierarchical_1.txt",'w', encoding='utf-8') as f:
@@ -140,4 +141,8 @@ if hierarchical_validation:
         f.write(f'mean (silhouette): {silhouette_list.mean()}\n')
         f.write(f'std (silouette): {silhouette_list.std()}\n')
 
-    plt.show() 
+    plt.hist(silhouette_list, bins=int((np.log2(num_records)+1)), edgecolor='k')
+    plt.xlabel('Silhouette')
+    plt.axvline(x=0.40)
+    plt.show()
+    
