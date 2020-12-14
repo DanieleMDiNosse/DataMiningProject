@@ -174,7 +174,7 @@ if hierarchical_validation:
 
         DistanceFromHome = random_attributes('DistanceFromHome', 1, 5.38)
 
-        df = random_dataframe([PercentSalaryHike,Age,MonthlyIncome,TrainingTimesLastYear])
+        df = random_dataframe([DistanceFromHome,Age,MonthlyIncome])
 
 
         scaler = MinMaxScaler()
@@ -214,5 +214,5 @@ if hierarchical_validation:
     plt.hist(silhouette_list, bins=int((np.log2(num_records)+1)), edgecolor='k')
     plt.xlabel('Silhouette')
 
-    plt.axvline(x=0.1846)
+    plt.axvline(x=0.35)
     plt.show()
