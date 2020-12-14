@@ -1,0 +1,13 @@
+DATA FRAME
+Index(['Age', 'MonthlyIncome', 'DistanceFromHome'], dtype='object')
+
+number of values for each attributes: 899
+number of random data frames: 500
+
+number of clusters: 2
+method: ward
+________________________________________________________________________
+
+STATISTIC
+mean (silhouette): 0.21662218565089678
+std (silouette): 0.01550378612915278

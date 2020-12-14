@@ -174,7 +174,7 @@ if hierarchical_validation:
 
         DistanceFromHome = random_attributes('DistanceFromHome', 1, 5.38)
 
-        df = random_dataframe([PercentSalaryHike,Age,MonthlyIncome,TrainingTimesLastYear])
+        df = random_dataframe([Age,MonthlyIncome,DistanceFromHome])
 
 
         scaler = MinMaxScaler()
@@ -196,7 +196,7 @@ if hierarchical_validation:
             silhouette_list.append(sil)
     
     silhouette_list=np.array(silhouette_list)
-    with open("validation_hierarchical_1.txt",'w', encoding='utf-8') as f:
+    with open("validation_hierarchical_df1(ward).txt",'w', encoding='utf-8') as f:
         f.write(f'DATA FRAME\n')
         f.write(f'{df.columns}\n')
         f.write(f'\n')
