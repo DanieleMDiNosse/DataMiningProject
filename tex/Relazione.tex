@@ -175,8 +175,9 @@ Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono 
 \end{center}
 
 \section{Clustering}
-Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means e DB Scan. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 4-5 dimensionali alla ricerca un qualche tipo di clusterizzazione. Come metrica è stata usata la distanza euclidea.\\
-Si vuole precisare che per la visualizzazione dei clusters è stato utilizzato uno spazio tridimensionale poichè, soprattutto nel K-Means, una visualizzazione bidimensionale portava ad un mixing eccesivo dei clusters stessi.
+Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means, DB Scan e Hierarchical. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 3-5 dimensionali alla ricerca un qualche tipo di clusterizzazione. Come metrica è stata usata la distanza euclidea.\\
+Si vuole precisare che per la visualizzazione dei clusters ottenuti tramite K-Means e DB Scan è stato utilizzato uno spazio tridimensionale poichè, soprattutto nel primo caso, una visualizzazione bidimensionale portava ad un mixing eccesivo dei clusters stessi.
+
 \subsection{K-Means}
 Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati migliori sono:\\
 
@@ -317,6 +318,49 @@ La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata r
 \end{figure}
 
 Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un diverso numero di cluster ed un certo numero di noise points (punti viola). Questo è essenzialmente dovuto alla distribuzione dei valori nello spazio tridimensionale: essi formano infatti delle slices molto dense a valori fissati di uno dei tre attributi, come si può ad esempio osservare nella Figura  25. In questo caso inoltre si nota che il valore della silhoutte è praticamente nullo e ciò implica che la divisione ottenuta è totalmente inconsistente. Per tali motivi non è stato possibile associare ai cluster alcun significato.
+
+\subsection{Hierarchical}
+Per quanto riguarda il Hierarchical i sottoinsiemi che hanno mostrato i risultati migliori sono:
+
+\begin{enumerate}
+\item DistanceFromHome, Age, MonthlyIncome
+\item PercentSalatyHike, TrainingTimeLastYear, MonthlyIncome, Age
+\end{enumerate}
+
+Per entrambi sono stati usati algoritmi di tipo agglomerativo con diverse definizioni della distanza inter clusters. Di seguito sono riportati i rispettivi dendogrammi
+
+\begin{itemize}
+\item Sottoinsieme 1: Group Average, Ward.
+\item Sottoinsieme 2: Median, Ward.
+\end{itemize}
+
+\begin{figure}[H]
+\begin{minipage}[H]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{DistanceFromHome,Age,MonthlyIncome035Average.png}
+\caption{Dendogramma sottoinsieme 1:  metodo = Group Average; silhouette = 0.35}
+\label{etichetta1}
+\centering
+\includegraphics[width=\textwidth]{hierarchical_df3.png}
+\caption{Dendogramma sottoinsieme 2:  metodo = Median; silhouette = 0.37}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[H]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{DistanceFromHome,Age,MonthlyIncome035Ward.png}
+\caption{Dendogramma sottoinsieme 1:  metodo = Ward; silhouette = 0.35  }
+\label{etichetta2}
+\centering
+\includegraphics[width=\textwidth]{dendogram_hierarchicaldf3(ward).png}
+\caption{Dendogramma sottoinsieme 2:  metodo = Ward; silhouette = 0.24}
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+
+
+
+
 
 %\section{Conclusioni}
 \end{document}

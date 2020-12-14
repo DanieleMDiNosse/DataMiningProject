@@ -1,0 +1,10 @@
+\BOOKMARK [1][-]{section.1}{Introduzione}{}% 1
+\BOOKMARK [1][-]{section.2}{Data Understanding}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Data Semantics}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Analisi statistica}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Data Quality : Outliers e Missing values}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Data Preparation}{}% 6
+\BOOKMARK [1][-]{section.4}{Clustering}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{K-Means}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{DB-Scan}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.3}{Hierarchical}{section.4}% 10
