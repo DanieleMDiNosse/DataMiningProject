@@ -1,0 +1,4 @@
+df3 = df[['PercentSalaryHike', 'TrainingTimesLastYear', 'MonthlyIncome', 'Age']]
+cluster : 4
+silhouette : 0.375
+metodo : median

@@ -1,0 +1,13 @@
+DATA FRAME
+Index(['PercentSalaryHike', 'Age', 'MonthlyIncome', 'TrainingTimesLastYear'], dtype='object')
+
+number of values for each attributes: 899
+number of random data frames: 500
+
+number of clusters: 2
+method: ward
+________________________________________________________________________
+
+STATISTIC
+mean (silhouette): 0.15316144874313187
+std (silouette): 0.013349219347078964

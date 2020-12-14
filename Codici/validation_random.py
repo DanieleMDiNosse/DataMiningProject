@@ -15,20 +15,15 @@ import matplotlib.pyplot as plt
 
 
 #== PARAMETERS ===============================================================================
-<<<<<<< HEAD
 num_records=899         #numer of records for each attributes (see random_attributes)
 validation_times = 500    #numer of random data frame (see ciclo for)
-=======
-num_records = 899         #numer of records for each attributes (see random_attributes)
-validation_times = 35000    #numer of random data frame (see ciclo for)
->>>>>>> 3a814c0cc075882f07ea9f40f29ec0f1c2ed74ec
 #============================================================================================
 
 
 #== IF CHECK =================================================================================
 kmean_validation = False
-db_scan = True
-hierarchical_validation = False
+db_scan = False
+hierarchical_validation = True
 
 # ===========================================================================================
 
@@ -173,30 +168,29 @@ if hierarchical_validation:
         StockOptionLevel = random_attributes('StockOptionLevel', 0, 3 , integer=True)
         MonthlyRate = random_attributes('MonthlyRate', 45.9, 164.4)
         MonthlyIncome = random_attributes('MonthlyIncome', 6.915, 9.905)
-<<<<<<< HEAD
+
         YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0, 18, integer = True)
         df = random_dataframe([TrainingTimesLastYear, StockOptionLevel, MonthlyIncome, Age])
-=======
+
         DistanceFromHome = random_attributes('DistanceFromHome', 1, 5.38)
 
         df = random_dataframe([PercentSalaryHike,Age,MonthlyIncome,TrainingTimesLastYear])
->>>>>>> 3a814c0cc075882f07ea9f40f29ec0f1c2ed74ec
+
 
         scaler = MinMaxScaler()
         X = scaler.fit_transform(df)
 
         n_clu=2
-        meth='average'
+        meth='ward'
         data_dist = pdist(X, metric='euclidean')
         data_link = linkage(data_dist, method=meth, metric='euclidean', optimal_ordering = True)
         fclu = fcluster(data_link, n_clu, criterion="maxclust")
-<<<<<<< HEAD
         # res = dendrogram(data_link, color_threshold=7.8)   
-        if len(np.unique(fclu))>1:
-=======
-        # res = dendrogram(data_link, color_threshold=7.8)
+        # if len(np.unique(fclu))>1:
+
+        #     res = dendrogram(data_link, color_threshold=7.8)
         if len(np.unique(fclu))>1:   
->>>>>>> 3a814c0cc075882f07ea9f40f29ec0f1c2ed74ec
+
             sil = silhouette_score(X, fclu, metric='euclidean')
             print(f'{time+1}) silhouette: {sil}')
             silhouette_list.append(sil)
@@ -219,11 +213,6 @@ if hierarchical_validation:
 
     plt.hist(silhouette_list, bins=int((np.log2(num_records)+1)), edgecolor='k')
     plt.xlabel('Silhouette')
-<<<<<<< HEAD
-    plt.axvline(x=0.40)
+
+    plt.axvline(x=0.1846)
     plt.show()
-    
-=======
-    plt.axvline(x=0.375)
-    plt.show()
->>>>>>> 3a814c0cc075882f07ea9f40f29ec0f1c2ed74ec

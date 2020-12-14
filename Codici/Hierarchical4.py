@@ -36,18 +36,18 @@ df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttrib
 # print(f'DF2 sil: {a}')
 
 
-# # Non robusto
-# df3 = df[['PercentSalaryHike', 'TrainingTimesLastYear', 'MonthlyIncome', 'Age']]
-# scaler = MinMaxScaler()
-# X = scaler.fit_transform(df3)
-# data_dist = pdist(X, metric='euclidean')
-# data_link = linkage(data_dist, method='median', metric='w', optimal_ordering = True)
-# # plt.figure()
+
+df3 = df[['PercentSalaryHike', 'TrainingTimesLastYear', 'MonthlyIncome', 'Age']]
+scaler = MinMaxScaler()
+X = scaler.fit_transform(df3)
+data_dist = pdist(X, metric='euclidean')
+data_link = linkage(data_dist, method='median', metric='w', optimal_ordering = True)
+# plt.figure()
 # plt.title('DF3 sil: 0.375, method: median, clusters: 4')
-# res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=0.6)
-# fclu = fcluster(data_link, 4, criterion="maxclust")
-# a = silhouette_score(X, fclu, metric='euclidean')
-# print(f'DF3 sil: {a}')
+res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=0.6)
+fclu = fcluster(data_link, 4, criterion="maxclust")
+a = silhouette_score(X, fclu, metric='euclidean')
+print(f'DF3 sil: {a}')
 
 
 
@@ -64,17 +64,17 @@ df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttrib
 # print(f'DF4 sil: {a}')
 
 
-df5 = df[['Age', 'YearsInCurrentRole', 'TrainingTimesLastYear', 'MonthlyIncome']]
-scaler = MinMaxScaler()
-X = scaler.fit_transform(df5)
-data_dist = pdist(X, metric='euclidean')
-data_link = linkage(data_dist, method='centroid', metric='w', optimal_ordering = True)
-plt.figure()
-plt.title('DF5 sil: 0.341, method: centroid, clusters: 3')
-res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=0.6)
-fclu = fcluster(data_link, 3, criterion="maxclust")
-a = silhouette_score(X, fclu, metric='euclidean')
-print(f'DF5 sil: {a}')
+# df5 = df[['Age', 'YearsInCurrentRole', 'TrainingTimesLastYear', 'MonthlyIncome']]
+# scaler = MinMaxScaler()
+# X = scaler.fit_transform(df5)
+# data_dist = pdist(X, metric='euclidean')
+# data_link = linkage(data_dist, method='centroid', metric='w', optimal_ordering = True)
+# plt.figure()
+# plt.title('DF5 sil: 0.341, method: centroid, clusters: 3')
+# res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=0.6)
+# fclu = fcluster(data_link, 3, criterion="maxclust")
+# a = silhouette_score(X, fclu, metric='euclidean')
+# print(f'DF5 sil: {a}')
 
 
 # df6 = df[['FractionYearsAtCompany', 'PercentSalaryHike', 'MonthlyRate', 'DistanceFromHome']]
@@ -90,14 +90,14 @@ print(f'DF5 sil: {a}')
 # print(f'DF6 sil: {a}')
 
 
-df7 = df[['YearsInCurrentRole', 'TrainingTimesLastYear', 'NumCompaniesWorked', 'Age']]
-scaler = MinMaxScaler()
-X = scaler.fit_transform(df7)
-data_dist = pdist(X, metric='euclidean')
-data_link = linkage(data_dist, method='ward', metric='w', optimal_ordering = True)
-plt.figure()
-plt.title('DF7 sil: 0.309, method: single, clusters: 3')
-res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=0.6)
-fclu = fcluster(data_link, 2, criterion="maxclust")
-a = silhouette_score(X, fclu, metric='euclidean')
-print(f'DF7 sil: {a}')
+# df7 = df[['YearsInCurrentRole', 'TrainingTimesLastYear', 'NumCompaniesWorked', 'Age']]
+# scaler = MinMaxScaler()
+# X = scaler.fit_transform(df7)
+# data_dist = pdist(X, metric='euclidean')
+# data_link = linkage(data_dist, method='ward', metric='w', optimal_ordering = True)
+# plt.figure()
+# plt.title('DF7 sil: 0.309, method: single, clusters: 3')
+# res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=0.6)
+# fclu = fcluster(data_link, 2, criterion="maxclust")
+# a = silhouette_score(X, fclu, metric='euclidean')
+# print(f'DF7 sil: {a}')
