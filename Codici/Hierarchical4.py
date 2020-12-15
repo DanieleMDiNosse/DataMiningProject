@@ -41,13 +41,20 @@ df3 = df[['PercentSalaryHike', 'TrainingTimesLastYear', 'MonthlyIncome', 'Age']]
 scaler = MinMaxScaler()
 X = scaler.fit_transform(df3)
 data_dist = pdist(X, metric='euclidean')
-data_link = linkage(data_dist, method='ward', metric='w', optimal_ordering = True)
+data_link = linkage(data_dist, method='median', metric='w', optimal_ordering = True)
 # plt.figure()
 # plt.title('DF3 sil: 0.375, method: median, clusters: 4')
-res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=6.5)
-fclu = fcluster(data_link, 2, criterion="maxclust")
+# res = dendrogram(data_link, truncate_mode = 'lastp', color_threshold=6.5)
+fclu = fcluster(data_link, 5, criterion="maxclust")
 a = silhouette_score(X, fclu, metric='euclidean')
 print(f'DF3 sil: {a}')
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(df['PercentSalaryHike'], df['MonthlyIncome'], df['Age'], c=fclu, s=20)
+ax.set_xlabel('PercentSalaryHike')
+ax.set_ylabel('TrainingTimesLastYear')
+ax.set_zlabel('Age')
+
 
 
 

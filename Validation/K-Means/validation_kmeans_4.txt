@@ -1,17 +1,18 @@
 DATA FRAME
-   DistanceFromHome  ...  YearsInCurrentRole
-0          2.112575  ...            3.963853
-1          4.454011  ...            2.349316
-2          4.623644  ...            4.019085
-3          4.957799  ...            2.116271
-4          3.340058  ...            1.185038
-
-[5 rows x 5 columns]
+   DistanceFromHome  TrainingTimesLastYear  YearsInCurrentRole  FractionYearsAtCompany  PercentSalaryHike
+0          4.294445               5.923793            0.284955                0.856266           3.964523
+1          3.892692               3.406830            0.340634                0.345703           3.697728
+2          2.006442               5.411549            0.153778                0.219240           3.892306
+3          2.891359               3.627983            2.116328                0.022304           3.959546
+4          1.849726               4.490291            2.571650                0.706812           3.906445
 
 number of values for each attributes: 899
 number of random data frames: 500
 _____________________________________________________________
 
 STATISTIC
-mean (SSE): 249.67404725671827
-std (SSE): 3.47163659748145
+mean (SSE): 249.62672728305344
+std (SSE): 3.345812472254173
+
+mean (sil): 0.1565651409667076
+std (sil): 0.003195065421999373

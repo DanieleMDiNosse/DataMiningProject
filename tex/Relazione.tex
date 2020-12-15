@@ -265,6 +265,70 @@ Infine il cluster verde può essere visto come il gruppo di persone che hanno ac
 La classificazione fatta non è certamente da considerarsi assoluta, poiché dai valori della silhouette non elevati, si capisce che la distinzione tra i cluster non è netta: mescolamenti tra di essi sono molto plausibili.
 Ragionamenti simili possono essere applicati agli altri grafici.
 
+\subsubsection{Validazione}
+Per quanto riguarda la validazione dei cluster ottenuti, si è valutata la distribuzione dell'SSE e della silhouette generati dal K-Means su un numero $N=500$ di set di dati random estratti dallo stesso dominio degli attributi usati. La clusterizzazione è quindi ritenuta non random se l'SSE e la silhouette sono al di fuori di quattro deviazioni standard dal valor medio, ciò assicura che i dati ottenuti sono esterni al $99.994\%$  delle relative distribuzioni.
+Dalle immagini seguenti si evince che tutti i valori ottenuti sono compatibili con una clusterizzazione non random.
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSSE_1.png}
+\caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 1. Media: 250; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.  }
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSilhouette_1.png}
+\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali.}
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+\begin{figure}[H]
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSSE_2.png}
+\caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 2. Media: 250; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSilhouette_2.png}
+\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 2. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali. }
+\label{etichetta2}
+\end{minipage}
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSSE_3.png}
+\caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 3. Media: 178; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.  }
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSilhouette_3.png}
+\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 3. Media: 0.200; Deviazione Standard: 0.004. La linea arancione rappresenta la silhouette sui dati reali.}
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+\begin{figure}[H]
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSSE_4.png}
+\caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 4. Media: 250; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.}
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSilhouette_4.png}
+\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 4. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali. }
+\label{etichetta2}
+\end{minipage}
+\end{figure}
+
+
 
 \subsection{DB-Scan}
 Per quanto riguarda il DB-Scan i sottoinsiemi che sono stati utilizzati :\\
@@ -317,7 +381,26 @@ La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata r
 \end{minipage}
 \end{figure}
 
-Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un diverso numero di cluster ed un certo numero di noise points (punti viola). Questo è essenzialmente dovuto alla distribuzione dei valori nello spazio tridimensionale: essi formano infatti delle slices molto dense a valori fissati di uno dei tre attributi, come si può ad esempio osservare nella Figura  25. In questo caso inoltre si nota che il valore della silhoutte è praticamente nullo e ciò implica che la divisione ottenuta è totalmente inconsistente. Per tali motivi non è stato possibile associare ai cluster alcun significato.
+Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un diverso numero di cluster ed un certo numero di noise points (punti viola). Questo è essenzialmente dovuto alla distribuzione dei valori nello spazio tridimensionale: essi formano infatti delle slices molto dense a valori fissati di uno dei tre attributi, come si può ad esempio osservare nella Figura 33. In questo caso inoltre si nota che il valore della silhoutte è praticamente nullo e ciò implica che la divisione ottenuta è totalmente inconsistente. Per tali motivi non è stato possibile associare ai cluster alcun significato.
+
+\subsubsection{Validazione}
+La validazione è stata eseguita anche in questo caso tramite la costruzione di $N=500$ distribuzioni random su cui si è valutata la silhouette. La clusterizzazione è stata considerata non random se il valore ottenuto della silhouette è al di fuori di quattro deviazioni standard dal valor medio, quindi esterno al $99.994\%$ della distribuzione.
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSilhouetteDBSCAN_1.png}
+\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.06; Deviazione Standard: 0.03. La linea arancione rappresenta la silhouette sui dati reali.  }
+\label{etichetta1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{RandomSilhouette_1.png}
+\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali.}
+\label{etichetta2}
+\end{minipage}
+\end{figure}
 
 \subsection{Hierarchical}
 Per quanto riguarda il Hierarchical i sottoinsiemi che hanno mostrato i risultati migliori sono:
@@ -359,8 +442,12 @@ Di seguito sono riportati i metodo usati per ciascun sottoinsieme e i rispettivi
 \end{minipage}
 \end{figure}
 
-I diversi claster ottenuti sono evidenziati in diversi colori. Si nota che metodi
-diversi restituiscono clusters diversi per uno stesso sottoinsieme. 
+
+
+
+
+
+
 
 
 
