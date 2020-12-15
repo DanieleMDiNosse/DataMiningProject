@@ -16,14 +16,14 @@ import matplotlib.pyplot as plt
 
 #== PARAMETERS ===============================================================================
 num_records=899         #numer of records for each attributes (see random_attributes)
-validation_times = 500    #numer of random data frame (see ciclo for)
+validation_times = 10    #numer of random data frame (see ciclo for)
 #============================================================================================
 
 
 #== IF CHECK =================================================================================
-kmean_validation = False
+kmean_validation = True
 db_scan = False
-hierarchical_validation = True
+hierarchical_validation = False
 
 # ===========================================================================================
 
@@ -61,27 +61,35 @@ def random_dataframe(list_att):
 # K MEANS CICLO FOR VALIDATION==================================================
 if kmean_validation:
 
-    ist_sse=[]
+    ist_sse=list()
+    sil_list=list()
     for time in range(validation_times):
         
+        Age = random_attributes('Age', 18, 60, integer=True)
         PercentSalaryHike = random_attributes('PercentSalaryHike', 3.316, 5.0)
         FractionYearsAtCompany = random_attributes('FractionYearsAtCompany',0.0,1.0)
         TrainingTimesLastYear = random_attributes('TrainingTimesLastYear', 0.0, 6.0)
         RateIncome = random_attributes('RateIncome', 0.044, 0.997)
         NumCompaniesWorked = random_attributes('NumCompaniesWorked', 0.0, 3.0)
+        YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0.0, 4.2426)
+        DistanceFromHome = random_attributes('DistanceFromHome', 1, 5.38)
 
-        df = random_dataframe([PercentSalaryHike,FractionYearsAtCompany,TrainingTimesLastYear,RateIncome,NumCompaniesWorked])
+        df = random_dataframe([DistanceFromHome,Age,RateIncome,FractionYearsAtCompany])
 
         scaler = MinMaxScaler()
         X = scaler.fit_transform(df.values)
         kmeans=KMeans(init='k-means++', n_clusters=4, n_init=100, max_iter=300)
         kmeans.fit(X)
         sse=kmeans.inertia_
-        print(f'{time+1}) SSE: {sse}')
+        sil = silhouette_score(X, kmeans.labels_)
+        print(f'{time+1}) SSE: {sse}, sil= {sil}')
         ist_sse.append(sse)
+        sil_list.append(sil)
+
 
     ist_sse=np.array(ist_sse)
-    with open("validation_kmeans_1.txt",'w', encoding='utf-8') as f:
+    sil_list=np.array(sil_list)
+    with open("validation_kmeans_2.txt",'w', encoding='utf-8') as f:
         f.write(f'DATA FRAME\n')
         f.write(f'{df.head()}\n')
         f.write(f'\n')
@@ -92,9 +100,19 @@ if kmean_validation:
         f.write(f'STATISTIC\n')
         f.write(f'mean (SSE): {ist_sse.mean()}\n')
         f.write(f'std (SSE): {ist_sse.std()}\n')
-    
+        f.write(f'\n')
+        f.write(f'mean (sil): {sil_list.mean()}\n')
+        f.write(f'std (sil): {sil_list.std()}\n')
+
+    plt.figure()
     plt.hist(ist_sse, bins=int((np.log2(num_records)+1)), edgecolor='k')
     plt.xlabel('SSE')
+    plt.axvline(x=129)
+
+    plt.figure()
+    plt.hist(sil_list, bins=int((np.log2(num_records)+1)), edgecolor='k')
+    plt.xlabel('Silhouette')
+    plt.axvline(x=0.25)
     plt.show()
 
 
@@ -108,6 +126,7 @@ if db_scan:
         RateIncome = random_attributes('RateIncome', 0.044, 0.997)
         NumCompaniesWorked = random_attributes('NumCompaniesWorked', 0.0, 3.0)
         YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0.0, 4.2426)
+        Age = random_attributes('Age', 18, 60, integer=True)
 
         df = random_dataframe([PercentSalaryHike,FractionYearsAtCompany,YearsInCurrentRole,RateIncome])
 
@@ -168,11 +187,10 @@ if hierarchical_validation:
         StockOptionLevel = random_attributes('StockOptionLevel', 0, 3 , integer=True)
         MonthlyRate = random_attributes('MonthlyRate', 45.9, 164.4)
         MonthlyIncome = random_attributes('MonthlyIncome', 6.915, 9.905)
-
-        YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0, 18, integer = True)
-        df = random_dataframe([TrainingTimesLastYear, StockOptionLevel, MonthlyIncome, Age])
-
         DistanceFromHome = random_attributes('DistanceFromHome', 1, 5.38)
+        YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0, 18, integer = True)
+       
+        df = random_dataframe([TrainingTimesLastYear, StockOptionLevel, MonthlyIncome, Age])
 
         df = random_dataframe([Age,MonthlyIncome,DistanceFromHome])
 
