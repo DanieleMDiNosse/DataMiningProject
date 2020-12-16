@@ -1,0 +1,14 @@
+DATA FRAME
+Index(['PercentSalaryHike', 'FractionYearsAtCompany', 'YearsInCurrentRole',
+       'RateIncome', 'NumCompaniesWorked'],
+      dtype='object')
+
+number of values for each attributes: 899
+number of random data frames: 1000000
+
+________________________________________________________________________
+
+STATISTIC
+numer of data: 294
+mean (silhouette): 0.0560486334421689
+std (silouette): 0.031777889831576325
