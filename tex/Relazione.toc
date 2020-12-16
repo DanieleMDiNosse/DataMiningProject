@@ -8,5 +8,8 @@
 \contentsline {section}{\numberline {3}Data Preparation}{7}{section.3}%
 \contentsline {section}{\numberline {4}Clustering}{9}{section.4}%
 \contentsline {subsection}{\numberline {4.1}K-Means}{9}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}DB-Scan}{11}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Hierarchical}{13}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.1.1}Validazione}{11}{subsubsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.2}DB-Scan}{12}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Validazione}{13}{subsubsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.3}Hierarchical}{14}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Validazione}{15}{subsubsection.4.3.1}%

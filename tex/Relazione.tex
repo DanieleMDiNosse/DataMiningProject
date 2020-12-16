@@ -175,7 +175,8 @@ Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono 
 \end{center}
 
 \section{Clustering}
-Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means, DB Scan e Hierarchical. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 3-5 dimensionali alla ricerca un qualche tipo di clusterizzazione. Come metrica è stata usata la distanza euclidea.\\
+Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means, DB Scan e Hierarchical. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 3-5 dimensionali alla ricerca un qualche tipo di clusterizzazione. 
+Come metrica è stata usata la distanza euclidea, i dati sono stati inoltre normalizzati tra $0$ e $1$.\\
 Si vuole precisare che per la visualizzazione dei clusters ottenuti tramite K-Means e DB Scan è stato utilizzato uno spazio tridimensionale poichè, soprattutto nel primo caso, una visualizzazione bidimensionale portava ad un mixing eccesivo dei clusters stessi.
 
 \subsection{K-Means}
@@ -252,7 +253,7 @@ Nei seguenti grafici sono mostrati i risultati ottenuti e per redendere più chi
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
 \includegraphics[scale=0.6]{FractionYear_Distance_Percent_CENTROIDI6.png}
-\caption{Cluster sottoinsieme 4: SSE$=182$; silhouette$=0.20$}
+\caption{Cluster sottoinsime 4: SSE$=182$; silhouette$=0.20$}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -283,49 +284,49 @@ Dalle immagini seguenti si evince che tutti i valori ottenuti sono compatibili c
 \caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali.}
 \label{etichetta2}
 \end{minipage}
-\end{figure}
-\begin{figure}[H]
-\begin{minipage}[b]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{RandomSSE_2.png}
-\caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 2. Media: 250; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.}
-\label{etichetta1}
-\end{minipage}
-\hfill
-\begin{minipage}[b]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{RandomSilhouette_2.png}
-\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 2. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali. }
-\label{etichetta2}
-\end{minipage}
-\begin{minipage}[b]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{RandomSSE_3.png}
-\caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 3. Media: 178; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.  }
-\label{etichetta1}
-\end{minipage}
-\hfill
-\begin{minipage}[b]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{RandomSilhouette_3.png}
-\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 3. Media: 0.200; Deviazione Standard: 0.004. La linea arancione rappresenta la silhouette sui dati reali.}
-\label{etichetta2}
-\end{minipage}
-\end{figure}
-\begin{figure}[H]
-\begin{minipage}[b]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{RandomSSE_4.png}
-\caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 4. Media: 250; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.}
-\label{etichetta1}
-\end{minipage}
-\hfill
-\begin{minipage}[b]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{RandomSilhouette_4.png}
-\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 4. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali. }
-\label{etichetta2}
-\end{minipage}
+% \end{figure}
+% \begin{figure}[H]
+% \begin{minipage}[b]{0.45\textwidth}
+% \centering
+% \includegraphics[width=\textwidth]{RandomSSE_2.png}
+% \caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 2. Media: 250; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.}
+% \label{etichetta1}
+% \end{minipage}
+% \hfill
+% \begin{minipage}[b]{0.45\textwidth}
+% \centering
+% \includegraphics[width=\textwidth]{RandomSilhouette_2.png}
+% \caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 2. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali. }
+% \label{etichetta2}
+% \end{minipage}
+% \begin{minipage}[b]{0.45\textwidth}
+% \centering
+% \includegraphics[width=\textwidth]{RandomSSE_3.png}
+% \caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 3. Media: 178; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.  }
+% \label{etichetta1}
+% \end{minipage}
+% \hfill
+% \begin{minipage}[b]{0.45\textwidth}
+% \centering
+% \includegraphics[width=\textwidth]{RandomSilhouette_3.png}
+% \caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 3. Media: 0.200; Deviazione Standard: 0.004. La linea arancione rappresenta la silhouette sui dati reali.}
+% \label{etichetta2}
+% \end{minipage}
+% \end{figure}
+% \begin{figure}[H]
+% \begin{minipage}[b]{0.45\textwidth}
+% \centering
+% \includegraphics[width=\textwidth]{RandomSSE_4.png}
+% \caption{Distribuzione dell'SSE su 500 set di dati random per il sottoinsieme 4. Media: 250; Deviazione Standard: 3. La linea arancione rappresenta l'SSE sui dati reali.}
+% \label{etichetta1}
+% \end{minipage}
+% \hfill
+% \begin{minipage}[b]{0.45\textwidth}
+% \centering
+% \includegraphics[width=\textwidth]{RandomSilhouette_4.png}
+% \caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 4. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali. }
+% \label{etichetta2}
+% \end{minipage}
 \end{figure}
 
 
@@ -344,14 +345,14 @@ La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata r
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Figure_1.png}
-\caption{Elbow curve con min samples =  8 }
+\caption{Sottoinsieme 1. Elbow curve con min samples =  8 }
 \label{etichetta1}
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Figure_24.png}
-\caption{eps = 0.750 , silhoutte = 0.26 }
+\caption{Sottoinsieme 1. eps = 0.750 , silhoutte = 0.26 }
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -361,22 +362,22 @@ La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata r
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{2.png}
-\caption{Elbow curve con min samples =  8}
+\caption{Sottoinsieme 2. Elbow curve con min samples =  8}
 \label{etichetta1}
 \centering
 \includegraphics[width=\textwidth]{5 (1).png}
-\caption{Elbow curve con min samples =  15}
+\caption{Sottoinsieme 3. Elbow curve con min samples =  15}
 \label{etichetta1}
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{22.png}
-\caption{eps = 0.950, silhoutte = 0.12 }
+\caption{Sottoinsieme 2. eps = 0.950, silhoutte = 0.12 }
 \label{etichetta2}
 \centering
 \includegraphics[width=\textwidth]{5 (2).png}
-\caption{eps = 1.20, silhoutte = 0.02}
+\caption{Sottoinsieme 3. eps = 1.20, silhoutte = 0.02}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -385,7 +386,7 @@ Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un divers
 
 \subsubsection{Validazione}
 La validazione è stata eseguita anche in questo caso tramite la costruzione di $N=500$ distribuzioni random su cui si è valutata la silhouette. La clusterizzazione è stata considerata non random se il valore ottenuto della silhouette è al di fuori di quattro deviazioni standard dal valor medio, quindi esterno al $99.994\%$ della distribuzione.
-
+Come si può notare dal secondo grafico i risultati otteneuti sono da scartare.
 \begin{figure}[H]
 \begin{minipage}[b]{0.45\textwidth}
 \centering
@@ -396,8 +397,8 @@ La validazione è stata eseguita anche in questo caso tramite la costruzione di 
 \hfill
 \begin{minipage}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=\textwidth]{RandomSilhouette_1.png}
-\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.156; Deviazione Standard: 0.003. La linea arancione rappresenta la silhouette sui dati reali.}
+\includegraphics[width=\textwidth]{RandomSilhouetteDBSCAN_2.png}
+\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 2. Media: 0.06; Deviazione Standard: 0.03. La linea arancione rappresenta la silhouette sui dati reali.}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -411,6 +412,9 @@ Per quanto riguarda il Hierarchical i sottoinsiemi che hanno mostrato i risultat
 \end{enumerate}
 
 Per entrambi sono stati usati algoritmi di tipo agglomerativo con diverse definizioni della distanza inter clusters.
+Ai fini della scelta del metodo da utilizzare, come primo approccio, si è deciso di visualizzare
+lo scatter plot dei data frame alla ricerca di strutture che possano suggerire una scelta appropriata.
+Dall' ananisi non sono emerse particolari evidenze e la decisione è ricaduta sui metodi che si sono rivelati più performanti.
 Di seguito sono riportati i metodo usati per ciascun sottoinsieme e i rispettivi dendogrammi.
 
 \begin{itemize}
@@ -419,46 +423,67 @@ Di seguito sono riportati i metodo usati per ciascun sottoinsieme e i rispettivi
 \end{itemize}
 
 \begin{figure}[H]
-\begin{minipage}[H]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{DistanceFromHome,Age,MonthlyIncome035Average.png}
-\caption{Dendogramma sottoinsieme 1:  metodo = Group Average; silhouette = 0.35}
-\label{etichetta1}
-\centering
-\includegraphics[width=\textwidth]{hierarchical_df3.png}
-\caption{Dendogramma sottoinsieme 2:  metodo = Median; silhouette = 0.37}
-\label{etichetta1}
-\end{minipage}
-\hfill
-\begin{minipage}[H]{0.45\textwidth}
-\centering
-\includegraphics[width=\textwidth]{DistanceFromHome,Age,MonthlyIncome035Ward.png}
-\caption{Dendogramma sottoinsieme 1:  metodo = Ward; silhouette = 0.35  }
-\label{etichetta2}
-\centering
-\includegraphics[width=\textwidth]{dendogram_hierarchicaldf3(ward).png}
-\caption{Dendogramma sottoinsieme 2:  metodo = Ward; silhouette = 0.24}
-\label{etichetta2}
-\end{minipage}
-\end{figure}
-
-
-
-
-
-\begin{figure}
-\centering
-\begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=1\linewidth]{ScatterVisualPlotDF1_Hierarchical(Average).png}
-  \caption{Dendogramma sottoinsieme 2:  metodo = Median; silhouette = 0.37}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{DistanceFromHome,Age,MonthlyIncome035Average.png}
+    \caption{Dendogramma sottoinsieme 1:  metodo = Group Average;\\ silhouette = 0.35}
+  \end{minipage}
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{hierarchical_df3.png}
+    \caption{Dendogramma sottoinsieme 2:  metodo = Median;\\ silhouette = 0.37}
+  \end{minipage}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \begin{minipage}{.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{DistanceFromHome,Age,MonthlyIncome035Ward.png}
+      \caption{Dendogramma sottoinsieme 1:  metodo = Ward;\\ silhouette = 0.35}
+    \end{minipage}
+    \begin{minipage}{.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{dendogram_hierarchicaldf3(ward).png}
+      \caption{Dendogramma sottoinsieme 2:  metodo = Ward; \\silhouette = 0.24 }
+    \end{minipage}
+    \end{figure}
+
+
+Nei dendogrammi mostrati è possibile notare le differenze dei vari metodi. In generale con Ward la robustezza risultante
+è maggiore, sebbene nel secondo sottoinsieme la silhouette calcolata è significativamente più bassa rispetto all'altro metodo.
+
+\subsubsection{Validazione}
+Anche in questo caso per validare i risultati ottenuti, sono stati generati $N=500$ set di dati random su cui è stato eseguito l'algoritmo Hierarchical e calcolata la silhouette. Se quella valutata sui dati reali cade al di fuori della distribuzione (media $ \pm $ quattro deviazioni standard) allora il risultato è stato considerato attendibile.
+
+\begin{figure}[H]
   \centering
-  \includegraphics[width=1\linewidth]{ScatterVisualPlotDF1_Hierarchical(Ward).png}
-  \caption{Dendogramma sottoinsieme 1:  metodo = Ward; silhouette = 0.35  }
-\end{minipage}
-\end{figure}
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{validation_hierDF1(ward).png}
+    \caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.22; Deviazione Standard: 0.02. La linea arancione rappresenta la silhouette sui dati reali.}
+  \end{minipage}
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{validation_silhouettehierdf2(median).png}
+    \caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.03; Deviazione Standard: 0.08. La linea arancione rappresenta la silhouette sui dati reali. }
+  \end{minipage}
+  \end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%   \begin{minipage}{.45\textwidth}
+%     \centering
+%     \includegraphics[width=\textwidth]{ScatterVisualPlotDF1_Hierarchical(Average).png}
+%     \caption{Dendogramma sottoinsieme 2:  metodo = Median;\\ silhouette = 0.37}
+%   \end{minipage}
+%   \begin{minipage}{.45\textwidth}
+%     \centering
+%     \includegraphics[width=\textwidth]{ScatterVisualPlotDF1_Hierarchical(Ward).png}
+%     \caption{Dendogramma sottoinsieme 1:  metodo = Ward; \\silhouette = 0.35  }
+%   \end{minipage}
+%   \end{figure}
 
 
 
