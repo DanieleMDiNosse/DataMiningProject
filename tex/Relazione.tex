@@ -385,20 +385,20 @@ La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata r
 Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un diverso numero di cluster ed un certo numero di noise points (punti viola). Questo è essenzialmente dovuto alla distribuzione dei valori nello spazio tridimensionale: essi formano infatti delle slices molto dense a valori fissati di uno dei tre attributi, come si può ad esempio osservare nella Figura 33. In questo caso inoltre si nota che il valore della silhoutte è praticamente nullo e ciò implica che la divisione ottenuta è totalmente inconsistente. Per tali motivi non è stato possibile associare ai cluster alcun significato.
 
 \subsubsection{Validazione}
-La validazione è stata eseguita anche in questo caso tramite la costruzione di $N=500$ distribuzioni random su cui si è valutata la silhouette. La clusterizzazione è stata considerata non random se il valore ottenuto della silhouette è al di fuori di quattro deviazioni standard dal valor medio, quindi esterno al $99.994\%$ della distribuzione.
+La validazione è stata eseguita anche in questo caso tramite la costruzione di $N_1=35000$ e $N_2=10^3$ distribuzioni random su cui si è valutata la silhouette. La clusterizzazione è stata considerata non random se il valore ottenuto della silhouette è al di fuori di quattro deviazioni standard dal valor medio, quindi esterno al $99.994\%$ della distribuzione.
 Come si può notare dal secondo grafico i risultati otteneuti sono da scartare.
 \begin{figure}[H]
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{RandomSilhouetteDBSCAN_1.png}
-\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 1. Media: 0.06; Deviazione Standard: 0.03. La linea arancione rappresenta la silhouette sui dati reali.  }
+\caption{Distribuzione della silhouette su $N_1$ per il sottoinsieme 1. Media: 0.06; Deviazione Standard: 0.03. La linea arancione rappresenta la silhouette sui dati reali.  }
 \label{etichetta1}
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{RandomSilhouetteDBSCAN_2.png}
-\caption{Distribuzione della silhouette su 500 set di dati random per il sottoinsieme 2. Media: 0.06; Deviazione Standard: 0.03. La linea arancione rappresenta la silhouette sui dati reali.}
+\caption{Distribuzione della silhouette su $N_2$ per il sottoinsieme 2. Media: 0.06; Deviazione Standard: 0.03. La linea arancione rappresenta la silhouette sui dati reali.}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -457,6 +457,7 @@ Nei dendogrammi mostrati è possibile notare le differenze dei vari metodi. In g
 \subsubsection{Validazione}
 Anche in questo caso per validare i risultati ottenuti, sono stati generati $N=500$ set di dati random su cui è stato eseguito l'algoritmo Hierarchical e calcolata la silhouette. Se quella valutata sui dati reali cade al di fuori della distribuzione (media $ \pm $ quattro deviazioni standard) allora il risultato è stato considerato attendibile.
 
+
 \begin{figure}[H]
   \centering
   \begin{minipage}{.45\textwidth}
@@ -485,9 +486,19 @@ Anche in questo caso per validare i risultati ottenuti, sono stati generati $N=5
 %   \end{minipage}
 %   \end{figure}
 
+\subsection{Confronto fra gli algoritmi}
+Alla luce di quanto ottenuto dai diversi algoritmi è possibile confrontare la bontà dei risultati ottenuti.\\
+Sicuramente il DB-Scan è quello che ha avuto la resa peggiore, in quanto, come già precisato, soffre a causa della mancanza di variazioni significative di densità.\\
+I risultati migliori in termini della silhouette sono relativi al K-Means e al Hierarchical. Inoltre, tramite quest'ultimo, è possibile scegliere il numero di clusters da utilizzare nel primo in modo da ottimizzare i risultati. Questo metodo è stato applicato per il seguente sottoinsieme 2 usato nel Hierarchical.
+Ne è riportato lo scatter plot ricavato dal K-Means con $K=4$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.65]{FromHierarchicalKmeansDF2.png}
+    \caption{Cluster sottoinsieme 2(par 4.3): SSE=96; silhouette=0.24 }
+    \label{fig:my_label}
+\end{figure}
 
-
-
+I risultati sono nettamente migliori in termini dell'SSE.
 
 
 

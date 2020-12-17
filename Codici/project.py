@@ -6,12 +6,12 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-from outliers import smirnov_grubbs as grubbs
+# from outliers import smirnov_grubbs as grubbs
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-df=pd.read_csv('TrasfAttributeFraction_RateIncome.csv',index_col = 0)
+df=pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome.csv',index_col = 0)
 print(df.columns)
 # print(df.describe())
 # print(df.head())
@@ -43,7 +43,7 @@ print(df.columns)
 #_____________________________________________________________________________________
 KM=False
 knee=False
-kM_3d=False
+kM_3d=True
 
 correlazione=False
 #_____________________________________________________________________________________
@@ -58,7 +58,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 numeric = df.select_dtypes('number')
-df = df[['PercentSalaryHike', 'FractionYearsAtCompany', 'YearsInCurrentRole', 'RateIncome', 'NumCompaniesWorked']]
+df = df[['PercentSalaryHike', 'TrainingTimesLastYear', 'MonthlyIncome', 'Age']]
 numeric = df.select_dtypes('number')
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric.values)
@@ -77,42 +77,52 @@ if kM_3d:
     hist, bins = np.histogram(kmeans.labels_, bins=range(0, len(set(kmeans.labels_)) + 1))
     # print(dict(zip(bins, hist))) 
     i = 0
-    for idx, columns in df.iteritems():
-        for index, columns in df.iteritems():
-            for index_n, columns in df.iteritems():
-                if idx != index:
-                    if index != index_n:
-                        if idx != index_n:
-                    #print(np.unique(dbscan.labels_, return_counts = True))
-                            fig = plt.figure()
-                            ax = fig.add_subplot(111, projection='3d')
-                            ax.scatter(df[index_n], df[index], df[idx], c=kmeans.labels_, s=30)
-                            ax.set_xlabel(index_n)
-                            ax.set_ylabel(index)
-                            ax.set_zlabel(idx)
-                            # plt.show()
+    for val in df:
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.scatter(df[val], df['Age'], df['PercentSalaryHike'], c=kmeans.labels_, s=30)
+        ax.set_xlabel(val)
+        ax.set_ylabel('Age')
+        ax.set_zlabel('PercentSalaryHike')
+        plt.show()
+    
+    
+    # for idx, columns in df.iteritems():
+    #     for index, columns in df.iteritems():
+    #         for index_n, columns in df.iteritems():
+    #             if idx != index:
+    #                 if index != index_n:
+    #                     if idx != index_n:
+    #                 #print(np.unique(dbscan.labels_, return_counts = True))
+    #                         fig = plt.figure()
+    #                         ax = fig.add_subplot(111, projection='3d')
+    #                         ax.scatter(df[index_n], df[index], df[idx], c=kmeans.labels_, s=30)
+    #                         ax.set_xlabel(index_n)
+    #                         ax.set_ylabel(index)
+    #                         ax.set_zlabel(idx)
+    #                         # plt.show()
 
-    centers=scaler.inverse_transform(kmeans.cluster_centers_)
+    # centers=scaler.inverse_transform(kmeans.cluster_centers_)
 
-    plt.figure()
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(df['DistanceFromHome'], df['PercentSalaryHike'], df['NumCompaniesWorked'], c=kmeans.labels_, s=30)
-    ax.scatter(centers[:,1],centers[:,0],centers[:,4],s=500,marker='*',c='crimson',edgecolor='k')
-    ax.set_xlabel('DistanceFormHome')
-    ax.set_ylabel('PercentSalaryHike')
-    ax.set_zlabel('NumCompaniesWorked')
-    # plt.show()  
+    # plt.figure()
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111, projection='3d')
+    # ax.scatter(df['DistanceFromHome'], df['PercentSalaryHike'], df['NumCompaniesWorked'], c=kmeans.labels_, s=30)
+    # ax.scatter(centers[:,1],centers[:,0],centers[:,4],s=500,marker='*',c='crimson',edgecolor='k')
+    # ax.set_xlabel('DistanceFormHome')
+    # ax.set_ylabel('PercentSalaryHike')
+    # ax.set_zlabel('NumCompaniesWorked')
+    # # plt.show()  
 
-    plt.figure('paralle cor centroids')
-    print(centers)
+    # plt.figure('paralle cor centroids')
+    # print(centers)
 
-    plt.plot(centers[2], marker='o',label='Cluster 2', c='teal')
-    plt.plot(centers[0], marker='o',label='Cluster 0', c='gold')
-    plt.plot(centers[1], marker='o',label='Cluster 1', c='purple')
-    plt.plot(centers[3], marker='o',label='Cluster 3', c='mediumaquamarine')
-    plt.legend()
-    plt.show()
+    # plt.plot(centers[2], marker='o',label='Cluster 2', c='teal')
+    # plt.plot(centers[0], marker='o',label='Cluster 0', c='gold')
+    # plt.plot(centers[1], marker='o',label='Cluster 1', c='purple')
+    # plt.plot(centers[3], marker='o',label='Cluster 3', c='mediumaquamarine')
+    # plt.legend()
+    # plt.show()
     
 if KM:
     kmeans = KMeans(n_clusters = 3, n_init = 100, max_iter=300, init='k-means++')
