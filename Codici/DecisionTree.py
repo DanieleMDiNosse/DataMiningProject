@@ -9,9 +9,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
 '''The objective is to classify the records based on the Attrition. In other words, Attrition will be our class 
-#target y while all the other attributes will be the vector x'''
+target y while all the other attributes will be the vector x'''
 
 df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome.csv',index_col = 0)
+categorical = df.select_dtypes(exclude = 'number')
 
 '''Before everything we must preprocess the data. We need to convert string attributes into some numerical attributes
 in order to make the algorithm works. For the features variable (X matrix) we must use OneHotEncoder that returns a 
@@ -21,19 +22,24 @@ y is binary, like Yes or No (that's the case for Attrition).
 Anyway, teacher suggested not to use categorical attributes in the decision tree classification, except for those one that
 has a small number of possibile values, like Gender'''
 
+ohe = OneHotEncoder(sparse = False)
 
-          
+gender_ohe = ohe.fit_transform(df['Gender'].values.reshape(-1,1)) # 0 = Female, 1 = Male
+overtime_ohe = ohe.fit_transform(df['OverTime'].values.reshape(-1,1)) # 0 = No, 1 = Yes
+df.replace({'Gender':{'Female' : 0, 'Male' : 1}}, inplace = True)
+df.replace({'OverTime':{'No' : 0, 'Yes' : 1}}, inplace = True)
+df.replace({'Attrition':{'No' : 0, 'Yes' : 1}}, inplace = True)
+numeric = df.select_dtypes('number')
 
-    
 '''The first thing to do is to divide the dataset into train and test. Be aware that the training set has to be
 further splitted into an actual training set and a validation set used for estimating the generalization error.
 Random_state specify the specific random splitting, while stratify keep the distribution of the target class'''
 
-# attributes = [col for col in df.columns if col != 'Attrition']
-# X = df[attributes].values
-# y = df['Attrition'] # Target class
+attributes = [col for col in numeric.columns if col != 'Attrition']
+X = df[attributes].values
+y = df['Attrition'] # Target class
 
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 100, stratify = y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 100, stratify = y)
 
     
 '''Build the decision tree.
@@ -42,5 +48,5 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-# clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1)
-# clf.fit(X_train, y_train)
+clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1)
+clf.fit(X_train, y_train)
