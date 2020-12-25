@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, LabelBinarizer
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score, f1_score, classification_report
 from sklearn.metrics import roc_curve, auc, roc_auc_score
@@ -60,7 +60,7 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.005, class_weight='balanced') # Class weight set the weight of the classes during the splitting procedure
+clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.005, class_weight={'Yes':20}) # Class weight set the weight of the classes during the splitting procedure
 clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
@@ -99,3 +99,37 @@ print(' Confusion Matrix Test \n', confusion_matrix(y_test, y_pred))
 
 print(' Confusion Matrix Train \n', confusion_matrix(y_train, y_pred_tr))
 
+'''Compute the ROC (Receiver Operating Characteristic) curve. ROC curve rapresents in a
+graphical fashion the performance of different classifiers varying the thresholds by which
+the model assigns the class labels. FPR on x axis and TPR on y axis. To compute the ROC curve
+you need the probabilities of the class label predictions of the various istances, sort these
+and then draw a point in the (FPR,TPR)-plane for different thresholds.'''
+
+# Seguendo il codice Titanic, se non converto in valori binari y_pred mi da errore
+for i,val in enumerate(y_pred):
+    if val == 'Yes':
+        y_pred[i] = 0
+    else:
+        y_pred[i] = 1
+# In ogni caso, dalla procedura per costruire la ROC curve, mi sembra di dover calcolare
+# queste probabilità ed usare queste al posto di y_pred. Il modulo predict_proba 
+# restituisce la probabilità predetta per la classe di ogni istanza. Tale probabilità
+# è la frazione dei valori degli attributi aventi la stessa classe in un leaf node
+predictions = clf.predict_proba(X_test, check_input = True)
+fpr, tpr, thresholds = roc_curve(y_test, predictions[:,1], pos_label = 'Yes')
+# fpr, tpr, thresholds = roc_curve(y_test, y_pred, pos_label = 'Yes')
+roc_auc = auc(fpr, tpr)
+print(roc_auc)
+
+roc_auc = roc_auc_score(y_test, predictions[:,1], average=None)
+# roc_auc = roc_auc_score(y_test, y_pred, average=None)
+print(roc_auc)
+
+plt.figure()
+plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % (roc_auc))
+plt.plot([0, 1], [0, 1], 'k--')
+
+plt.xlabel('False Positive Rate',)
+plt.ylabel('True Positive Rate')
+plt.legend(loc="lower right", fontsize=14, frameon=False)
+plt.show()
