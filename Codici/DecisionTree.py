@@ -60,7 +60,7 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.005, class_weight={'No':10})
+clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.005, class_weight='balanced') # Class weight set the weight of the classes during the splitting procedure
 clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
