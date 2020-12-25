@@ -21,7 +21,7 @@ from IPython.display import Image
 '''The objective is to classify the records based on the Attrition. In other words, Attrition will be our class 
 target y while all the other attributes will be the vector x'''
 
-df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome.csv',index_col = 0)
+df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv')
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome.csv',index_col = 0)
 categorical = df.select_dtypes(exclude = 'number')
 
@@ -33,10 +33,11 @@ y is binary, like Yes or No (that's the case for Attrition).
 Anyway, teacher suggested not to use categorical attributes in the decision tree classification, except for those one that
 has a small number of possibile values, like Gender'''
 
-ohe = OneHotEncoder(sparse = False)
+# ohe = OneHotEncoder(sparse = False)
 
-gender_ohe = ohe.fit_transform(df['Gender'].values.reshape(-1,1)) # 0 = Female, 1 = Male
-overtime_ohe = ohe.fit_transform(df['OverTime'].values.reshape(-1,1)) # 0 = No, 1 = Yes
+# gender_ohe = ohe.fit_transform(df['Gender'].values.reshape(-1,1)) # 0 = Female, 1 = Male
+# overtime_ohe = ohe.fit_transform(df['OverTime'].values.reshape(-1,1)) # 0 = No, 1 = Yes
+
 df.replace({'Gender':{'Female' : 0., 'Male' : 1.}}, inplace = True)
 df.replace({'OverTime':{'No' : 0., 'Yes' : 1.}}, inplace = True)
 # df.replace({'Attrition':{'No' : 0., 'Yes' : 1.}}, inplace = True)
@@ -44,7 +45,7 @@ numeric = df.select_dtypes('number')
 
 '''The first thing to do is to divide the dataset into train and test. Be aware that the training set has to be
 further splitted into an actual training set and a validation set used for estimating the generalization error.
-Random_state specify the specific random splitting, while stratify keep the distribution of the target class'''
+Random_state specify the specific random splitting, while stratify keep the distribution of the target class label'''
 
 attributes = [col for col in numeric.columns if col != 'Attrition']
 X = df[attributes].values
@@ -59,7 +60,7 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.0005)
+clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.005, class_weight={'No':10})
 clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
@@ -81,15 +82,20 @@ graph.write_pdf("iris.pdf")
 
 '''Performance
 Accuracy = Number of correct predictions / Total Number of predictions
-F1-Score = TP / (TP + 0.5*(FP + FN))  oppure F1 = 2 * (precision * recall) / (precision + recall)
-best value at 1 and worst score at 0
+F1-Score = TP / (TP + 0.5*(FP + FN)) or the same with TN oppure F1 = 2 * (precision * recall) / (precision + recall) : best value at 1 and worst score at 0
 '''
 
-print('Train Accuracy %s' % accuracy_score(y_train, y_pred_tr))
+print('Train Accuracy %s' % accuracy_score(y_train, y_pred_tr)) # Accuratezza basata sul training set (Indica quanto il modello ha imparato bene dal training set)
 print('Train F1-score %s' % f1_score(y_train, y_pred_tr, average=None))
 
-print('Test Accuracy %s' % accuracy_score(y_test, y_pred))
+print('Test Accuracy %s' % accuracy_score(y_test, y_pred)) # Accuratezza sul test set
 print('Test F1-score %s' % f1_score(y_test, y_pred, average=None))
-# print(classification_report(y_test, y_pred))
 
-print(confusion_matrix(y_test, y_pred))
+print('                   Classification Report for Test \n ', classification_report(y_test, y_pred))
+
+print('                   Classification Report for Train \n ', classification_report(y_train, y_pred_tr))
+
+print(' Confusion Matrix Test \n', confusion_matrix(y_test, y_pred))
+
+print(' Confusion Matrix Train \n', confusion_matrix(y_train, y_pred_tr))
+
