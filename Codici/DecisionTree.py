@@ -13,10 +13,6 @@ import pydotplus
 from sklearn import tree
 from IPython.display import Image
 
-# import os
-# os.environ['PATH'] += os.pathsep + 'C:/Users/raffy/Anaconda3/Library/bin/graphviz'
-# import os
-# os.environ['PATH'] += os.pathsep + 'C:/Users/raffy/.conda/pkgs/graphviz-2.38-hfd603c8_2/Library/bin/graphviz'
 
 '''The objective is to classify the records based on the Attrition. In other words, Attrition will be our class 
 target y while all the other attributes will be the vector x'''
@@ -25,6 +21,11 @@ target y while all the other attributes will be the vector x'''
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv')
 df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv')
 categorical = df.select_dtypes(exclude = 'number')
+
+# == If ceck ==============================================================================================================
+impurity_decrese_if = True
+max_depth_if = True
+# ======================================================================================================================
 
 '''Before everything we must preprocess the data. We need to convert string attributes into some numerical attributes
 in order to make the algorithm works. For the features variable (X matrix) we must use OneHotEncoder that returns a 
@@ -61,27 +62,75 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.0005, class_weight={'Yes':10}) # Class weight set the weight of the classes during the splitting procedure
+clf = DecisionTreeClassifier(criterion='entropy', max_depth = 6, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.002, class_weight={'Yes':2}) # Class weight set the weight of the classes during the splitting procedure
 clf.fit(X_train, y_train)
+x=clf.tree_
+print(f' numero di nodi: {x.node_count}')
 
 y_pred = clf.predict(X_test)
 y_pred_tr = clf.predict(X_train)
 
+dot_data = tree.export_graphviz(clf, out_file=None, feature_names=attributes, class_names=clf.classes_, filled=True, rounded=True, special_characters=True, impurity=True)  
+graph = pydotplus.graph_from_dot_data(dot_data)
+Image(graph.create_png())
+graph.write_pdf("iris_entropy11.pdf")
+
 # ========== Overfitting and Underfitting ==============
-ER_train = []
-ER_test = []
-for depth in range(1,50):
-    clf = DecisionTreeClassifier(criterion='gini', max_depth = depth, min_samples_split = 2, min_samples_leaf = 1)
-    clf.fit(X_train, y_train)
-    tmp_test = (confusion_matrix(y_test, y_pred)[0][1] + confusion_matrix(y_test, y_pred)[1][0]) / (np.sum(confusion_matrix(y_test, y_pred))) 
-    tmp_train = (confusion_matrix(y_train, y_pred_tr)[0][1] + confusion_matrix(y_train, y_pred_tr)[1][0]) / (np.sum(confusion_matrix(y_train, y_pred_tr)))
-    ER_train.append(tmp_train)
-    ER_test.append(tmp_test)
-plt.figure()
-plt.plot(np.arange(1,50), ER_train, label = 'Error Rate Train')
-plt.plot(np.arange(1,50), ER_test, label = 'Error Rate Test')
-plt.legend()
-plt.grid(True)
+if impurity_decrese_if:
+    ER_train = list()
+    ER_test = list()
+    nodes_list = list()
+    for impurity in np.linspace(0.0,0.08,150):
+        clf = DecisionTreeClassifier(criterion='entropy', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=impurity, class_weight={'Yes': 3})
+        clf.fit(X_train, y_train)
+
+        nodes=clf.tree_.node_count
+        
+
+        y_pred = clf.predict(X_test)
+        y_pred_tr = clf.predict(X_train)
+
+        tmp_test = (confusion_matrix(y_test, y_pred)[0][1] + confusion_matrix(y_test, y_pred)[1][0]) / (np.sum(confusion_matrix(y_test, y_pred))) 
+        tmp_train = (confusion_matrix(y_train, y_pred_tr)[0][1] + confusion_matrix(y_train, y_pred_tr)[1][0]) / (np.sum(confusion_matrix(y_train, y_pred_tr)))
+        print(impurity,nodes)
+        ER_train.append(tmp_train)
+        ER_test.append(tmp_test)
+        nodes_list.append(nodes)
+
+    plt.figure('Impurity decrese Overfitting')
+    plt.plot(nodes_list, ER_train, label = 'Error Rate Train')
+    plt.plot(nodes_list, ER_test, label = 'Error Rate Test')
+    plt.legend()
+    plt.grid(True)
+
+if max_depth_if:
+    ER_train = list()
+    ER_test = list()
+    nodes_list = list()
+
+    max_val_depth=50
+    for depth in range(1, max_val_depth):
+        clf = DecisionTreeClassifier(criterion='entropy', max_depth = depth, min_samples_split = 2, min_samples_leaf = 1, class_weight={'Yes': 3})
+        clf.fit(X_train, y_train)
+
+        nodes=clf.tree_.node_count
+        
+        y_pred = clf.predict(X_test)
+        y_pred_tr = clf.predict(X_train)
+
+        tmp_test = (confusion_matrix(y_test, y_pred)[0][1] + confusion_matrix(y_test, y_pred)[1][0]) / (np.sum(confusion_matrix(y_test, y_pred))) 
+        tmp_train = (confusion_matrix(y_train, y_pred_tr)[0][1] + confusion_matrix(y_train, y_pred_tr)[1][0]) / (np.sum(confusion_matrix(y_train, y_pred_tr)))
+        print(depth,nodes)
+        ER_train.append(tmp_train)
+        ER_test.append(tmp_test)
+        nodes_list.append(nodes)
+
+    plt.figure('Max depth Overfitting')
+    plt.plot(nodes_list, ER_train, label = 'Error Rate Train')
+    plt.plot(nodes_list, ER_test, label = 'Error Rate Test')
+    plt.legend()
+    plt.grid(True)
+    
 plt.show()
 
 '''In scikit-learn, we implement the importance as described in
@@ -93,10 +142,7 @@ or “mean decrease impurity” and is defined as the total decrease in node imp
 # for col, imp in zip(attributes, clf.feature_importances_):
 #     print(col, imp)
 
-dot_data = tree.export_graphviz(clf, out_file=None, feature_names=attributes, class_names=clf.classes_, filled=True, rounded=True, special_characters=True, impurity=True)  
-graph = pydotplus.graph_from_dot_data(dot_data)
-Image(graph.create_png())
-graph.write_pdf("iris.pdf")
+
 
 '''Performance
 Accuracy = Number of correct predictions / Total Number of predictions

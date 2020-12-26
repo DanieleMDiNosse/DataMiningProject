@@ -16,13 +16,13 @@ import matplotlib.pyplot as plt
 
 #== PARAMETERS ===============================================================================
 num_records=899         #numer of records for each attributes (see random_attributes)
-validation_times = 10    #numer of random data frame (see ciclo for)
+validation_times = 1000000    #numer of random data frame (see ciclo for)
 #============================================================================================
 
 
 #== IF CHECK =================================================================================
-kmean_validation = True
-db_scan = False
+kmean_validation = False
+db_scan = True
 hierarchical_validation = False
 
 # ===========================================================================================
@@ -89,7 +89,7 @@ if kmean_validation:
 
     ist_sse=np.array(ist_sse)
     sil_list=np.array(sil_list)
-    with open("validation_kmeans_2.txt",'w', encoding='utf-8') as f:
+    with open("validation_kmeans_3.txt",'w', encoding='utf-8') as f:
         f.write(f'DATA FRAME\n')
         f.write(f'{df.head()}\n')
         f.write(f'\n')
@@ -128,21 +128,29 @@ if db_scan:
         YearsInCurrentRole = random_attributes('YearsInCurrentRole', 0.0, 4.2426)
         Age = random_attributes('Age', 18, 60, integer=True)
 
-        df = random_dataframe([PercentSalaryHike,FractionYearsAtCompany,YearsInCurrentRole,RateIncome])
+        df = random_dataframe([PercentSalaryHike,FractionYearsAtCompany,YearsInCurrentRole,RateIncome,NumCompaniesWorked])
 
         scaler = MinMaxScaler()
         X = scaler.fit_transform(df)
 
         dist = pdist(X, 'euclidean') #pair wise distance
         dist = squareform(dist) #distance matrix given the vector dist
-        k = 7
+        k = 8
         kth_distances = list()
         for d in dist:
             index_kth_distance = np.argsort(d)[k]
             kth_distances.append(d[index_kth_distance])
 
+        vall=np.mean(sorted(kth_distances)[760:820])
+
+        # plt.plot(range(0, len(kth_distances)), sorted(kth_distances))
+        # plt.ylabel('dist from %sth neighbor' %k)
+        # plt.xlabel('sorted distances')
+        # plt.grid(True)
+        # plt.axhline(y=vall)
+        # plt.show()
         
-        vall=np.mean(sorted(kth_distances)[770:820])
+        
 
         dbscan = DBSCAN(eps = vall, min_samples=10, algorithm='ball_tree', metric='euclidean', leaf_size=100).fit(X)
         count=np.unique(dbscan.labels_, return_counts=True)
@@ -153,7 +161,7 @@ if db_scan:
             print(f'{time+1}) 1 cluster')
 
     sil_list=np.array(sil_list)
-    with open("validation_dbscan_1.txt",'w', encoding='utf-8') as f:
+    with open("validation_dbscan_2.txt",'w', encoding='utf-8') as f:
         f.write(f'DATA FRAME\n')
         f.write(f'{df.columns}\n')
         f.write(f'\n')
@@ -169,7 +177,7 @@ if db_scan:
 
     plt.hist(sil_list, bins=int((np.log2(num_records)+1)), edgecolor='k')
     plt.xlabel('Silhouette')
-    plt.axvline(x=0.26)
+    plt.axvline(x=0.12)
     plt.show()
         
 
