@@ -21,8 +21,9 @@ from IPython.display import Image
 '''The objective is to classify the records based on the Attrition. In other words, Attrition will be our class 
 target y while all the other attributes will be the vector x'''
 
-df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv')
-# df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome.csv',index_col = 0)
+# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv') 
+# df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv')
+df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv')
 categorical = df.select_dtypes(exclude = 'number')
 
 '''Before everything we must preprocess the data. We need to convert string attributes into some numerical attributes
@@ -60,11 +61,28 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.005, class_weight={'Yes':20}) # Class weight set the weight of the classes during the splitting procedure
+clf = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease = 0.0005, class_weight={'Yes':10}) # Class weight set the weight of the classes during the splitting procedure
 clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
 y_pred_tr = clf.predict(X_train)
+
+# ========== Overfitting and Underfitting ==============
+ER_train = []
+ER_test = []
+for depth in range(1,50):
+    clf = DecisionTreeClassifier(criterion='gini', max_depth = depth, min_samples_split = 2, min_samples_leaf = 1)
+    clf.fit(X_train, y_train)
+    tmp_test = (confusion_matrix(y_test, y_pred)[0][1] + confusion_matrix(y_test, y_pred)[1][0]) / (np.sum(confusion_matrix(y_test, y_pred))) 
+    tmp_train = (confusion_matrix(y_train, y_pred_tr)[0][1] + confusion_matrix(y_train, y_pred_tr)[1][0]) / (np.sum(confusion_matrix(y_train, y_pred_tr)))
+    ER_train.append(tmp_train)
+    ER_test.append(tmp_test)
+plt.figure()
+plt.plot(np.arange(1,50), ER_train, label = 'Error Rate Train')
+plt.plot(np.arange(1,50), ER_test, label = 'Error Rate Test')
+plt.legend()
+plt.grid(True)
+plt.show()
 
 '''In scikit-learn, we implement the importance as described in
 (often cited, but unfortunately rarely read…). It is sometimes called “gini importance” 
@@ -82,6 +100,7 @@ graph.write_pdf("iris.pdf")
 
 '''Performance
 Accuracy = Number of correct predictions / Total Number of predictions
+Error Rate = Number of wrong predictions / Total Number of predictions
 F1-Score = TP / (TP + 0.5*(FP + FN)) or the same with TN oppure F1 = 2 * (precision * recall) / (precision + recall) : best value at 1 and worst score at 0
 '''
 
@@ -92,6 +111,7 @@ print('Test Accuracy %s' % accuracy_score(y_test, y_pred)) # Accuratezza sul tes
 print('Test F1-score %s' % f1_score(y_test, y_pred, average=None))
 
 print('                   Classification Report for Test \n ', classification_report(y_test, y_pred))
+
 
 print('                   Classification Report for Train \n ', classification_report(y_train, y_pred_tr))
 
@@ -115,21 +135,21 @@ for i,val in enumerate(y_pred):
 # queste probabilità ed usare queste al posto di y_pred. Il modulo predict_proba 
 # restituisce la probabilità predetta per la classe di ogni istanza. Tale probabilità
 # è la frazione dei valori degli attributi aventi la stessa classe in un leaf node
-predictions = clf.predict_proba(X_test, check_input = True)
-fpr, tpr, thresholds = roc_curve(y_test, predictions[:,1], pos_label = 'Yes')
-# fpr, tpr, thresholds = roc_curve(y_test, y_pred, pos_label = 'Yes')
-roc_auc = auc(fpr, tpr)
-print(roc_auc)
+# predictions = clf.predict_proba(X_test, check_input = True)
+# fpr, tpr, thresholds = roc_curve(y_test, predictions[:,1], pos_label = 'Yes')
+# # fpr, tpr, thresholds = roc_curve(y_test, y_pred, pos_label = 'Yes')
+# roc_auc = auc(fpr, tpr)
+# print(roc_auc)
 
-roc_auc = roc_auc_score(y_test, predictions[:,1], average=None)
-# roc_auc = roc_auc_score(y_test, y_pred, average=None)
-print(roc_auc)
+# roc_auc = roc_auc_score(y_test, predictions[:,1], average=None)
+# # roc_auc = roc_auc_score(y_test, y_pred, average=None)
+# print(roc_auc)
 
-plt.figure()
-plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % (roc_auc))
-plt.plot([0, 1], [0, 1], 'k--')
+# plt.figure()
+# plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % (roc_auc))
+# plt.plot([0, 1], [0, 1], 'k--')
 
-plt.xlabel('False Positive Rate',)
-plt.ylabel('True Positive Rate')
-plt.legend(loc="lower right", fontsize=14, frameon=False)
-plt.show()
+# plt.xlabel('False Positive Rate',)
+# plt.ylabel('True Positive Rate')
+# plt.legend(loc="lower right", fontsize=14, frameon=False)
+# plt.show()
