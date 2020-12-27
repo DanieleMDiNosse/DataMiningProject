@@ -8,6 +8,10 @@ from sklearn.metrics import roc_curve, auc, roc_auc_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 import pydotplus
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import classification_report
 
 import pydotplus
 from sklearn import tree
@@ -27,6 +31,7 @@ categorical = df.select_dtypes(exclude = 'number')
 impurity_decrese_if = False
 max_depth_if = False
 roc_curve_if = False
+cross_validation_if = True
 # ===========================================================================================================================
 
 # == PREPROCESSING OF DATA - COVERTS INTO NUMERICAL =========================================================================
@@ -60,6 +65,7 @@ X = df[attributes].values
 y = df['Attrition'] # Target class
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 100, stratify = y)
+
 # ==========================================================================================================================
 
 # == BUILD DECISION TREE ===================================================================================================
@@ -120,7 +126,7 @@ print('')
 print(' Confusion Matrix Train \n', confusion_matrix(y_train, y_pred_tr))
 print('_________________________________________________________________')
 
-# == OVERFITTINFìG AND UNDERFITTING  ===============================================================================================================================
+# == OVERFITTINFIG AND UNDERFITTING  ===============================================================================================================================
 if impurity_decrese_if:
     ER_train = list()
     ER_test = list()
@@ -177,41 +183,43 @@ if max_depth_if:
     plt.grid(True)
     
 plt.show()
-# ==========================================================================================================================
+# =================================================================================================================================================
 
+# CROSS - VAIDATION ============================================================================================================================================
+if cross_validation_if:
+    tuned_parameters = [{'max_depth': list(range(4,50)), 'min_samples_split': list(range(4,50)), 'min_samples_leaf': list(range(1,47)), 'min_impurity_decrease': list(np.linspace(0.0,0.08,46)), 'class_weight':[{'Yes': i} for i in range(1,47)]}]
 
-# '''In scikit-learn, we implement the importance as described in
-# (often cited, but unfortunately rarely read…). It is sometimes called “gini importance” 
-# or “mean decrease impurity” and is defined as the total decrease in node impurity 
-# (weighted by the probability of reaching that node (which is approximated by the proportion of samples
-#  reaching that node)) averaged over all trees of the ensemble.'''
+    scores = ['precision', 'recall']
 
-# # for col, imp in zip(attributes, clf.feature_importances_):
-# #     print(col, imp)
+    for score in scores:
+        print("# Tuning hyper-parameters for %s" % score)
+        print()
 
+        clf = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, scoring='%s_macro' % score, cv=5)
+        clf.fit(X_train, y_train)
 
+        print("Best parameters set found on development set:")
+        print()
+        print(clf.best_params_)
+        print()
+        print("Grid scores on development set:")
+        print()
 
-# '''Performance
-# Accuracy = Number of correct predictions / Total Number of predictions
-# Error Rate = Number of wrong predictions / Total Number of predictions
-# F1-Score = TP / (TP + 0.5*(FP + FN)) or the same with TN oppure F1 = 2 * (precision * recall) / (precision + recall) : best value at 1 and worst score at 0
-# '''
+        means = clf.cv_results_['mean_test_score']
+        stds = clf.cv_results_['std_test_score']
+        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
 
-# print('Train Accuracy %s' % accuracy_score(y_train, y_pred_tr)) # Accuratezza basata sul training set (Indica quanto il modello ha imparato bene dal training set)
-# print('Train F1-score %s' % f1_score(y_train, y_pred_tr, average=None))
+        print("Detailed classification report:")
+        print()
+        print("The model is trained on the full development set.")
+        print("The scores are computed on the full evaluation set.")
+        print()
+        y_true, y_pred = y_test, clf.predict(X_test)
+        print(classification_report(y_true, y_pred))
+        print()
 
-# print('Test Accuracy %s' % accuracy_score(y_test, y_pred)) # Accuratezza sul test set
-# print('Test F1-score %s' % f1_score(y_test, y_pred, average=None))
-
-# print('                   Classification Report for Test \n ', classification_report(y_test, y_pred))
-
-
-# print('                   Classification Report for Train \n ', classification_report(y_train, y_pred_tr))
-
-# print(' Confusion Matrix Test \n', confusion_matrix(y_test, y_pred))
-
-# print(' Confusion Matrix Train \n', confusion_matrix(y_train, y_pred_tr))
-
+# ======================================================================================================================================================
 
 # == ROC CURVE =====================================================================================================================================
 '''Compute the ROC (Receiver Operating Characteristic) curve. ROC curve rapresents in a
