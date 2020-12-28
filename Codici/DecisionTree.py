@@ -75,7 +75,13 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 6, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':3}) # Class weight set the weight of the classes during the splitting procedure
+# clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 7, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':2})  #c=4 recall
+# clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':3}) #c=5 recall
+# clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2}) #c=4 precision
+# clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3}) #c=5 recall raff
+
+
+clf = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3})  # Class weight set the weight of the classes during the splitting procedure
 clf.fit(X_train, y_train)
 print('')
 print( 'BASIC DESCRIPTION\n')
@@ -90,7 +96,7 @@ y_pred_tr = clf.predict(X_train)
 dot_data = tree.export_graphviz(clf, out_file=None, feature_names=attributes, class_names=clf.classes_, filled=True, rounded=True, special_characters=True, impurity=True)  
 graph = pydotplus.graph_from_dot_data(dot_data)
 Image(graph.create_png())
-graph.write_pdf("Attriction_tree.pdf")
+graph.write_pdf("Modello_4.pdf")
 
 '''In scikit-learn, we implement the importance as described in
 (often cited, but unfortunately rarely read…). It is sometimes called “gini importance” 
@@ -232,25 +238,43 @@ the model assigns the class labels. FPR on x axis and TPR on y axis. To compute 
 you need the probabilities of the class label predictions of the various istances, sort these
 and then draw a point in the (FPR,TPR)-plane for different thresholds.'''
 if roc_curve_if:
-    print(X_train.shape, y_train.shape)
-    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
-    print(XX_train.shape, XX_val.shape)
+    clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 7, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':2})  #c=4 recall
+    clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':3}) #c=5 recall
+    clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2}) #c=4 precision
+    clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3}) #c=5 recall raff
+
+    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.4, random_state = 100, stratify = y_train)
+    
+    clf.fit(XX_train, yy_train)
+    clf1.fit(XX_train, yy_train)
+    clf2.fit(XX_train, yy_train)
+    clf3.fit(XX_train, yy_train)
+
     # In ogni caso, dalla procedura per costruire la ROC curve, mi sembra di dover calcolare
     # queste probabilità ed usare queste al posto di y_pred. Il modulo predict_proba 
     # restituisce la probabilità predetta per la classe di ogni istanza. Tale probabilità
     # è la frazione dei valori degli attributi aventi la stessa classe in un leaf node
-    predictions = clf.predict_proba(X_test, check_input = True)
-    fpr, tpr, thresholds = roc_curve(y_test, predictions[:,1], pos_label = 'Yes')
-    # fpr, tpr, thresholds = roc_curve(y_test, y_pred, pos_label = 'Yes')
-    roc_auc = auc(fpr, tpr)
-    print(roc_auc)
+    predictions = clf.predict_proba(XX_val, check_input = True)
+    predictions1 = clf1.predict_proba(XX_val, check_input = True)
+    predictions2 = clf2.predict_proba(XX_val, check_input = True)
+    predictions3 = clf3.predict_proba(XX_val, check_input = True)
 
-    roc_auc = roc_auc_score(y_test, predictions[:,1], average=None)
-    # roc_auc = roc_auc_score(y_test, y_pred, average=None)
-    print(roc_auc)
+    fpr, tpr, thresholds = roc_curve(yy_val, predictions[:,1], pos_label = 'Yes')
+    fpr1, tpr1, thresholds1 = roc_curve(yy_val, predictions1[:,1], pos_label = 'Yes')
+    fpr2, tpr2, thresholds2 = roc_curve(yy_val, predictions2[:,1], pos_label = 'Yes')
+    fpr3, tpr3, thresholds3 = roc_curve(yy_val, predictions3[:,1], pos_label = 'Yes')
+    
+    roc_auc = roc_auc_score(yy_val, predictions[:,1], average=None)
+    roc_auc1 = roc_auc_score(yy_val, predictions1[:,1], average=None)
+    roc_auc2 = roc_auc_score(yy_val, predictions2[:,1], average=None)
+    roc_auc3 = roc_auc_score(yy_val, predictions3[:,1], average=None)
+    print(roc_auc, roc_auc1, roc_auc2, roc_auc3)
 
-    plt.figure()
-    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % (roc_auc))
+    plt.figure('ROC CURVE')
+    plt.plot(fpr, tpr, label='Modello 1 (area = %0.2f)' % (roc_auc))
+    plt.plot(fpr1, tpr1, label='Modello 2 (area = %0.2f)' % (roc_auc1))
+    plt.plot(fpr2, tpr2, label='Modello 3  (area = %0.2f)' % (roc_auc2))
+    plt.plot(fpr3, tpr3, label='Modello 4  (area = %0.2f)' % (roc_auc3))
     plt.plot([0, 1], [0, 1], 'k--')
 
     plt.xlabel('False Positive Rate',)
