@@ -1,0 +1,20 @@
+# Tuning hyper-parameters for precision
+
+{'class_weight': {'Yes': 2}, 'max_depth': 4, 'min_impurity_decrease': 0.02, 'min_samples_leaf': 1, 'min_samples_split': 4}
+
+Grid scores on development set:
+
+Detailed classification report:
+
+The model is trained on the full development set.
+The scores are computed on the full evaluation set.
+
+              precision    recall  f1-score   support
+
+          No       0.86      0.93      0.89       297
+         Yes       0.42      0.25      0.32        59
+
+    accuracy                           0.82       356
+   macro avg       0.64      0.59      0.61       356
+weighted avg       0.79      0.82      0.80       356
+

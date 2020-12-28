@@ -1,0 +1,21 @@
+# Tuning hyper-parameters for recall
+
+Best parameters set found on development set:
+
+{'class_weight': {'Yes': 2}, 'max_depth': 4, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 2, 'min_samples_split': 7}
+
+Grid scores on development set:
+
+Detailed classification report:
+
+The model is trained on the full development set.
+The scores are computed on the full evaluation set.
+
+              precision    recall  f1-score   support
+
+          No       0.88      0.91      0.89       297
+         Yes       0.44      0.37      0.40        59
+
+    accuracy                           0.82       356
+   macro avg       0.66      0.64      0.65       356
+weighted avg       0.81      0.82      0.81       356
