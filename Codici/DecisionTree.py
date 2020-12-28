@@ -30,8 +30,8 @@ categorical = df.select_dtypes(exclude = 'number')
 # == IF CKECKS ==============================================================================================================
 impurity_decrese_if = False
 max_depth_if = False
-roc_curve_if = False
-cross_validation_if = True
+roc_curve_if = True
+cross_validation_if = False
 # ===========================================================================================================================
 
 # == PREPROCESSING OF DATA - COVERTS INTO NUMERICAL =========================================================================
@@ -75,7 +75,7 @@ is the minimun number of samples required to consider a node a leaf node. There'
 min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
 is less that the number set'''
 
-clf = DecisionTreeClassifier(criterion='entropy', max_depth = 6, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.002, class_weight={'Yes':2}) # Class weight set the weight of the classes during the splitting procedure
+clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 6, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':3}) # Class weight set the weight of the classes during the splitting procedure
 clf.fit(X_train, y_train)
 print('')
 print( 'BASIC DESCRIPTION\n')
@@ -132,7 +132,7 @@ if impurity_decrese_if:
     ER_test = list()
     nodes_list = list()
     for impurity in np.linspace(0.0,0.08,150):
-        clf = DecisionTreeClassifier(criterion='entropy', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=impurity, class_weight={'Yes': 3})
+        clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=impurity, class_weight={'Yes': 3})
         clf.fit(X_train, y_train)
 
         nodes=clf.tree_.node_count
@@ -161,7 +161,7 @@ if max_depth_if:
 
     max_val_depth=50
     for depth in range(1, max_val_depth):
-        clf = DecisionTreeClassifier(criterion='entropy', max_depth = depth, min_samples_split = 2, min_samples_leaf = 1, class_weight={'Yes': 3})
+        clf = DecisionTreeClassifier(criterion='gini', max_depth = depth, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes': 2})
         clf.fit(X_train, y_train)
 
         nodes=clf.tree_.node_count
@@ -187,15 +187,16 @@ plt.show()
 
 # CROSS - VAIDATION ============================================================================================================================================
 if cross_validation_if:
-    tuned_parameters = [{'max_depth': list(range(4,50)), 'min_samples_split': list(range(4,50)), 'min_samples_leaf': list(range(1,47)), 'min_impurity_decrease': list(np.linspace(0.0,0.08,46)), 'class_weight':[{'Yes': i} for i in range(1,47)]}]
+    tuned_parameters = [{'max_depth': list(range(4,8)), 'min_samples_split': list(range(4,8)), 'min_samples_leaf': list(range(1,5)), 'min_impurity_decrease': list(np.linspace(0.0,0.08,5)), 'class_weight':[{'Yes': i} for i in range(1,5)]}]
 
     scores = ['precision', 'recall']
 
+    best_par_list=list()
     for score in scores:
         print("# Tuning hyper-parameters for %s" % score)
         print()
 
-        clf = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, scoring='%s_macro' % score, cv=5)
+        clf = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, scoring='%s_macro' % score, cv=4)
         clf.fit(X_train, y_train)
 
         print("Best parameters set found on development set:")
@@ -207,8 +208,8 @@ if cross_validation_if:
 
         means = clf.cv_results_['mean_test_score']
         stds = clf.cv_results_['std_test_score']
-        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-            print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+        # for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+        #     print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
 
         print("Detailed classification report:")
         print()
@@ -218,6 +219,9 @@ if cross_validation_if:
         y_true, y_pred = y_test, clf.predict(X_test)
         print(classification_report(y_true, y_pred))
         print()
+        best_par_list.append(clf.best_params_)
+
+    print(best_par_list)
 
 # ======================================================================================================================================================
 
@@ -228,32 +232,29 @@ the model assigns the class labels. FPR on x axis and TPR on y axis. To compute 
 you need the probabilities of the class label predictions of the various istances, sort these
 and then draw a point in the (FPR,TPR)-plane for different thresholds.'''
 if roc_curve_if:
-    # Seguendo il codice Titanic, se non converto in valori binari y_pred mi da errore
-    for i,val in enumerate(y_pred):
-        if val == 'Yes':
-            y_pred[i] = 0
-        else:
-            y_pred[i] = 1
+    print(X_train.shape, y_train.shape)
+    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
+    print(XX_train.shape, XX_val.shape)
     # In ogni caso, dalla procedura per costruire la ROC curve, mi sembra di dover calcolare
     # queste probabilità ed usare queste al posto di y_pred. Il modulo predict_proba 
     # restituisce la probabilità predetta per la classe di ogni istanza. Tale probabilità
     # è la frazione dei valori degli attributi aventi la stessa classe in un leaf node
-    # predictions = clf.predict_proba(X_test, check_input = True)
-    # fpr, tpr, thresholds = roc_curve(y_test, predictions[:,1], pos_label = 'Yes')
-    # # fpr, tpr, thresholds = roc_curve(y_test, y_pred, pos_label = 'Yes')
-    # roc_auc = auc(fpr, tpr)
-    # print(roc_auc)
+    predictions = clf.predict_proba(X_test, check_input = True)
+    fpr, tpr, thresholds = roc_curve(y_test, predictions[:,1], pos_label = 'Yes')
+    # fpr, tpr, thresholds = roc_curve(y_test, y_pred, pos_label = 'Yes')
+    roc_auc = auc(fpr, tpr)
+    print(roc_auc)
 
-    # roc_auc = roc_auc_score(y_test, predictions[:,1], average=None)
-    # # roc_auc = roc_auc_score(y_test, y_pred, average=None)
-    # print(roc_auc)
+    roc_auc = roc_auc_score(y_test, predictions[:,1], average=None)
+    # roc_auc = roc_auc_score(y_test, y_pred, average=None)
+    print(roc_auc)
 
-    # plt.figure()
-    # plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % (roc_auc))
-    # plt.plot([0, 1], [0, 1], 'k--')
+    plt.figure()
+    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % (roc_auc))
+    plt.plot([0, 1], [0, 1], 'k--')
 
-    # plt.xlabel('False Positive Rate',)
-    # plt.ylabel('True Positive Rate')
-    # plt.legend(loc="lower right", fontsize=14, frameon=False)
-    # plt.show()
+    plt.xlabel('False Positive Rate',)
+    plt.ylabel('True Positive Rate')
+    plt.legend(loc="lower right", fontsize=14, frameon=False)
+    plt.show()
 # ==================================================================================================================================================
