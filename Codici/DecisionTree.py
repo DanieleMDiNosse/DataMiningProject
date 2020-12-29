@@ -12,18 +12,19 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
-
+import time
 import pydotplus
 from sklearn import tree
 from IPython.display import Image
 
-
+start = time.time()
 '''The objective is to classify the records based on the Attrition. In other words, Attrition will be our class 
 target y while all the other attributes will be the vector x'''
 
-# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0) 
+df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
-df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
+# df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
+
 
 categorical = df.select_dtypes(exclude = 'number')
 
@@ -50,7 +51,11 @@ has a small number of possibile values, like Gender'''
 
 df.replace({'Gender':{'Female' : 0., 'Male' : 1.}}, inplace = True)
 df.replace({'OverTime':{'No' : 0., 'Yes' : 1.}}, inplace = True)
-# df.replace({'Attrition':{'No' : 0., 'Yes' : 1.}}, inplace = True)
+df.replace({'EnvironmentSatisfaction':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
+df.replace({'WorkLifeBalance':{'Bad': 0, 'Good': 0, 'Better': 1, 'Best': 1}}, inplace = True)
+df.replace({'JobInvolvement':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
+df.replace({'MaritalStatus':{'Single':0, 'Married': 1, 'Divorced': 0}}, inplace = True)
+
 numeric = df.select_dtypes('number')
 # ==========================================================================================================================
 
@@ -81,7 +86,7 @@ is less that the number set'''
 # clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3}) #c=5 recall raff
 
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2})  # Class weight set the weight of the classes during the splitting procedure
+clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2}) #c=4 precision
 clf.fit(X_train, y_train)
 print('')
 print( 'BASIC DESCRIPTION\n')
@@ -96,7 +101,7 @@ y_pred_tr = clf.predict(X_train)
 dot_data = tree.export_graphviz(clf, out_file=None, feature_names=attributes, class_names=clf.classes_, filled=True, rounded=True, special_characters=True, impurity=True)  
 graph = pydotplus.graph_from_dot_data(dot_data)
 Image(graph.create_png())
-graph.write_pdf("Modello_4.pdf")
+graph.write_pdf("Modello_4_raff1.pdf")
 
 '''In scikit-learn, we implement the importance as described in
 (often cited, but unfortunately rarely read…). It is sometimes called “gini importance” 
@@ -130,6 +135,16 @@ print('                   Classification Report for Train \n ', classification_r
 print(' Confusion Matrix Test \n', confusion_matrix(y_test, y_pred))
 print('')
 print(' Confusion Matrix Train \n', confusion_matrix(y_train, y_pred_tr))
+
+print('-----------------------------------------------------')
+N = len(X_test)
+acc = accuracy_score(y_test, y_pred)
+Z_a = {'99%':2.58, '98%':2.33, '95%':1.96, '90%':1.65, '80%':1.28, '70%':1.04, '50%':0.67}
+confidence_interval_low = (2*N*acc + Z_a['95%']**2 - Z_a['95%']*np.sqrt(Z_a['95%']**2 + 4*N*acc - 4*N*acc**2))/(2*(N + Z_a['95%']**2))
+confidence_interval_high = (2*N*acc + Z_a['95%']**2 + Z_a['95%']*np.sqrt(Z_a['95%']**2 + 4*N*acc - 4*N*acc**2))/(2*(N + Z_a['95%']**2))
+print('Confidence Interval: %.2f -- %.2f' %(confidence_interval_low, confidence_interval_high), '\nwhile accuracy is %.2f, so' %acc)
+if (acc > confidence_interval_low) and (acc < confidence_interval_high):
+    print('the empirical accuracy is statistically acceptable')
 print('_________________________________________________________________')
 
 # == OVERFITTINFIG AND UNDERFITTING  ===============================================================================================================================
@@ -137,8 +152,8 @@ if impurity_decrese_if:
     ER_train = list()
     ER_test = list()
     nodes_list = list()
-    for impurity in np.linspace(0.0,0.08,150):
-        clf = DecisionTreeClassifier(criterion='gini', max_depth = None, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=impurity, class_weight={'Yes': 3})
+    for depth in range(1,50):
+        clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 3, min_samples_leaf = 1, min_impurity_decrease=0.01, class_weight={'Yes':1.78, 'No':0.38}) #c=5 recall raff
         clf.fit(X_train, y_train)
 
         nodes=clf.tree_.node_count
@@ -149,7 +164,7 @@ if impurity_decrese_if:
 
         tmp_test = (confusion_matrix(y_test, y_pred)[0][1] + confusion_matrix(y_test, y_pred)[1][0]) / (np.sum(confusion_matrix(y_test, y_pred))) 
         tmp_train = (confusion_matrix(y_train, y_pred_tr)[0][1] + confusion_matrix(y_train, y_pred_tr)[1][0]) / (np.sum(confusion_matrix(y_train, y_pred_tr)))
-        print(impurity,nodes)
+        print(nodes,nodes)
         ER_train.append(tmp_train)
         ER_test.append(tmp_test)
         nodes_list.append(nodes)
@@ -193,7 +208,7 @@ plt.show()
 
 # CROSS - VAIDATION ============================================================================================================================================
 if cross_validation_if:
-    tuned_parameters = [{'max_depth': list(range(4,8)), 'min_samples_split': list(range(3,6)), 'min_samples_leaf': list(range(1,4)), 'min_impurity_decrease': list(np.linspace(0.0,0.04,5)), 'class_weight':[{'Yes': i} for i in range(1,5)], 'ccp_alpha':list(np.linspace(0.0,1,10))}]
+    tuned_parameters = [{'max_depth': list(range(4,11)), 'min_samples_split': list(range(3,10)), 'min_samples_leaf': list(range(1,8)), 'min_impurity_decrease': list(np.linspace(0.0,0.07,7)), 'class_weight':[{'Yes': i, 'No': j} for i,j in zip(np.linspace(1.5,3.5,7), np.linspace(0.2,1.5,7))]}]
 
     scores = ['precision', 'recall']
 
@@ -202,7 +217,7 @@ if cross_validation_if:
         print("# Tuning hyper-parameters for %s" % score)
         print()
 
-        clf = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, scoring='%s_macro' % score, cv=4)
+        clf = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, scoring='%s_macro' % score, cv=3)
         clf.fit(X_train, y_train)
 
         print("Best parameters set found on development set:")
@@ -282,3 +297,7 @@ if roc_curve_if:
     plt.legend(loc="lower right", fontsize=14, frameon=False)
     plt.show()
 # ==================================================================================================================================================
+
+end = time.time()
+elaps = (end-start)/60
+print('Elapsed time: %.2f minutes' %elaps)
