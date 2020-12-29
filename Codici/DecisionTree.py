@@ -30,7 +30,7 @@ categorical = df.select_dtypes(exclude = 'number')
 # == IF CKECKS ==============================================================================================================
 impurity_decrese_if = False
 max_depth_if = False
-roc_curve_if = True
+roc_curve_if = False
 cross_validation_if = False
 # ===========================================================================================================================
 
@@ -81,7 +81,7 @@ is less that the number set'''
 # clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3}) #c=5 recall raff
 
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3})  # Class weight set the weight of the classes during the splitting procedure
+clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2})  # Class weight set the weight of the classes during the splitting procedure
 clf.fit(X_train, y_train)
 print('')
 print( 'BASIC DESCRIPTION\n')
@@ -193,7 +193,7 @@ plt.show()
 
 # CROSS - VAIDATION ============================================================================================================================================
 if cross_validation_if:
-    tuned_parameters = [{'max_depth': list(range(4,8)), 'min_samples_split': list(range(4,8)), 'min_samples_leaf': list(range(1,5)), 'min_impurity_decrease': list(np.linspace(0.0,0.08,5)), 'class_weight':[{'Yes': i} for i in range(1,5)]}]
+    tuned_parameters = [{'max_depth': list(range(4,8)), 'min_samples_split': list(range(3,6)), 'min_samples_leaf': list(range(1,4)), 'min_impurity_decrease': list(np.linspace(0.0,0.04,5)), 'class_weight':[{'Yes': i} for i in range(1,5)], 'ccp_alpha':list(np.linspace(0.0,1,10))}]
 
     scores = ['precision', 'recall']
 
