@@ -118,6 +118,8 @@ print('_________________________________________________________________')
 Accuracy = Number of correct predictions / Total Number of predictions
 Error Rate = Number of wrong predictions / Total Number of predictions
 F1-Score = TP / (TP + 0.5*(FP + FN)) or the same with TN oppure F1 = 2 * (precision * recall) / (precision + recall) : best value at 1 and worst score at 0
+Recall = TN / (TN+FP)
+Precision = TP / (TP+FP)
 '''
 print('')
 print( 'PERFORMANCE\n')
@@ -137,6 +139,8 @@ print('')
 print(' Confusion Matrix Train \n', confusion_matrix(y_train, y_pred_tr))
 
 print('-----------------------------------------------------')
+# Confidence Interval
+
 N = len(X_test)
 acc = accuracy_score(y_test, y_pred)
 Z_a = {'99%':2.58, '98%':2.33, '95%':1.96, '90%':1.65, '80%':1.28, '70%':1.04, '50%':0.67}
