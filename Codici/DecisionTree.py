@@ -21,9 +21,9 @@ start = time.time()
 '''The objective is to classify the records based on the Attrition. In other words, Attrition will be our class 
 target y while all the other attributes will be the vector x'''
 
-df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
+# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
-# df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
+df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
 
 
 categorical = df.select_dtypes(exclude = 'number')
@@ -31,7 +31,7 @@ categorical = df.select_dtypes(exclude = 'number')
 # == IF CKECKS ==============================================================================================================
 impurity_decrese_if = False
 max_depth_if = False
-roc_curve_if = False
+roc_curve_if = True
 cross_validation_if = False
 # ===========================================================================================================================
 

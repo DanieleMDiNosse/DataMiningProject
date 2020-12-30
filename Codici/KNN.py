@@ -14,13 +14,14 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 start = time.time()
 
-
+make_dataframe = False
 grid_search_cv = False
-model_tuning = True
+model_tuning = False
 
-df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
+
+# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
-# df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
+df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
 
 df.replace({'Gender':{'Female' : 0., 'Male' : 1.}}, inplace = True)
 df.replace({'OverTime':{'No' : 0., 'Yes' : 1.}}, inplace = True)
@@ -35,15 +36,25 @@ def oversampling(df, attribute, value, n_duplicate):
             indici = np.array(df[df[attribute] == v].index)
     for i in range(n_duplicate):
         nrand = int(random.uniform(0,len(indici)))
-        df = df.append(df.iloc[nrand])
-    return df     
+        df = df.append(df.iloc[indici[nrand]])
+    return df    
 
-print(df.shape)
-df = oversampling(df,'Attrition', 'Yes',700)
-print(df.shape)
+
+if make_dataframe:
+    print(df.shape)
+    df = oversampling(df,'Attrition', 'Yes',150)
+    print(df.shape)
+
+    df.to_csv('knn_plus150_attriction_yes.csv', index=False)
+
+
+# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/knn_plus150_attriction_yes.csv', index_col = 0) 
+# df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
+df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
             
 
 numeric = df.select_dtypes('number')
+print(numeric.shape)
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric)
 
@@ -97,24 +108,22 @@ if grid_search_cv:
     print(best_par_list)
 
 if model_tuning:
-    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
+    print(X_train.shape,y_train.shape)
+    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.4, random_state = 100, stratify = y_train)
     for n in range(1,30):
         
         neigh = KNeighborsClassifier(n_neighbors=n, weights='distance')
-        neigh.fit(XX_train, yy_val)
+        neigh.fit(XX_train, yy_train)
         y_true, y_pred = yy_val, neigh.predict(XX_val)
-        precision = precision_score(y_true, y_pred)
-        recall =  recall_score(y_true, y_pred)
-        if precision > 0.75:
-            if recall > 0.55:
+        precision = precision_score( y_true, y_pred, pos_label= 'Yes')
+        recall =  recall_score(y_true, y_pred, pos_label= 'Yes')
+        if precision > 0.50:
+            if recall > 0.50:
                 print(f'Precision, Recall, N neighbors: {precision}, {recall}. {n}')
         
         # print(precision_score(y_true, y_pred))
         # print(recall_score(y_true, y_pred))
         # print(' Confusion Matrix Test \n', confusion_matrix(y_true, y_pred))
-
-
-
 
 
 end = time.time()
