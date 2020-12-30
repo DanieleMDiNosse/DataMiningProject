@@ -16,8 +16,8 @@ start = time.time()
 
 make_dataframe = False
 grid_search_cv = False
+overfitting_knn = True
 model_tuning = False
-
 
 # df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
@@ -50,11 +50,10 @@ if make_dataframe:
 
 # df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/knn_plus150_attriction_yes.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
-df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
+# df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
             
 
 numeric = df.select_dtypes('number')
-print(numeric.shape)
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric)
 
@@ -75,7 +74,7 @@ if grid_search_cv:
     K = {'n_neighbors':list(range(1,150))}
     scores = ['precision', 'recall']
     
-    best_par_list=list()
+    par_list=list()
     for score in scores:
         print("# Tuning hyper-parameters for %s" % score)
         print()
@@ -83,48 +82,63 @@ if grid_search_cv:
         clf = GridSearchCV(KNeighborsClassifier(weights='distance'), K, scoring='%s_macro' % score, cv=3)
         clf.fit(X_train, y_train)
     
-        print("Best parameters set found on development set:")
-        print()
-        print(clf.best_params_)
-        print()
-        print("Grid scores on development set:")
-        print()
-    
         means = clf.cv_results_['mean_test_score']
         stds = clf.cv_results_['std_test_score']
-        # for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-        #     print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
-    
-        print("Detailed classification report:")
-        print()
-        print("The model is trained on the full development set.")
-        print("The scores are computed on the full evaluation set.")
-        print()
-        y_true, y_pred = y_test, clf.predict(X_test)
-        print(classification_report(y_true, y_pred))
-        print()
-        best_par_list.append(clf.best_params_)
-    
-    print(best_par_list)
+        list_score=list()
+        for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+            list_score.append(mean)
 
-if model_tuning:
-    print(X_train.shape,y_train.shape)
-    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.4, random_state = 100, stratify = y_train)
-    for n in range(1,30):
-        
-        neigh = KNeighborsClassifier(n_neighbors=n, weights='distance')
-        neigh.fit(XX_train, yy_train)
-        y_true, y_pred = yy_val, neigh.predict(XX_val)
-        precision = precision_score( y_true, y_pred, pos_label= 'Yes')
-        recall =  recall_score(y_true, y_pred, pos_label= 'Yes')
-        if precision > 0.50:
-            if recall > 0.50:
-                print(f'Precision, Recall, N neighbors: {precision}, {recall}. {n}')
-        
-        # print(precision_score(y_true, y_pred))
-        # print(recall_score(y_true, y_pred))
-        # print(' Confusion Matrix Test \n', confusion_matrix(y_true, y_pred))
+        par_list.append(list_score)
+   
+    plt.figure()
+    plt.plot(list(range(1,150)),par_list[0])
+    plt.plot(list(range(1,150)),par_list[1])
+    plt.show()
 
+
+
+if overfitting_knn:
+    ER_train = list()
+    ER_test = list()
+    k_plot=list(range(1,150))
+    for k_value in k_plot:
+        clf = KNeighborsClassifier(n_neighbors=k_value, weights='distance') #c=5 recall raff
+        XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
+        clf.fit(X_train, y_train)
+
+
+        y_pred = clf.predict(X_test)
+        y_pred_tr = clf.predict(X_train)
+
+        tmp_test = (confusion_matrix(y_test, y_pred)[0][1] + confusion_matrix(y_test, y_pred)[1][0]) / (np.sum(confusion_matrix(y_test, y_pred))) 
+        tmp_train = (confusion_matrix(y_train, y_pred_tr)[0][1] + confusion_matrix(y_train, y_pred_tr)[1][0]) / (np.sum(confusion_matrix(y_train, y_pred_tr)))
+        ER_train.append(tmp_train)
+        ER_test.append(tmp_test)
+
+        print(' Confusion Matrix Test \n', confusion_matrix(y_train, y_pred_tr), k_value)
+        precision = precision_score( y_train, y_pred_tr, pos_label= 'Yes')
+        print(f'Precision, Recall: {precision}')
+        print('_____________________________________________________')
+
+    plt.figure('knn decrese Overfitting')
+    plt.plot(k_plot, ER_train, label = 'Error Rate Train')
+    plt.plot(k_plot, ER_test, label = 'Error Rate Val')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+if model_tuning:   
+    neigh = KNeighborsClassifier(n_neighbors=10, weights='distance')
+    neigh.fit(X_train, y_train)
+    y_true, y_pred = y_test, neigh.predict(X_test)
+    precision = precision_score( y_true, y_pred, pos_label= 'Yes')
+    recall =  recall_score(y_true, y_pred, pos_label= 'Yes')
+    
+    print(f'Precision, Recall: {precision}, {recall}')
+    
+    print(' Confusion Matrix Test \n', confusion_matrix(y_true, y_pred))
 
 end = time.time()
 elaps = (end-start)/60
