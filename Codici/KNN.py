@@ -10,11 +10,13 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix
 import random
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
 start = time.time()
 
 
 grid_search_cv = False
-model = False
+model_tuning = True
 
 df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
@@ -33,11 +35,11 @@ def oversampling(df, attribute, value, n_duplicate):
             indici = np.array(df[df[attribute] == v].index)
     for i in range(n_duplicate):
         nrand = int(random.uniform(0,len(indici)))
-        df.append(df[nrand].index)
+        df = df.append(df.iloc[nrand])
     return df     
 
 print(df.shape)
-df = oversampling(df,'Attrition', 'Yes',2)
+df = oversampling(df,'Attrition', 'Yes',700)
 print(df.shape)
             
 
@@ -94,12 +96,22 @@ if grid_search_cv:
     
     print(best_par_list)
 
-if model:
-    neigh = KNeighborsClassifier(n_neighbors=18, weights='distance')
-    neigh.fit(X_train, y_train)
-    y_true, y_pred = y_test, neigh.predict(X_test)
-    print(classification_report(y_true, y_pred))
-    print(' Confusion Matrix Test \n', confusion_matrix(y_true, y_pred))
+if model_tuning:
+    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
+    for n in range(1,30):
+        
+        neigh = KNeighborsClassifier(n_neighbors=n, weights='distance')
+        neigh.fit(XX_train, yy_val)
+        y_true, y_pred = yy_val, neigh.predict(XX_val)
+        precision = precision_score(y_true, y_pred)
+        recall =  recall_score(y_true, y_pred)
+        if precision > 0.75:
+            if recall > 0.55:
+                print(f'Precision, Recall, N neighbors: {precision}, {recall}. {n}')
+        
+        # print(precision_score(y_true, y_pred))
+        # print(recall_score(y_true, y_pred))
+        # print(' Confusion Matrix Test \n', confusion_matrix(y_true, y_pred))
 
 
 
