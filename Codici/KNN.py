@@ -15,13 +15,13 @@ from sklearn.metrics import recall_score
 start = time.time()
 
 make_dataframe = False
-grid_search_cv = False
+grid_search_cv = True
 overfitting_knn = True
-model_tuning = False
+model= True
 
-# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
+df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
-df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
+# df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
 
 df.replace({'Gender':{'Female' : 0., 'Male' : 1.}}, inplace = True)
 df.replace({'OverTime':{'No' : 0., 'Yes' : 1.}}, inplace = True)
@@ -48,7 +48,7 @@ if make_dataframe:
     df.to_csv('knn_plus150_attriction_yes.csv', index=False)
 
 
-# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/knn_plus150_attriction_yes.csv', index_col = 0) 
+df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/knn_plus150_attriction_yes.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
 # df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
             
@@ -79,7 +79,7 @@ if grid_search_cv:
         print("# Tuning hyper-parameters for %s" % score)
         print()
     
-        clf = GridSearchCV(KNeighborsClassifier(weights='distance'), K, scoring='%s_macro' % score, cv=3)
+        clf = GridSearchCV(KNeighborsClassifier(weights='uniform'), K, scoring='%s_macro' % score, cv=3)
         clf.fit(X_train, y_train)
     
         means = clf.cv_results_['mean_test_score']
@@ -89,11 +89,16 @@ if grid_search_cv:
             print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
             list_score.append(mean)
 
-        par_list.append(list_score)
-   
+        par_list.append(np.array(list_score))
+    f1score = 2/(1/(par_list[0]) + 1/(par_list[1]))
     plt.figure()
-    plt.plot(list(range(1,150)),par_list[0])
-    plt.plot(list(range(1,150)),par_list[1])
+    plt.plot(list(range(1,150)),par_list[0], label = 'Precision')
+    plt.plot(list(range(1,150)),par_list[1], label = 'Recall')
+    plt.plot(list(range(1,150)),f1score, label = 'F1-Score')
+    plt.legend()
+    plt.grid(True)
+    plt.xlabel('k')
+    plt.ylabel('Scores')
     plt.show()
 
 
@@ -103,7 +108,7 @@ if overfitting_knn:
     ER_test = list()
     k_plot=list(range(1,150))
     for k_value in k_plot:
-        clf = KNeighborsClassifier(n_neighbors=k_value, weights='distance') #c=5 recall raff
+        clf = KNeighborsClassifier(n_neighbors=k_value, weights='uniform')
         XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
         clf.fit(X_train, y_train)
 
@@ -126,17 +131,19 @@ if overfitting_knn:
     plt.plot(k_plot, ER_test, label = 'Error Rate Val')
     plt.legend()
     plt.grid(True)
+    plt.xlabel('k')
+    plt.ylabel('Error Rates')
     plt.show()
 
 
-if model_tuning:   
-    neigh = KNeighborsClassifier(n_neighbors=10, weights='distance')
+if model:   
+    neigh = KNeighborsClassifier(n_neighbors=16, weights='uniform')
     neigh.fit(X_train, y_train)
     y_true, y_pred = y_test, neigh.predict(X_test)
     precision = precision_score( y_true, y_pred, pos_label= 'Yes')
     recall =  recall_score(y_true, y_pred, pos_label= 'Yes')
-    
-    print(f'Precision, Recall: {precision}, {recall}')
+    f1score = 2/(1/(precision) + 1/(recall))
+    print(f'Precision, Recall, F1-Score: {precision}, {recall}, {f1score}')
     
     print(' Confusion Matrix Test \n', confusion_matrix(y_true, y_pred))
 
