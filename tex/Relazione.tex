@@ -9,7 +9,7 @@
 \usepackage{colortbl}
 \usepackage{multicol}
 \usepackage{wrapfig}
-
+\usepackage{booktabs}
 \usepackage{amsmath,bm}
 \usepackage{siunitx}
 \usepackage{float}
@@ -499,6 +499,63 @@ Ne è riportato lo scatter plot ricavato dal K-Means con $K=4$.
 \end{figure}
 
 I risultati sono nettamente migliori in termini dell'SSE.
+
+\section{Classification}
+Lo scopo in questo caso è quello di determinare modelli capaci di classificare i records presenti nel data frame in funzione dell'attributo Attrition. Sono stati usati due algoritmi differenti: Decision Tree e K-Nearest Neighbors. Per il primo il data frame considerato è stato quello precedente alla trasformazioni delle variabili, quindi senza missing values e con l'eliminazione del maggior numero di incongruenze possibili fra i dati. Ciò è stato fatto poiché la classificazione tramite Decision Tree non soffre se le distribuzioni dei dati sono sbilanciate e/o molto sparse. Per il secondo, invece, si è utilizzato il data frame con le variabili trasformate. 
+In entrambi gli algoritmi i valori degli attributi categorici ordinali maggiormente correlati con Attrition (Tabella XXXX) sono stati stati sostituiti con valori numerici in maniera tale da ottenere una divisione binaria mantenendo l'ordinamento:
+
+\begin{itemize}
+\item Gender: 'Female'=0, 'Male'=1.
+\item OverTime: 'No'=0, 'Yes'=1.
+\item EnvironmentSatisfaction: 'Low'=0, 'Medium'=0, 'High'=1, 'Very High'=1.
+\item WorkLifeBalance: 'Bad'=0, 'Good'=0, 'Better'=1, 'Best'=1.
+\item JobInvolvement: 'Low'=0, 'Medium'=0, 'High'=1, 'Very High'=1.
+\item MaritalStatus: 'Single'=0, 'Divorced'=0, 'Married'=1.
+\end{itemize}
+
+Siccome i valori dell'attributo Attrition sono fortemente sbilanciati a favore dei 'No' ($84\%$), si è deciso di effettuare un  random oversampling delle istanze relative al valore 'Yes' in modo da ridurre il bias presente nei dati. 
+Il data frame è stato suddiviso in train set ($70\%$) e test set ($30\%$). Inoltre ai fini della selezione del modello migliore è stata utilizzata la cross validation, in cui il train set è ulteriormente diviso in tre blocchi di cui due vengono usati per l'effettivo training ed uno, ciclicamente, per la validazione.
+
+\subsection{Decision Tree}
+
+\subsection{K-Nearest Neighbors}
+In questo caso gli unici parametri da dover scegliere in maniera opportuna sono il numero di primi vicini $k$ ed il peso da assegnare a ciascuno di essi relativamente alla loro distanza. Con lo scopo di ridurre l'impatto di $k$ sui risultati si è deciso di utilizzare come peso l'inverso del quadrato della distanza. Infatti, in tal modo, si da maggior importanza ai primi vicini più vicini.
+Il range in cui si è fatto variare $k$ ai fini della massimizzazione delle performance del modello è stato $k \in [1,150]$. In seguito alla cross-validation, il miglior valore è risultato essere, come si può intuire dai grafici che seguono, $k=9$.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Gridsearch60distance.png}
+    \caption{Risultati della cross-validation al variare del parametro $k$.}
+  \end{minipage}
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Overfitting60distance.png}
+    \caption{Andamento dell'error rate sul train set e sul validation set. Si può notare l'overfitting del modello per piccoli valori di $k$.}
+  \end{minipage}
+  \end{figure}
+In Figura XXXsx si evince come il compromesso migliore fra i tre scores risulta essere $k=8$, dove si nota il massimo dell'F1-Score che quindi rappresenta un buon bilanciamento fra Precision e Recall. Questo valore corrisponde anche al minimo del validation error rate in Figura XXXdx.
+Di seguito è riportato il risultato del modello selezionato sul test set, tramite la Confusion Matrix.\\
+
+\begin{figure}[H]
+    \centering
+\begin{tabular}{cc|cc}
+\toprule
+&\bfseries      & \multicolumn{2}{c}{\bfseries Predicted class} \\
+& & \bfseries No & \bfseries Yes \\
+\midrule
+\bfseries Actual&\bfseries No  & 235 & 3  \\
+\bfseries Class &\bfseries Yes & 21 & 29  \\
+\bottomrule
+\end{tabular}
+\caption{Confusion Matrix del test set. Precision=0.91, Recall=0.58}
+\end{figure}
+Si può notare come, sebbene l'approccio dell'oversampling abbia sanato parzialmente lo squilibrio fra i due valori di Attrition, resta comunque un bias in favore dei 'No'.
+
+
+
+
 
 
 
