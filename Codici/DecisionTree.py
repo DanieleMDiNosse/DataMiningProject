@@ -22,8 +22,8 @@ start = time.time()
 target y while all the other attributes will be the vector x'''
 
 # df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
-# df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
-df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
+df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/knn_plus150_attriction_yes.csv')
+# df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
 
 
 categorical = df.select_dtypes(exclude = 'number')
@@ -49,12 +49,12 @@ has a small number of possibile values, like Gender'''
 # gender_ohe = ohe.fit_transform(df['Gender'].values.reshape(-1,1)) # 0 = Female, 1 = Male
 # overtime_ohe = ohe.fit_transform(df['OverTime'].values.reshape(-1,1)) # 0 = No, 1 = Yes
 
-df.replace({'Gender':{'Female' : 0., 'Male' : 1.}}, inplace = True)
-df.replace({'OverTime':{'No' : 0., 'Yes' : 1.}}, inplace = True)
-df.replace({'EnvironmentSatisfaction':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
-df.replace({'WorkLifeBalance':{'Bad': 0, 'Good': 0, 'Better': 1, 'Best': 1}}, inplace = True)
-df.replace({'JobInvolvement':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
-df.replace({'MaritalStatus':{'Single':0, 'Married': 1, 'Divorced': 0}}, inplace = True)
+# df.replace({'Gender':{'Female' : 0., 'Male' : 1.}}, inplace = True)
+# df.replace({'OverTime':{'No' : 0., 'Yes' : 1.}}, inplace = True)
+# df.replace({'EnvironmentSatisfaction':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
+# df.replace({'WorkLifeBalance':{'Bad': 0, 'Good': 0, 'Better': 1, 'Best': 1}}, inplace = True)
+# df.replace({'JobInvolvement':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
+# df.replace({'MaritalStatus':{'Single':0, 'Married': 1, 'Divorced': 0}}, inplace = True)
 
 numeric = df.select_dtypes('number')
 # ==========================================================================================================================
@@ -66,7 +66,7 @@ further splitted into an actual training set and a validation set used for estim
 Random_state specify the specific random splitting, while stratify keep the distribution of the target class label'''
 
 attributes = [col for col in numeric.columns if col != 'Attrition']
-X = df[attributes].values
+X = numeric.values
 y = df['Attrition'] # Target class
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 100, stratify = y)
@@ -85,8 +85,12 @@ is less that the number set'''
 # clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2}) #c=4 precision
 # clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3}) #c=5 recall raff
 
+ 
+    # clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007)
 
-clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2}) #c=4 precision
+
+
+clf = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007) #c=4 precision
 clf.fit(X_train, y_train)
 print('')
 print( 'BASIC DESCRIPTION\n')
@@ -101,7 +105,7 @@ y_pred_tr = clf.predict(X_train)
 dot_data = tree.export_graphviz(clf, out_file=None, feature_names=attributes, class_names=clf.classes_, filled=True, rounded=True, special_characters=True, impurity=True)  
 graph = pydotplus.graph_from_dot_data(dot_data)
 Image(graph.create_png())
-graph.write_pdf("Modello_4_raff1.pdf")
+graph.write_pdf("modello4.pdf")
 
 '''In scikit-learn, we implement the importance as described in
 (often cited, but unfortunately rarely read…). It is sometimes called “gini importance” 
@@ -212,7 +216,7 @@ plt.show()
 
 # CROSS - VAIDATION ============================================================================================================================================
 if cross_validation_if:
-    tuned_parameters = [{'max_depth': list(range(4,11)), 'min_samples_split': list(range(3,10)), 'min_samples_leaf': list(range(1,8)), 'min_impurity_decrease': list(np.linspace(0.0,0.07,7)), 'class_weight':[{'Yes': i, 'No': j} for i,j in zip(np.linspace(1.5,3.5,7), np.linspace(0.2,1.5,7))]}]
+    tuned_parameters = [{'max_depth': list(range(4,8)), 'min_samples_split': list(range(2,4)), 'min_samples_leaf': list(range(1,2)), 'min_impurity_decrease': list(np.linspace(0.0,0.04,1000))}]
 
     scores = ['precision', 'recall']
 
@@ -257,12 +261,13 @@ the model assigns the class labels. FPR on x axis and TPR on y axis. To compute 
 you need the probabilities of the class label predictions of the various istances, sort these
 and then draw a point in the (FPR,TPR)-plane for different thresholds.'''
 if roc_curve_if:
-    clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 7, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':2})  #c=4 recall
-    clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':3}) #c=5 recall
-    clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2}) #c=4 precision
-    clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3}) #c=5 recall raff
+    clf = DecisionTreeClassifier(criterion='gini', max_depth = 8, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.001325)
+    clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 2, min_impurity_decrease=0.005)
+    # clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.00200200200200)
+    clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02) 
+    clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007)
 
-    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.4, random_state = 100, stratify = y_train)
+    XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
     
     clf.fit(XX_train, yy_train)
     clf1.fit(XX_train, yy_train)
