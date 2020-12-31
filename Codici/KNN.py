@@ -14,10 +14,10 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 start = time.time()
 
-make_dataframe = True
-grid_search_cv = False
+make_dataframe = False
+grid_search_cv = True
 overfitting_knn = False
-model= False
+model= True
 
 df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome_Reversed.csv') 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
@@ -48,7 +48,7 @@ if make_dataframe:
     df.to_csv('decisiontree_plus60_attriction_yes.csv', index=False)
 
 
-df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/knn_plus150_attriction_yes.csv', index_col = 0) 
+df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TRANSFknn_plus150_attriction_yes60.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
 # df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
             
@@ -79,7 +79,7 @@ if grid_search_cv:
         print("# Tuning hyper-parameters for %s" % score)
         print()
     
-        clf = GridSearchCV(KNeighborsClassifier(weights='uniform'), K, scoring='%s_macro' % score, cv=3)
+        clf = GridSearchCV(KNeighborsClassifier(weights='distance'), K, scoring='%s_macro' % score, cv=3)
         clf.fit(X_train, y_train)
     
         means = clf.cv_results_['mean_test_score']
@@ -95,7 +95,7 @@ if grid_search_cv:
     plt.plot(list(range(1,150)),par_list[0], label = 'Precision')
     plt.plot(list(range(1,150)),par_list[1], label = 'Recall')
     plt.plot(list(range(1,150)),f1score, label = 'F1-Score')
-    plt.legend()
+    plt.legend(loc='upper right')
     plt.grid(True)
     plt.xlabel('k')
     plt.ylabel('Scores')
@@ -137,7 +137,7 @@ if overfitting_knn:
 
 
 if model:   
-    neigh = KNeighborsClassifier(n_neighbors=16, weights='uniform')
+    neigh = KNeighborsClassifier(n_neighbors=9, weights='distance')
     neigh.fit(X_train, y_train)
     y_true, y_pred = y_test, neigh.predict(X_test)
     precision = precision_score( y_true, y_pred, pos_label= 'Yes')
