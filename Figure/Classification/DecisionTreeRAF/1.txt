@@ -1,0 +1,44 @@
+BASIC DESCRIPTION
+
+Parameters: see DecisionTreeClassifier for more details
+number of nodes: 129
+_________________________________________________________________
+
+PERFORMANCE
+
+Train Accuracy 0.9387144992526159     
+Train F1-score [0.96157451 0.84870849]
+Test Accuracy 0.7878787878787878      
+Test F1-score [0.86328125 0.52702703] 
+
+                   Classification Report for Test 
+                precision    recall  f1-score   support
+
+          No       0.88      0.84      0.86       262  
+         Yes       0.49      0.57      0.53        68  
+
+    accuracy                           0.79       330  
+   macro avg       0.69      0.71      0.70       330  
+weighted avg       0.80      0.79      0.79       330  
+
+                   Classification Report for Train     
+                precision    recall  f1-score   support
+
+          No       0.96      0.97      0.96       530  
+         Yes       0.87      0.83      0.85       139  
+
+    accuracy                           0.94       669  
+   macro avg       0.91      0.90      0.91       669  
+weighted avg       0.94      0.94      0.94       669  
+
+ Confusion Matrix Test
+ [[221  41]
+ [ 29  39]]
+
+ Confusion Matrix Train
+ [[513  17]
+ [ 24 115]]
+-----------------------------------------------------
+Confidence Interval: 0.74 -- 0.83
+while accuracy is 0.79, so
+the empirical accuracy is statistically acceptable

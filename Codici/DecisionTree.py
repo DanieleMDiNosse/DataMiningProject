@@ -21,76 +21,39 @@ start = time.time()
 '''The objective is to classify the records based on the Attrition. In other words, Attrition will be our class 
 target y while all the other attributes will be the vector x'''
 
-# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv', index_col = 0) 
-df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/knn_plus150_attriction_yes.csv')
+# df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/TRANSFknn_plus150_attriction_yes90.csv') 
+df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/decisiontree_plus100_attriction_yes.csv')
 # df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
 
+
+print(df['Attrition'].value_counts())
 
 categorical = df.select_dtypes(exclude = 'number')
 
 # == IF CKECKS ==============================================================================================================
 impurity_decrese_if = False
 max_depth_if = False
-roc_curve_if = True
+roc_curve_if = False
 cross_validation_if = False
-# ===========================================================================================================================
-
-# == PREPROCESSING OF DATA - COVERTS INTO NUMERICAL =========================================================================
-'''Before everything we must preprocess the data. We need to convert string attributes into some numerical attributes
-in order to make the algorithm works. For the features variable (X matrix) we must use OneHotEncoder that returns a 
-sparse matrix. Then, for y label, we must use LabelEncoder if the labels are greater than 2 or LabelBinarizer if
-y is binary, like Yes or No (that's the case for Attrition).
-                             
-Anyway, teacher suggested not to use categorical attributes in the decision tree classification, except for those one that
-has a small number of possibile values, like Gender'''
-
-# ohe = OneHotEncoder(sparse = False)
-
-# gender_ohe = ohe.fit_transform(df['Gender'].values.reshape(-1,1)) # 0 = Female, 1 = Male
-# overtime_ohe = ohe.fit_transform(df['OverTime'].values.reshape(-1,1)) # 0 = No, 1 = Yes
-
-# df.replace({'Gender':{'Female' : 0., 'Male' : 1.}}, inplace = True)
-# df.replace({'OverTime':{'No' : 0., 'Yes' : 1.}}, inplace = True)
-# df.replace({'EnvironmentSatisfaction':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
-# df.replace({'WorkLifeBalance':{'Bad': 0, 'Good': 0, 'Better': 1, 'Best': 1}}, inplace = True)
-# df.replace({'JobInvolvement':{'Low': 0, 'Medium': 0, 'High': 1, 'Very High': 1}}, inplace = True)
-# df.replace({'MaritalStatus':{'Single':0, 'Married': 1, 'Divorced': 0}}, inplace = True)
 
 numeric = df.select_dtypes('number')
-# ==========================================================================================================================
 
-
-# == DIVIDE DATA SET INTO TRAINING SET (train-validation) AND TESTING SET ==================================================
-'''The first thing to do is to divide the dataset into train and test. Be aware that the training set has to be
-further splitted into an actual training set and a validation set used for estimating the generalization error.
-Random_state specify the specific random splitting, while stratify keep the distribution of the target class label'''
 
 attributes = [col for col in numeric.columns if col != 'Attrition']
 X = numeric.values
 y = df['Attrition'] # Target class
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 100, stratify = y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.33, random_state = 100, stratify = y)
 
-# ==========================================================================================================================
+# [{'max_depth': 7, 'min_impurity_decrease': 0.0024242424242424242, 'min_samples_leaf': 1, 'min_samples_split': 5} precision
+# {'max_depth': 7, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 3}] recall cv=3
 
-# == BUILD DECISION TREE ===================================================================================================
-'''Build the decision tree.
-min_samples_split is the minimun number of samples required by a node to be splitted, while min_samples_leaf
-is the minimun number of samples required to consider a node a leaf node. There's also another important parameter,
-min_impurity_decrease that is an early-stopping createrion for the tree. Growing is stopped if the decrease of impurity 
-is less that the number set'''
+# clf = DecisionTreeClassifier( criterion='gini', max_depth = 8, min_samples_split = 5, min_samples_leaf = 2, min_impurity_decrease= 0.0)
+# clf = DecisionTreeClassifier(criterion='gini', max_depth = 3, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.0)
+# clf = DecisionTreeClassifier(criterion='gini', max_depth = 12, min_samples_split = 5, min_samples_leaf = 1, min_impurity_decrease=0.001) 
+# clf = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.0033)
 
-# clf = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 7, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':2})  #c=4 recall
-# clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 2, min_impurity_decrease=0.0, class_weight={'Yes':3}) #c=5 recall
-# clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02, class_weight={'Yes':2}) #c=4 precision
-# clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007, class_weight={'Yes':3}) #c=5 recall raff
-
- 
-    # clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007)
-
-
-
-clf = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007) #c=4 precision
+# clf = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 3, min_samples_leaf = 1, min_impurity_decrease= 0.003)
 clf.fit(X_train, y_train)
 print('')
 print( 'BASIC DESCRIPTION\n')
@@ -105,26 +68,8 @@ y_pred_tr = clf.predict(X_train)
 dot_data = tree.export_graphviz(clf, out_file=None, feature_names=attributes, class_names=clf.classes_, filled=True, rounded=True, special_characters=True, impurity=True)  
 graph = pydotplus.graph_from_dot_data(dot_data)
 Image(graph.create_png())
-graph.write_pdf("modello4.pdf")
+graph.write_pdf("1.pdf")
 
-'''In scikit-learn, we implement the importance as described in
-(often cited, but unfortunately rarely read…). It is sometimes called “gini importance” 
-or “mean decrease impurity” and is defined as the total decrease in node impurity 
-(weighted by the probability of reaching that node (which is approximated by the proportion of samples
- reaching that node)) averaged over all trees of the ensemble.'''
-print('')
-print('ATTRIBUTES IMPORTANCE\n')
-for col, imp in zip(attributes, clf.feature_importances_):
-    print(col, imp)
-print('_________________________________________________________________')
-
-'''Performance
-Accuracy = Number of correct predictions / Total Number of predictions
-Error Rate = Number of wrong predictions / Total Number of predictions
-F1-Score = TP / (TP + 0.5*(FP + FN)) or the same with TN oppure F1 = 2 * (precision * recall) / (precision + recall) : best value at 1 and worst score at 0
-Recall = TN / (TN+FP)
-Precision = TP / (TP+FP)
-'''
 print('')
 print( 'PERFORMANCE\n')
 print('Train Accuracy %s' % accuracy_score(y_train, y_pred_tr)) # Accuratezza basata sul training set (Indica quanto il modello ha imparato bene dal training set)
@@ -216,7 +161,7 @@ plt.show()
 
 # CROSS - VAIDATION ============================================================================================================================================
 if cross_validation_if:
-    tuned_parameters = [{'max_depth': list(range(4,8)), 'min_samples_split': list(range(2,4)), 'min_samples_leaf': list(range(1,2)), 'min_impurity_decrease': list(np.linspace(0.0,0.04,1000))}]
+    tuned_parameters = [{'max_depth': list(range(2,8)), 'min_samples_split': list(range(2,6)), 'min_samples_leaf': list(range(1,6)), 'min_impurity_decrease': list(np.linspace(0.0,0.02,100))}]
 
     scores = ['precision', 'recall']
 
@@ -261,11 +206,13 @@ the model assigns the class labels. FPR on x axis and TPR on y axis. To compute 
 you need the probabilities of the class label predictions of the various istances, sort these
 and then draw a point in the (FPR,TPR)-plane for different thresholds.'''
 if roc_curve_if:
-    clf = DecisionTreeClassifier(criterion='gini', max_depth = 8, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.001325)
-    clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 2, min_impurity_decrease=0.005)
-    # clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.00200200200200)
-    clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 4, min_samples_split = 4, min_samples_leaf = 1, min_impurity_decrease=0.02) 
-    clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 7, min_samples_split = 2, min_samples_leaf = 2, min_impurity_decrease=0.007)
+
+# [{'max_depth': 7, 'min_impurity_decrease': 0.0024242424242424242, 'min_samples_leaf': 1, 'min_samples_split': 5} precision
+# {'max_depth': 7, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 3}] recall cv=3
+    clf = DecisionTreeClassifier( criterion='gini', max_depth = 8, min_samples_split = 5, min_samples_leaf = 2, min_impurity_decrease= 0.0)
+    clf1 = DecisionTreeClassifier(criterion='gini', max_depth = 3, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.0)
+    clf2 = DecisionTreeClassifier(criterion='gini', max_depth = 12, min_samples_split = 3, min_samples_leaf = 1, min_impurity_decrease=0.0) 
+    clf3 = DecisionTreeClassifier(criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.0033)
 
     XX_train, XX_val, yy_train, yy_val = train_test_split(X_train, y_train, test_size = 0.3, random_state = 100, stratify = y_train)
     
@@ -274,10 +221,6 @@ if roc_curve_if:
     clf2.fit(XX_train, yy_train)
     clf3.fit(XX_train, yy_train)
 
-    # In ogni caso, dalla procedura per costruire la ROC curve, mi sembra di dover calcolare
-    # queste probabilità ed usare queste al posto di y_pred. Il modulo predict_proba 
-    # restituisce la probabilità predetta per la classe di ogni istanza. Tale probabilità
-    # è la frazione dei valori degli attributi aventi la stessa classe in un leaf node
     predictions = clf.predict_proba(XX_val, check_input = True)
     predictions1 = clf1.predict_proba(XX_val, check_input = True)
     predictions2 = clf2.predict_proba(XX_val, check_input = True)

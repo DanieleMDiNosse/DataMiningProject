@@ -1,0 +1,4 @@
+modello 1 = criterion='gini', max_depth = 8, min_samples_split = 5, min_samples_leaf = 2, min_impurity_decrease= 0.0)
+modello 2 = criterion='gini', max_depth = 3, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.0)
+modello 3 = criterion='gini', max_depth = 12, min_samples_split = 5, min_samples_leaf = 1, min_impurity_decrease=0.001) 
+modello 4 = criterion='gini', max_depth = 6, min_samples_split = 2, min_samples_leaf = 1, min_impurity_decrease=0.0033)
