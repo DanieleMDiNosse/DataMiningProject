@@ -82,9 +82,29 @@ PerformanceRating & RelationshipSatisfaction&WorkLifeBalance  &   \quad\quad&\qu
 Di conseguenza, il dominio di tali attributi è di tipo categorico od ordinale e non numerico (un attributo ordinale è effettivamente una sottocategoria categorica, si è scelto comunque di elencarli separatamente). Inoltre, sebbene non si abbiano informazioni dettagliate sulle classi relative agli attributi JobLevel e  StockOptionLevel, per la loro stessa natura si è deciso di trattarli come attributi ordinali. Organizzando tutte le variabili per la loro tipologia, si ottiene quindi la seguente suddivisione:
 
 \begin{center}
-\includegraphics[scale=0.50]{semantics.png}
-\captionof{figure}{Domini degli attributi}
+\begin{tabular}{c|c|c}
+\toprule
+\bfseries Categorici: 8 &\bfseries Ordinali: 10 & \bfseries Numerici: 15 \\
+\midrule
+Attriction & Business Travel & Age \\
+Department & Education & Daily Rate \\
+Education Filed & Enviroment Satisfaction & Distance From Home \\
+Gender & Job Involvement & Monthly Income \\
+Job Role & Job Level & Monthly Rate\\
+Marital Status & Job Satisfaction & Montly Rate\\
+Over 18 & Performance Rating & Num Company Worked\\
+Over Time & Relationship Satisfaction & Persent Salary Hike\\
+& Stock Option Level & Standard Hours\\
+& Work Life Balance & Total Working Years\\
+& &Training Time Last Year\\
+& & Years At Company\\
+& & Years In Current Role\\
+& & Years Since Last Promotion\\
+& & Yeaer With Current Manager\\
+\bottomrule 
+\end{tabular}
 \end{center}
+
 Per quanto riguarda il range di valori degli attributi risulta essere molto più discretizzato per gli attributi ordinali che per gli attributi numerici. Inoltre differisce molto da attributo ad attributo (anche di 4 ordini di grandezza), cosa che sottolinea sin da  ora l'importanza di una trasformazione delle variabili.
 
 \subsection{Analisi statistica}
