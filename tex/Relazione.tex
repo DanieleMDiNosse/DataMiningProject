@@ -517,7 +517,7 @@ Siccome i valori dell'attributo Attrition sono fortemente sbilanciati a favore d
 Il data frame è stato suddiviso in train set ($70\%$) e test set ($30\%$). Inoltre ai fini della selezione del modello migliore è stata utilizzata la cross validation, in cui il train set è ulteriormente diviso in tre blocchi di cui due vengono usati per l'effettivo training ed uno, ciclicamente, per la validazione.
 
 \subsection{Decision Tree}
-Un classificatore di tipo $Decision Tree$ è caratterizzato da un diverso numero di parametri. Per la loro scelta è stata utilizzata la cross-validation in modo da ottenere la combinazione più performante deglli stessi. 
+Un classificatore di tipo $Decision Tree$ è caratterizzato da un diverso numero di parametri. Per la loro scelta è stata utilizzata la cross-validation in modo da ottenere la combinazione più performante degli stessi. 
 I parametri scelti e il relativo range sono i seguenti:
 
 \begin{itemize}
@@ -534,7 +534,7 @@ Le migliori combinazioni che ottimizzano rispettivamente la $Precision$ e la $Re
 \item Recall: min impurity decrease$=0.0$; max depth$=7$; min samples split$=3$; min samples leaf$=1$; $\alpha$=$0$.
 \end{itemize}
 
-Tali valori sono stati ulteriormente modificati per ridurre la complessità degli alberi generati sempre con lo scopo di migliorare le performance. Infatti, per come è stato implementata la cross-validation, $Precision$ e $Recall$ vengono ottimizzati singolarmente e quindi è possibile avere set di parametri maggiormente adatti agli scopi in esame che non erano stati indagati.
+Tali valori sono stati ulteriormente modificati per ridurre la complessità degli alberi generati sempre con lo scopo di migliorare le performance. Infatti, per come è stato implementata la cross-validation, Precision e Recall vengono ottimizzati singolarmente e quindi è possibile avere set di parametri maggiormente adatti agli scopi in esame che non erano stati indagati.
 I modelli ottenuti sono:
 \begin{itemize}
 \item Modello 1: min impurity decrease$=0.0$; max depth$=8$; min samples split$=5$; min samples leaf$=2$; 
@@ -550,6 +550,57 @@ Di questi modelli sono state calcolate le rispettive ROC curve mostrate in Figur
     \caption{ROC curve dei quattro modelli selezionati.}
     \label{fig:my_label}
 \end{figure}
+Fra i quattro modelli, quello scelto è stato quello che ha presentato il valore dell'AUC maggiore, ovvero il Modello 4. Il corrispondente albero generato è il seguente
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.40]{Modello 4 (scelto).png}
+    \caption{Decision tree generato dal Modello 4.}
+    \label{fig:my_label}
+\end{figure}
+
+Applicando tale modello sul test set si sono ottenuti ricavati risultati che suggeriscono una buona performance del $Decision Tree$ selezionato.
+
+\begin{figure}[H]
+    \centering
+\begin{tabular}{cc|cc}
+\toprule
+&\bfseries      & \multicolumn{2}{c}{\bfseries Predicted class} \\
+& & \bfseries No & \bfseries Yes \\
+\midrule
+\bfseries Actual&\bfseries No  & 237 & 25  \\
+\bfseries Class &\bfseries Yes & 31 & 37  \\
+\bottomrule
+\end{tabular}
+\caption{Confusion Matrix del test set. 'No': Precision$=0.88$,\\ \qquad \qquad Recall$=0.90$; 'Yes': Precision$=0.60$, Recall$=0.54$}
+\end{figure}
+
+Come precedentemente detto, l'approccio dell'oversampling è stato utilizzato per ridurre il bias che il set di dati presentava a favore dei 'No' nell'attributo Attrition. Si verifica, infatti, che applicando le stesse procedure sul data frame originale i risultati che si ottengono sono nettamente peggiori, come si può notare dalla Confusion Matrix in Figura BOOOH.
+
+
+\begin{figure}[H]
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{ROC_CURVEsenzaYes.png}
+    \caption{ROC curve relativi a quattro modelli selezionati con il data frame originale.}
+  \end{minipage}
+  \centering
+  \begin{minipage}{.45\textwidth}
+       \centering
+\begin{tabular}{cc|cc}
+\toprule
+&\bfseries      & \multicolumn{2}{c}{\bfseries Predicted class} \\
+& & \bfseries No & \bfseries Yes \\
+\midrule
+\bfseries Actual&\bfseries No  & 231 & 7  \\
+\bfseries Class &\bfseries Yes & 30 & 2  \\
+\bottomrule
+\end{tabular}
+\caption{Confusion Matrix del test set. 'No': Precision$=0.89$, Recall$=0.97$; 'Yes': Precision$=0.22$, Recall$=0.06$}
+  \end{minipage}
+
+  \end{figure}
+
 
 
 
