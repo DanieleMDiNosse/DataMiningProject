@@ -1,0 +1,33 @@
+                   Classification Report for Test 
+                precision    recall  f1-score   support
+
+          No       0.89      0.97      0.93       238
+         Yes       0.22      0.06      0.10        32
+
+    accuracy                           0.86       270
+   macro avg       0.55      0.52      0.51       270
+weighted avg       0.81      0.86      0.83       270
+
+                   Classification Report for Train 
+                precision    recall  f1-score   support
+
+          No       0.90      0.99      0.95       554
+         Yes       0.84      0.21      0.34        75
+
+    accuracy                           0.90       629
+   macro avg       0.87      0.60      0.64       629
+weighted avg       0.90      0.90      0.87       629
+
+ Confusion Matrix Test 
+ [[231   7]
+ [ 30   2]]
+
+ Confusion Matrix Train 
+ [[551   3]
+ [ 59  16]]
+-----------------------------------------------------
+Confidence Interval: 0.82 -- 0.90 
+while accuracy is 0.86, so
+the empirical accuracy is statistically acceptable
+
+NODI: 29
