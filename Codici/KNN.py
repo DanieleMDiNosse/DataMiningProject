@@ -14,10 +14,10 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 start = time.time()
 
-make_dataframe = False
-grid_search_cv = True
+make_dataframe = True
+grid_search_cv = False
 overfitting_knn = False
-model= True
+model= False
 
 df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome_Reversed.csv') 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/DataFrameWMWO_Reversed.csv',index_col = 0)
@@ -42,13 +42,13 @@ def oversampling(df, attribute, value, n_duplicate):
 
 if make_dataframe:
     print(df.shape)
-    df = oversampling(df,'Attrition', 'Yes',60)
+    df = oversampling(df,'Attrition', 'Yes',100)
     print(df.shape)
 
-    df.to_csv('decisiontree_plus60_attriction_yes.csv', index=False)
+    df.to_csv('decisiontree_plus100_attriction_yes.csv', index=False)
 
 
-df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TRANSFknn_plus150_attriction_yes60.csv', index_col = 0) 
+# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TRANSFknn_plus150_attriction_yes100.csv', index_col = 0) 
 # df = pd.read_csv('C:/Users/raffy/Desktop/temp/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
 # df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/knn_plus150_attriction_yes.csv',index_col = 0)
             
