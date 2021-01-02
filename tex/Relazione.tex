@@ -521,17 +521,39 @@ Un classificatore di tipo $Decision Tree$ è caratterizzato da un diverso numero
 I parametri scelti e il relativo range sono i seguenti:
 
 \begin{itemize}
-\item min impurity decrese $ \in [0,0.2]$: il minimo gain dell'impurità affinché il nodo venga splittato;
+\item min impurity decrease $ \in [0,0.2]$: il minimo gain dell'impurità affinché il nodo venga splittato;
 \item max depth $ \in [2,8]$: massima profondità dell' albero;
 \item min samples split $ \in [2,8]$: numero minimo di valori di un nodo affinché esso venga splittato;
 \item min samples leaf $ \in [2,8]$ :numero minimo di valori di un nodo affinché esso sia un  nodo leaf;
 \item $\alpha$ $ \in [0,1]$: peso della complessità.
 \end{itemize}
 
-La migliore combinazione ottenuta risulta essere la seguente:\\
+Le migliori combinazioni che ottimizzano rispettivamente la $Precision$ e la $Recall$ risultano essere:
 \begin{itemize}
-\item min impurity decrese$=$; max depth$=$; min samples split$=$; min samples leaf$=$; $\alpha$=$0$.
+\item Precision: min impurity decrease$=0.0024$; max depth$=7$; min samples split$=5$; min samples leaf$=1$; $\alpha$=$0$.
+\item Recall: min impurity decrease$=0.0$; max depth$=7$; min samples split$=3$; min samples leaf$=1$; $\alpha$=$0$.
 \end{itemize}
+
+Tali valori sono stati ulteriormente modificati per ridurre la complessità degli alberi generati sempre con lo scopo di migliorare le performance. Infatti, per come è stato implementata la cross-validation, $Precision$ e $Recall$ vengono ottimizzati singolarmente e quindi è possibile avere set di parametri maggiormente adatti agli scopi in esame che non erano stati indagati.
+I modelli ottenuti sono:
+\begin{itemize}
+\item Modello 1: min impurity decrease$=0.0$; max depth$=8$; min samples split$=5$; min samples leaf$=2$; 
+\item Modello 2: min impurity decrease$=0.0$; max depth$=3$; min samples split$=2$; min samples leaf$=1$; 
+\item Modello 3: min impurity decrease$=0.001$; max depth$=12$; min samples split$=5$; min samples leaf$=1$; 
+\item Modello 4: min impurity decrease$=0.003$; max depth$=6$; min samples split$=2$; min samples leaf$=1$; 
+\end{itemize}
+
+Di questi modelli sono state calcolate le rispettive ROC curve mostrate in Figura.NNNN
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.65]{ROC_CURVE.png}
+    \caption{ROC curve dei quattro modelli selezionati.}
+    \label{fig:my_label}
+\end{figure}
+
+
+
+
 
 
 \subsection{K-Nearest Neighbors}
