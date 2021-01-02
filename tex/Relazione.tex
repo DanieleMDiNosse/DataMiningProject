@@ -513,13 +513,30 @@ In entrambi gli algoritmi i valori degli attributi categorici ordinali maggiorme
 \item MaritalStatus: 'Single'=0, 'Divorced'=0, 'Married'=1.
 \end{itemize}
 
-Siccome i valori dell'attributo Attrition sono fortemente sbilanciati a favore dei 'No' ($84\%$), si è deciso di effettuare un  random oversampling delle istanze relative al valore 'Yes' in modo da ridurre il bias presente nei dati. 
+Siccome i valori dell'attributo Attrition sono fortemente sbilanciati a favore dei 'No' ($84\%$), si è deciso di effettuare un  random oversampling delle istanze relative al valore 'Yes' in modo da ridurre il bias presente nei dati. In particolare la frequenta del valore 'Yes' è passata dal $16\%$ al $23\%$ nel Decision Tree, mentre nel KNN dal $16\%$ al $20\%$.
 Il data frame è stato suddiviso in train set ($70\%$) e test set ($30\%$). Inoltre ai fini della selezione del modello migliore è stata utilizzata la cross validation, in cui il train set è ulteriormente diviso in tre blocchi di cui due vengono usati per l'effettivo training ed uno, ciclicamente, per la validazione.
 
 \subsection{Decision Tree}
+Un classificatore di tipo $Decision Tree$ è caratterizzato da un diverso numero di parametri. Per la loro scelta è stata utilizzata la cross-validation in modo da ottenere la combinazione più performante deglli stessi. 
+I parametri scelti e il relativo range sono i seguenti:
+
+\begin{itemize}
+\item min impurity decrese $ \in [0,0.2]$: il minimo gain dell'impurità affinché il nodo venga splittato;
+\item max depth $ \in [2,8]$: massima profondità dell' albero;
+\item min samples split $ \in [2,8]$: numero minimo di valori di un nodo affinché esso venga splittato;
+\item min samples leaf $ \in [2,8]$ :numero minimo di valori di un nodo affinché esso sia un  nodo leaf;
+\item $\alpha$ $ \in [0,1]$: peso della complessità.
+\end{itemize}
+
+La migliore combinazione ottenuta risulta essere la seguente:\\
+\begin{itemize}
+\item min impurity decrese$=$; max depth$=$; min samples split$=$; min samples leaf$=$; $\alpha$=$0$.
+\end{itemize}
+
 
 \subsection{K-Nearest Neighbors}
-In questo caso gli unici parametri da dover scegliere in maniera opportuna sono il numero di primi vicini $k$ ed il peso da assegnare a ciascuno di essi relativamente alla loro distanza. Con lo scopo di ridurre l'impatto di $k$ sui risultati si è deciso di utilizzare come peso l'inverso del quadrato della distanza. Infatti, in tal modo, si da maggior importanza ai primi vicini più vicini.
+A differenza del caso precedente i dati sono stati normalizzati conservando la deviazione standard dei valori di partenza.
+Gli unici parametri da dover scegliere in maniera opportuna sono il numero di primi vicini $k$ ed il peso da assegnare a ciascuno di essi relativamente alla loro distanza. Con lo scopo di ridurre l'impatto di $k$ sui risultati si è deciso di utilizzare come peso l'inverso del quadrato della distanza. Infatti, in tal modo, si da maggior importanza ai primi vicini più vicini.
 Il range in cui si è fatto variare $k$ ai fini della massimizzazione delle performance del modello è stato $k \in [1,150]$. In seguito alla cross-validation, il miglior valore è risultato essere, come si può intuire dai grafici che seguono, $k=9$.
 
 \begin{figure}[H]
