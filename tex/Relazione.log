@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.17)  31 DEC 2020 16:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.17)  3 JAN 2021 18:39
 entering extended mode
 **"c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Relazione.tex"
 ("c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Relazione.tex"
@@ -498,6 +498,12 @@ LaTeX Warning: Label `etichetta1' multiply defined.
 
 LaTeX Warning: Label `etichetta2' multiply defined.
 
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
 )
 \openout1 = `Relazione.aux'.
 
@@ -620,317 +626,328 @@ LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 37
  ("C:\Program Files\MiKTeX\tex/latex/base\t1cmtt.fd"
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-<semantics.png, id=104, 476.982pt x 305.943pt>
-File: semantics.png Graphic file (type png)
-<use semantics.png>
-Package pdftex.def Info: semantics.png  used on input line 85.
-(pdftex.def)             Requested size: 238.4904pt x 152.97112pt.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 86.
-See the caption package documentation for explanation.
-
-<frequenza attributi nominali.png, id=105, 326.1786pt x 125.7498pt>
+<frequenza attributi nominali.png, id=104, 326.1786pt x 125.7498pt>
 File: frequenza attributi nominali.png Graphic file (type png)
 <use frequenza attributi nominali.png>
-Package pdftex.def Info: frequenza attributi nominali.png  used on input line 94.
+Package pdftex.def Info: frequenza attributi nominali.png  used on input line 116.
 (pdftex.def)             Requested size: 417.50717pt x 160.95917pt.
 
+
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 95.
+(caption)                particular \caption on input line 117.
 See the caption package documentation for explanation.
 
-[3 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/semantics.png>]
-<modacategoriciordinali.png, id=115, 185.9748pt x 169.3527pt>
+[3]
+<modacategoriciordinali.png, id=112, 185.9748pt x 169.3527pt>
 File: modacategoriciordinali.png Graphic file (type png)
 <use modacategoriciordinali.png>
-Package pdftex.def Info: modacategoriciordinali.png  used on input line 99.
+Package pdftex.def Info: modacategoriciordinali.png  used on input line 121.
 (pdftex.def)             Requested size: 185.97433pt x 169.35228pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 100.
+(caption)                particular \caption on input line 122.
 See the caption package documentation for explanation.
 
-<statistica.png, id=116, 326.6604pt x 185.493pt>
+<statistica.png, id=113, 326.6604pt x 185.493pt>
 File: statistica.png Graphic file (type png)
 <use statistica.png>
-Package pdftex.def Info: statistica.png  used on input line 108.
+Package pdftex.def Info: statistica.png  used on input line 130.
 (pdftex.def)             Requested size: 359.32753pt x 204.04292pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 109.
+(caption)                particular \caption on input line 131.
 See the caption package documentation for explanation.
 
-<Istogrammi1.png, id=117, 597.432pt x 845.0772pt>
+<Istogrammi1.png, id=114, 597.432pt x 845.0772pt>
 File: Istogrammi1.png Graphic file (type png)
 <use Istogrammi1.png>
-Package pdftex.def Info: Istogrammi1.png  used on input line 113.
+Package pdftex.def Info: Istogrammi1.png  used on input line 135.
 (pdftex.def)             Requested size: 489.89742pt x 692.96779pt.
 [4 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/frequenza attributi nominali.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/modacategoriciordinali.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/statistica.png>]
-<Istogrammi2.png, id=128, 573.342pt x 537.207pt>
+<Istogrammi2.png, id=126, 573.342pt x 537.207pt>
 File: Istogrammi2.png Graphic file (type png)
 <use Istogrammi2.png>
-Package pdftex.def Info: Istogrammi2.png  used on input line 118.
+Package pdftex.def Info: Istogrammi2.png  used on input line 140.
 (pdftex.def)             Requested size: 470.14348pt x 440.51259pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 119.
+(caption)                particular \caption on input line 141.
 See the caption package documentation for explanation.
 
 [5 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Istogrammi1.png>]
-<missingvalues.png, id=134, 121.4136pt x 74.679pt>
+<missingvalues.png, id=132, 121.4136pt x 74.679pt>
 File: missingvalues.png Graphic file (type png)
 <use missingvalues.png>
-Package pdftex.def Info: missingvalues.png  used on input line 127.
+Package pdftex.def Info: missingvalues.png  used on input line 149.
 (pdftex.def)             Requested size: 182.11995pt x 112.0182pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 128.
+(caption)                particular \caption on input line 150.
 See the caption package documentation for explanation.
 
 [6 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Istogrammi2.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/missingvalues.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 138--139
+Underfull \hbox (badness 10000) in paragraph at lines 160--161
 
  []
 
-<boxplot.png, id=143, 471.2004pt x 124.3044pt>
+<boxplot.png, id=141, 471.2004pt x 124.3044pt>
 File: boxplot.png Graphic file (type png)
 <use boxplot.png>
-Package pdftex.def Info: boxplot.png  used on input line 148.
+Package pdftex.def Info: boxplot.png  used on input line 170.
 (pdftex.def)             Requested size: 471.19923pt x 124.30408pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 149.
+(caption)                particular \caption on input line 171.
 See the caption package documentation for explanation.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 151--153
+Underfull \hbox (badness 10000) in paragraph at lines 173--175
 
  []
 
-<trasformer.png, id=144, 1463.4675pt x 663.6795pt>
+<trasformer.png, id=142, 1463.4675pt x 663.6795pt>
 File: trasformer.png Graphic file (type png)
 <use trasformer.png>
-Package pdftex.def Info: trasformer.png  used on input line 155.
+Package pdftex.def Info: trasformer.png  used on input line 177.
 (pdftex.def)             Requested size: 512.2213pt x 232.2913pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 156.
+(caption)                particular \caption on input line 178.
 See the caption package documentation for explanation.
 
 [7 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/boxplot.png>]
-<mccat.png, id=155, 316.5426pt x 197.538pt>
+<mccat.png, id=153, 316.5426pt x 197.538pt>
 File: mccat.png Graphic file (type png)
 <use mccat.png>
-Package pdftex.def Info: mccat.png  used on input line 168.
+Package pdftex.def Info: mccat.png  used on input line 190.
 (pdftex.def)             Requested size: 379.84921pt x 237.0444pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 169.
+(caption)                particular \caption on input line 191.
 See the caption package documentation for explanation.
 
-<macnum.png, id=156, 308.352pt x 198.0198pt>
+<macnum.png, id=154, 308.352pt x 198.0198pt>
 File: macnum.png Graphic file (type png)
 <use macnum.png>
-Package pdftex.def Info: macnum.png  used on input line 173.
+Package pdftex.def Info: macnum.png  used on input line 195.
 (pdftex.def)             Requested size: 370.02054pt x 237.62257pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 174.
+(caption)                particular \caption on input line 196.
 See the caption package documentation for explanation.
 
 [8 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/trasformer.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/mccat.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 183--184
+Underfull \hbox (badness 10000) in paragraph at lines 205--206
 
  []
 
-<SSEsub1.png, id=166, 514.5624pt x 375.804pt>
+<SSEsub1.png, id=164, 514.5624pt x 375.804pt>
 File: SSEsub1.png Graphic file (type png)
 <use SSEsub1.png>
-Package pdftex.def Info: SSEsub1.png  used on input line 194.
+Package pdftex.def Info: SSEsub1.png  used on input line 216.
 (pdftex.def)             Requested size: 308.73982pt x 225.48413pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 195.
+(caption)                particular \caption on input line 217.
 See the caption package documentation for explanation.
 
 [9 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/macnum.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/SSEsub1.png>]
-<parallelsub1.png, id=178, 366.168pt x 273.4215pt>
+<parallelsub1.png, id=176, 366.168pt x 273.4215pt>
 File: parallelsub1.png Graphic file (type png)
 <use parallelsub1.png>
-Package pdftex.def Info: parallelsub1.png  used on input line 204.
+Package pdftex.def Info: parallelsub1.png  used on input line 226.
 (pdftex.def)             Requested size: 261.5457pt x 195.30295pt.
-<numcompan_Fraction_percentCENTROIDI.png, id=179, 462.528pt x 344.0052pt>
+<numcompan_Fraction_percentCENTROIDI.png, id=177, 462.528pt x 344.0052pt>
 File: numcompan_Fraction_percentCENTROIDI.png Graphic file (type png)
 <use numcompan_Fraction_percentCENTROIDI.png>
-Package pdftex.def Info: numcompan_Fraction_percentCENTROIDI.png  used on input line 210.
+Package pdftex.def Info: numcompan_Fraction_percentCENTROIDI.png  used on input line 232.
 (pdftex.def)             Requested size: 277.51894pt x 206.40471pt.
 
-Overfull \hbox (13.35362pt too wide) in paragraph at lines 202--214
+Overfull \hbox (13.35362pt too wide) in paragraph at lines 224--236
 [][]  [] 
  []
 
-<par_cor2.png, id=180, 426.99525pt x 326.4195pt>
+<par_cor2.png, id=178, 426.99525pt x 326.4195pt>
 File: par_cor2.png Graphic file (type png)
 <use par_cor2.png>
-Package pdftex.def Info: par_cor2.png  used on input line 219.
+Package pdftex.def Info: par_cor2.png  used on input line 241.
 (pdftex.def)             Requested size: 261.5457pt x 199.94737pt.
-<rate_fraction_distance2.png, id=181, 462.528pt x 344.0052pt>
+<rate_fraction_distance2.png, id=179, 462.528pt x 344.0052pt>
 File: rate_fraction_distance2.png Graphic file (type png)
 <use rate_fraction_distance2.png>
-Package pdftex.def Info: rate_fraction_distance2.png  used on input line 225.
+Package pdftex.def Info: rate_fraction_distance2.png  used on input line 247.
 (pdftex.def)             Requested size: 277.51894pt x 206.40471pt.
 
-Overfull \hbox (13.35362pt too wide) in paragraph at lines 217--229
+Overfull \hbox (13.35362pt too wide) in paragraph at lines 239--251
 [][]  [] 
  []
 
-<par_cor_centroid8.png, id=182, 462.528pt x 344.0052pt>
+<par_cor_centroid8.png, id=180, 462.528pt x 344.0052pt>
 File: par_cor_centroid8.png Graphic file (type png)
 <use par_cor_centroid8.png>
-Package pdftex.def Info: par_cor_centroid8.png  used on input line 234.
+Package pdftex.def Info: par_cor_centroid8.png  used on input line 256.
 (pdftex.def)             Requested size: 261.5457pt x 194.53127pt.
-<rate_frac_dist8.png, id=183, 462.528pt x 344.0052pt>
+<rate_frac_dist8.png, id=181, 462.528pt x 344.0052pt>
 File: rate_frac_dist8.png Graphic file (type png)
 <use rate_frac_dist8.png>
-Package pdftex.def Info: rate_frac_dist8.png  used on input line 240.
+Package pdftex.def Info: rate_frac_dist8.png  used on input line 262.
 (pdftex.def)             Requested size: 277.51894pt x 206.40471pt.
 
-Overfull \hbox (13.35362pt too wide) in paragraph at lines 232--244
+Overfull \hbox (13.35362pt too wide) in paragraph at lines 254--266
 [][]  [] 
  []
 
 [10 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/parallelsub1.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/numcompan_Fraction_percentCENTROIDI.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/par_cor2.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/rate_fraction_distance2.png>]
-<parr cor frac6.png, id=196, 398.6895pt x 307.1475pt>
+<parr cor frac6.png, id=194, 398.6895pt x 307.1475pt>
 File: parr cor frac6.png Graphic file (type png)
 <use parr cor frac6.png>
-Package pdftex.def Info: parr cor frac6.png  used on input line 249.
+Package pdftex.def Info: parr cor frac6.png  used on input line 271.
 (pdftex.def)             Requested size: 261.5457pt x 201.49005pt.
-<FractionYear_Distance_Percent_CENTROIDI6.png, id=197, 462.528pt x 344.0052pt>
+<FractionYear_Distance_Percent_CENTROIDI6.png, id=195, 462.528pt x 344.0052pt>
 File: FractionYear_Distance_Percent_CENTROIDI6.png Graphic file (type png)
 <use FractionYear_Distance_Percent_CENTROIDI6.png>
-Package pdftex.def Info: FractionYear_Distance_Percent_CENTROIDI6.png  used on input line 255.
+Package pdftex.def Info: FractionYear_Distance_Percent_CENTROIDI6.png  used on input line 277.
 (pdftex.def)             Requested size: 277.51894pt x 206.40471pt.
 
-Overfull \hbox (13.35362pt too wide) in paragraph at lines 247--259
+Overfull \hbox (13.35362pt too wide) in paragraph at lines 269--281
 [][]  [] 
  []
 
-<RandomSSE_1.png, id=198, 462.528pt x 344.0052pt>
+<RandomSSE_1.png, id=196, 462.528pt x 344.0052pt>
 File: RandomSSE_1.png Graphic file (type png)
 <use RandomSSE_1.png>
-Package pdftex.def Info: RandomSSE_1.png  used on input line 276.
+Package pdftex.def Info: RandomSSE_1.png  used on input line 298.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
-<RandomSilhouette_1.png, id=199, 462.528pt x 346.896pt>
+<RandomSilhouette_1.png, id=197, 462.528pt x 346.896pt>
 File: RandomSilhouette_1.png Graphic file (type png)
 <use RandomSilhouette_1.png>
-Package pdftex.def Info: RandomSilhouette_1.png  used on input line 283.
+Package pdftex.def Info: RandomSilhouette_1.png  used on input line 305.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
 [11 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/par_cor_centroid8.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/rate_frac_dist8.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/parr cor frac6.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/FractionYear_Distance_Percent_CENTROIDI6.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 335--336
+Underfull \hbox (badness 10000) in paragraph at lines 357--358
 
  []
 
-<Figure_1.png, id=210, 462.528pt x 344.0052pt>
+<Figure_1.png, id=208, 462.528pt x 344.0052pt>
 File: Figure_1.png Graphic file (type png)
 <use Figure_1.png>
-Package pdftex.def Info: Figure_1.png  used on input line 347.
+Package pdftex.def Info: Figure_1.png  used on input line 369.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
-<Figure_24.png, id=211, 462.528pt x 344.0052pt>
+<Figure_24.png, id=209, 462.528pt x 344.0052pt>
 File: Figure_24.png Graphic file (type png)
 <use Figure_24.png>
-Package pdftex.def Info: Figure_24.png  used on input line 354.
+Package pdftex.def Info: Figure_24.png  used on input line 376.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
-<2.png, id=212, 462.528pt x 344.0052pt>
+<2.png, id=210, 462.528pt x 344.0052pt>
 File: 2.png Graphic file (type png)
 <use 2.png>
-Package pdftex.def Info: 2.png  used on input line 364.
+Package pdftex.def Info: 2.png  used on input line 386.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
-<5 (1).png, id=213, 462.528pt x 344.0052pt>
+<5 (1).png, id=211, 462.528pt x 344.0052pt>
 File: 5 (1).png Graphic file (type png)
 <use 5 (1).png>
-Package pdftex.def Info: 5 (1).png  used on input line 368.
+Package pdftex.def Info: 5 (1).png  used on input line 390.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
-<22.png, id=214, 462.528pt x 344.0052pt>
+<22.png, id=212, 462.528pt x 344.0052pt>
 File: 22.png Graphic file (type png)
 <use 22.png>
-Package pdftex.def Info: 22.png  used on input line 375.
+Package pdftex.def Info: 22.png  used on input line 397.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
-<5 (2).png, id=215, 462.528pt x 344.0052pt>
+<5 (2).png, id=213, 462.528pt x 344.0052pt>
 File: 5 (2).png Graphic file (type png)
 <use 5 (2).png>
-Package pdftex.def Info: 5 (2).png  used on input line 379.
+Package pdftex.def Info: 5 (2).png  used on input line 401.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
 [12 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/RandomSSE_1.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/RandomSilhouette_1.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Figure_1.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Figure_24.png>]
-<RandomSilhouetteDBSCAN_1.png, id=229, 462.528pt x 344.0052pt>
+<RandomSilhouetteDBSCAN_1.png, id=227, 462.528pt x 344.0052pt>
 File: RandomSilhouetteDBSCAN_1.png Graphic file (type png)
 <use RandomSilhouetteDBSCAN_1.png>
-Package pdftex.def Info: RandomSilhouetteDBSCAN_1.png  used on input line 393.
+Package pdftex.def Info: RandomSilhouetteDBSCAN_1.png  used on input line 415.
 (pdftex.def)             Requested size: 250.41374pt x 186.2482pt.
-<RandomSilhouetteDBSCAN_2.png, id=230, 462.528pt x 346.896pt>
+<RandomSilhouetteDBSCAN_2.png, id=228, 462.528pt x 346.896pt>
 File: RandomSilhouetteDBSCAN_2.png Graphic file (type png)
 <use RandomSilhouetteDBSCAN_2.png>
-Package pdftex.def Info: RandomSilhouetteDBSCAN_2.png  used on input line 400.
+Package pdftex.def Info: RandomSilhouetteDBSCAN_2.png  used on input line 422.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
  [13 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/2.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/5 (1).png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/22.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/5 (2).png>]
-<DistanceFromHome,Age,MonthlyIncome035Average.png, id=242, 385.44pt x 289.08pt>
+<DistanceFromHome,Age,MonthlyIncome035Average.png, id=240, 385.44pt x 289.08pt>
 File: DistanceFromHome,Age,MonthlyIncome035Average.png Graphic file (type png)
 <use DistanceFromHome,Age,MonthlyIncome035Average.png>
-Package pdftex.def Info: DistanceFromHome,Age,MonthlyIncome035Average.png  used on input line 429.
+Package pdftex.def Info: DistanceFromHome,Age,MonthlyIncome035Average.png  used on input line 451.
 (pdftex.def)             Requested size: 250.41374pt x 187.80713pt.
-<hierarchical_df3.png, id=243, 462.528pt x 346.896pt>
+<hierarchical_df3.png, id=241, 462.528pt x 346.896pt>
 File: hierarchical_df3.png Graphic file (type png)
 <use hierarchical_df3.png>
-Package pdftex.def Info: hierarchical_df3.png  used on input line 434.
+Package pdftex.def Info: hierarchical_df3.png  used on input line 456.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
-<DistanceFromHome,Age,MonthlyIncome035Ward.png, id=244, 385.44pt x 289.08pt>
+<DistanceFromHome,Age,MonthlyIncome035Ward.png, id=242, 385.44pt x 289.08pt>
 File: DistanceFromHome,Age,MonthlyIncome035Ward.png Graphic file (type png)
 <use DistanceFromHome,Age,MonthlyIncome035Ward.png>
-Package pdftex.def Info: DistanceFromHome,Age,MonthlyIncome035Ward.png  used on input line 443.
+Package pdftex.def Info: DistanceFromHome,Age,MonthlyIncome035Ward.png  used on input line 465.
 (pdftex.def)             Requested size: 250.41374pt x 187.80713pt.
-<dendogram_hierarchicaldf3(ward).png, id=245, 462.528pt x 346.896pt>
+<dendogram_hierarchicaldf3(ward).png, id=243, 462.528pt x 346.896pt>
 File: dendogram_hierarchicaldf3(ward).png Graphic file (type png)
 <use dendogram_hierarchicaldf3(ward).png>
-Package pdftex.def Info: dendogram_hierarchicaldf3(ward).png  used on input line 448.
+Package pdftex.def Info: dendogram_hierarchicaldf3(ward).png  used on input line 470.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
  [14 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/RandomSilhouetteDBSCAN_1.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/RandomSilhouetteDBSCAN_2.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/DistanceFromHome,Age,MonthlyIncome035Average.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/hierarchical_df3.png>]
-<validation_hierDF1(ward).png, id=260, 462.528pt x 346.896pt>
+<validation_hierDF1(ward).png, id=258, 462.528pt x 346.896pt>
 File: validation_hierDF1(ward).png Graphic file (type png)
 <use validation_hierDF1(ward).png>
-Package pdftex.def Info: validation_hierDF1(ward).png  used on input line 465.
+Package pdftex.def Info: validation_hierDF1(ward).png  used on input line 487.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
-<validation_silhouettehierdf2(median).png, id=261, 462.528pt x 346.896pt>
+<validation_silhouettehierdf2(median).png, id=259, 462.528pt x 346.896pt>
 File: validation_silhouettehierdf2(median).png Graphic file (type png)
 <use validation_silhouettehierdf2(median).png>
-Package pdftex.def Info: validation_silhouettehierdf2(median).png  used on input line 470.
+Package pdftex.def Info: validation_silhouettehierdf2(median).png  used on input line 492.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
-<FromHierarchicalKmeansDF2.png, id=262, 462.528pt x 346.896pt>
+<FromHierarchicalKmeansDF2.png, id=260, 462.528pt x 346.896pt>
 File: FromHierarchicalKmeansDF2.png Graphic file (type png)
 <use FromHierarchicalKmeansDF2.png>
-Package pdftex.def Info: FromHierarchicalKmeansDF2.png  used on input line 496.
+Package pdftex.def Info: FromHierarchicalKmeansDF2.png  used on input line 518.
 (pdftex.def)             Requested size: 300.63962pt x 225.47972pt.
- [15 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/DistanceFromHome,Age,MonthlyIncome035Ward.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/dendogram_hierarchicaldf3(ward).png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/validation_hierDF1(ward).png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/validation_silhouettehierdf2(median).png>]
-<Gridsearch60distance.png, id=273, 462.528pt x 346.896pt>
+ [15 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/DistanceFromHome,Age,MonthlyIncome035Ward.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/dendogram_hierarchicaldf3(ward).png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/validation_hierDF1(ward).png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/validation_silhouettehierdf2(median).png>] [16 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/FromHierarchicalKmeansDF2.png>]
+<ROC_CURVE.png, id=277, 462.528pt x 346.896pt>
+File: ROC_CURVE.png Graphic file (type png)
+<use ROC_CURVE.png>
+Package pdftex.def Info: ROC_CURVE.png  used on input line 571.
+(pdftex.def)             Requested size: 300.63962pt x 225.47972pt.
+<Modello 4 (scelto).png, id=278, 1318.17468pt x 540.51938pt>
+File: Modello 4 (scelto).png Graphic file (type png)
+<use Modello 4 (scelto).png>
+Package pdftex.def Info: Modello 4 (scelto).png  used on input line 579.
+(pdftex.def)             Requested size: 527.26054pt x 216.20392pt.
+
+Overfull \hbox (4.17783pt too wide) in paragraph at lines 584--585
+[]\T1/cmr/m/n/10 Applicando ta-le mo-del-lo sul te-st set si so-no ot-te-nu-ti ri-ca-va-ti ri-sul-ta-ti che sug-ge-ri-sco-no una buo-na per-for-man-ce del $\OML/cmm/m/it/10 DecisionTree$
+ []
+
+[17 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/ROC_CURVE.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Modello 4 (scelto).png (PNG copy)>]
+<ROC_CURVEsenzaYes.png, id=286, 462.528pt x 346.896pt>
+File: ROC_CURVEsenzaYes.png Graphic file (type png)
+<use ROC_CURVEsenzaYes.png>
+Package pdftex.def Info: ROC_CURVEsenzaYes.png  used on input line 606.
+(pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
+<Gridsearch60distance.png, id=287, 462.528pt x 346.896pt>
 File: Gridsearch60distance.png Graphic file (type png)
 <use Gridsearch60distance.png>
-Package pdftex.def Info: Gridsearch60distance.png  used on input line 529.
+Package pdftex.def Info: Gridsearch60distance.png  used on input line 641.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
-<Overfitting60distance.png, id=274, 462.528pt x 346.896pt>
+<Overfitting60distance.png, id=288, 462.528pt x 346.896pt>
 File: Overfitting60distance.png Graphic file (type png)
 <use Overfitting60distance.png>
-Package pdftex.def Info: Overfitting60distance.png  used on input line 534.
+Package pdftex.def Info: Overfitting60distance.png  used on input line 646.
 (pdftex.def)             Requested size: 250.41374pt x 187.81331pt.
- [16 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/FromHierarchicalKmeansDF2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 538--540
+
+Underfull \hbox (badness 10000) in paragraph at lines 650--652
 
  []
 
-[17 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Gridsearch60distance.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Overfitting60distance.png>] ("c:/Users\lasal\Desktop\UNIPI notes\Data Mining\DataMiningProject\tex\Relazione.aux")
+[18 <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/ROC_CURVEsenzaYes.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Gridsearch60distance.png> <c:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/tex/Overfitting60distance.png>] [19] ("c:/Users\lasal\Desktop\UNIPI notes\Data Mining\DataMiningProject\tex\Relazione.aux")
 Package rerunfilecheck Info: File `Relazione.out' has not changed.
 (rerunfilecheck)             Checksum: F10A1962CBF51A5A5439F0344B89E9C4;1061.
 
@@ -939,17 +956,17 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 12196 strings out of 479873
- 220898 string characters out of 2880513
- 533265 words of memory out of 3000000
- 28777 multiletter control sequences out of 15000+200000
+ 12213 strings out of 479873
+ 221269 string characters out of 2880513
+ 536265 words of memory out of 3000000
+ 28787 multiletter control sequences out of 15000+200000
  555799 words of font info for 89 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,9n,74p,1132b,961s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 66i,11n,74p,1132b,960s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1000.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\lasal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1728.pk><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on "c:/Users\lasal\Desktop\UNIPI notes\Data Mining\DataMiningProject\tex\Relazione.pdf" (17 pages, 2435046 bytes).
+Output written on "c:/Users\lasal\Desktop\UNIPI notes\Data Mining\DataMiningProject\tex\Relazione.pdf" (19 pages, 2830058 bytes).
 PDF statistics:
- 669 PDF objects out of 1000 (max. 8388607)
- 70 named destinations out of 1000 (max. 500000)
- 332 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 695 PDF objects out of 1000 (max. 8388607)
+ 75 named destinations out of 1000 (max. 500000)
+ 342 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -48,15 +48,16 @@ Nella prima fase dell'elaborazione si è studiato il data frame, valutando il nu
 Il numero di attributi è pari a 33. Si dividono in attributi numerici e categorici, ma ad uno sguardo più attento si nota che alcuni di essi, come Education o EnviromentSatisfaction, presentano valori numerici che poco si adattano al loro significato. Si ha infatti che sussistono le seguenti relazioni: 
 
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\arrayrulecolor{white}\hline
+\begin{tabular}{l|l|l|l}
+\hline
 Education & EnvironmentSatisfaction & JobInvolvement & JobSatisfaction \\
-\arrayrulecolor{white}\hline
-1 : 'Below College' & 1 : 'Low'  & 1 : 'Low'& 1 : 'Low' \\
-2 : 'College'  & 2 : 'Medium' & 2 : 'Medium'& 2 : 'Medium'\\
-3 : 'Bachelor'    &3 : 'High' & 3 : 'High'& 3 : 'High'  \\
-4 : 'Master'    &4 : 'Very High' & 4 : 'Very High' & 4 : 'Very High' \\
-5 : 'Doctor'  &  & &\\
+\hline
+\hline
+1 : `Below College' & 1 : `Low'  & 1 : `Low'& 1 : `Low' \\
+2 : `College'  & 2 : `Medium' & 2 : `Medium'& 2 : `Medium'\\
+3 : `Bachelor'    &3 : `High' & 3 : `High'& 3 : `High'  \\
+4 : `Master'    &4 : `Very High' & 4 : `Very High' & 4 : `Very High' \\
+5 : `Doctor'  &  & &\\
 \hline
 \end{tabular}
 \end{center}
@@ -65,14 +66,15 @@ Education & EnvironmentSatisfaction & JobInvolvement & JobSatisfaction \\
 %\begin{table}{I}{0.7\linewidth}
 %\centering
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|}
-\arrayrulecolor{white}\hline
-PerformanceRating & RelationshipSatisfaction&WorkLifeBalance  &   \quad\quad&\quad\quad    &\quad\quad      \\
-\arrayrulecolor{white}\hline
-1 : `Low' & 1 : `Low' & 1 : `Bad'&&&\\
-2 : `Good' & 2 : 'Medium'& 2 : `Good'&&&\\
-3 : `Excellent'& 3 : 'High' & 3 : `Better'&&&\\
-4 : `Outstanding'& 4 : 'Very High' &4 : `Best'&&&\\
+\begin{tabular}{l|l|l}
+\hline
+PerformanceRating & RelationshipSatisfaction&WorkLifeBalance \\
+\hline
+\hline
+1 : `Low' & 1 : `Low' & 1 : `Bad'\\
+2 : `Good' & 2 : 'Medium'& 2 : `Good'\\
+3 : `Excellent'& 3 : `High' & 3 : `Better'\\
+4 : `Outstanding'& 4 : `Very High' &4 : `Best'\\
 \hline
 \end{tabular}
 \end{center}
