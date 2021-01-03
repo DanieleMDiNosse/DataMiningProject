@@ -2,6 +2,20 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from fim import apriori
+'''
+Rapresentative set of frequent itemsets:
+Maxiaml Frequent Itemset --> An itemset is said to be maximal frequent if none of its immediate supersets are frequent.
+Maximal frequent itemsets rapresents the blocks from which you can construct all the other frequent itemsets. Anyway
+they do not include any information about the support except that they satify the min sup condition.
+
+Closed Itemset --> An intemset is said to be closed if none of its immediate supersets have the same support count.
+One interesting characteristic of closed itemsets is that if we know their support count we can compute the support
+count of all the other itemsets using the definition of CI and the anti-monotone propriety of the support count.
+
+Closed Frequent Itemset --> An itemset is said to bea closed frequent itemset if it's closed an its support is greater
+than min supp.
+Closed frequent itemsets provide a compact rapresentation of the support count of all the frequent itemsets
+'''
 
 df0 = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome.csv')
 df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome_Reversed.csv')
