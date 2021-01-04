@@ -17,11 +17,14 @@ than min supp.
 Closed frequent itemsets provide a compact rapresentation of the support count of all the frequent itemsets
 '''
 
-df0 = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome.csv')
-df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome_Reversed.csv')
-df['Age'] = df0['Age'].values
 
-column2drop = ['Age', 'PerformanceRating', 'TrainingTimesLastYear', 
+# df = pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome_Reversed.csv')
+
+df = pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Codici/TrasfAttributeFraction_RateIncome_NOMonthlyRateMonthlyIncome_Reversed.csv')
+
+# == DATA FRAME PREPARATION  ====================================================================================================================================================================
+
+column2drop = ['PerformanceRating', 'TrainingTimesLastYear', 
                 'StockOptionLevel', 'YearsInCurrentRole', 'NumCompaniesWorked','PercentSalaryHike',
                 'OverTime', 'RateIncome', 'FractionYearsAtCompany']
 df.drop(column2drop, axis=1, inplace=True)
@@ -30,53 +33,86 @@ df.drop(column2drop, axis=1, inplace=True)
 df['DistanceFromHomeBin'] = pd.cut(df['DistanceFromHome'].astype(int), 10 , right=False) 
 
 df = df.drop(columns='DistanceFromHome')
-
+df['JobInvolvement']=df['JobInvolvement'].astype('str')+'_JobInv'
+df['EnvironmentSatisfaction']=df['EnvironmentSatisfaction'].astype('str')+'_EnvSat'
+df['JobSatisfaction']=df['JobSatisfaction'].astype('str')+'_JobSat'
+df['WorkLifeBalance']=df['WorkLifeBalance'].astype('str')+'_WorkLifeBalance'
 # Divide in Train and Test
 train = df.iloc[:630]
 test = df.iloc[630:]
+# ======================================================================================================================================================================
 
+# ======================================================================================================================================================================
+association_rule=False
+
+# ======================================================================================================================================================================
 
 
 basket = train.values.tolist()
-lunghezza_supp = []
-for s in range(1,100):
+itemsets_tot = []
+itemsets_maximal = []
+itemsets_closed = []
+for s in np.linspace(1,25,50):
     itemsets = apriori(basket, supp=s, zmin=2, target='a')
-    lunghezza_supp.append(len(itemsets))
-plt.figure()
-plt.plot(range(1,100), lunghezza_supp)
+    itemsets_tot.append(len(itemsets))
+
+    itemsets = apriori(basket, supp=s, zmin=2, target='c')
+    itemsets_closed.append(len(itemsets))
+
+    itemsets = apriori(basket, supp=s, zmin=2, target='m')
+    itemsets_maximal.append(len(itemsets))
+
+plt.figure('Frequen, maximal and closed itemsets')
+plt.plot(np.linspace(1,25,50), itemsets_tot, label='Frequent')
+plt.plot(np.linspace(1,25,50), itemsets_maximal, label='Maximal')
+plt.plot(np.linspace(1,25,50), itemsets_closed, label='Closed')
+plt.legend()
 plt.grid(True)
-plt.show()
+
+itemsets_10 = apriori(basket, supp=10, zmin=2, target='c')
+interest_itemsets = []
+for i in itemsets_10:
+    if (i[1]>200) and (len(i[0])>2):
+        interest_itemsets.append(i)
+print(f'Number of itemsets s > 10: {len(itemsets_10)}')
+print(f'Number of interest itemsets s > 200 and shape=3: {len(interest_itemsets)}')
+for i in interest_itemsets:
+    print(i)
+# plt.show()
+
 
 # print('Number of itemsets:', len(itemsets))
 
+if association_rule:
+    plt.figure()
+    for s in range(5,25,5):
+        lunghezza_conf = []
+        for c in range(0,100):
+            rules = apriori(basket, supp=s, zmin=2, target='r', conf=c, report='ascl')
+            lunghezza_conf.append(len(rules))
+        plt.plot(range(0,100), lunghezza_conf, label = f'min_supp = {s}')
+        plt.grid(True)
+    plt.legend()
+    # plt.show()
 
-plt.figure()
-for s in range(5,25,5):
-    lunghezza_conf = []
-    for c in range(0,100):
-        rules = apriori(basket, supp=s, zmin=2, target='r', conf=c, report='ascl')
-        lunghezza_conf.append(len(rules))
-    plt.plot(range(0,100), lunghezza_conf, label = f'min_supp = {s}')
-    plt.grid(True)
-plt.legend()
+
+    lift_list = []
+    lift_sup = 2
+    rules = apriori(basket, supp=10, zmin=2, target='r', conf=70, report='ascl')
+    print(f'Number of rules: {len(rules)}')
+    for r in rules: 
+        if r[-1]>lift_sup:     
+            # print(f'lift:{r[-1]}')
+            lift_list.append(r[-1])
+    print(f'Number of rules with lift > {lift_sup}: {len(lift_list)}')
+
 plt.show()
-
-
-# lift = []
-# for c in range(0,1):
-#     rules = apriori(basket, supp=10, zmin=2, target='r', conf=c, report='ascl')
-#     print(len(rules))
-#     lift.append(rules[4])
-# plt.figure()
-# plt.plot(range(0,100), lift)
-# plt.grid(True)
-# plt.show()
 
 
 # print('Number of rule:', len(rules))
 
-for r in rules:
-    if r[0] == 'Male':
-        print(r)
-    if r[0] == 'Female':
-        print(r)
+# for r in rules:
+#     if r[0] == 'Male':
+#         print(r)
+#     if r[0] == 'Female':
+#         print(r)
