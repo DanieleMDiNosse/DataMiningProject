@@ -1,0 +1,34 @@
+===================== FREQUENT ITEMSETS =====================
+Number of frequent itemsets s > 10: 653
+Number of interest frequent itemsets s > 150 and shape = 3: 11
+
+(('Life Sciences', 'Research & Development', 'No'), 167)
+(('Married', 'Better_WorkLifeBalance', 'No'), 156)
+(('Married', 'Research & Development', 'No'), 169)
+(('Better_WorkLifeBalance', 'High_JobInv', 'No'), 194)
+(('Better_WorkLifeBalance', 'Male', 'Research & Development'), 151)
+(('Better_WorkLifeBalance', 'Male', 'No'), 208)
+(('Better_WorkLifeBalance', 'Research & Development', 'No'), 225)
+(('High_JobInv', 'Male', 'Research & Development'), 152)
+(('High_JobInv', 'Male', 'No'), 206)
+(('High_JobInv', 'Research & Development', 'No'), 213)
+(('Male', 'Research & Development', 'No'), 230)
+
+===================== MAXIMAL ITEMSETS =====================
+Number of maxiaml itemsets s > 10: 262
+Number of interest maximal itemsets s > 100 and shape=3: 2
+
+(('Married', 'Better_WorkLifeBalance', 'Research & Development', 'No'), 106)
+(('Married', 'Male', 'Research & Development', 'No'), 103)
+
+===================== CLOSED ITEMSETS =====================
+(('Married', 'Better_WorkLifeBalance', 'Research & Development', 'No'), 106) ALSO CLOSED ==> MAXIMAL CLOSED ITEMSET
+
+Number of itemsets s > 10: 633
+Number of interest itemsets s > 200 and shape=3: 5
+
+(('Better_WorkLifeBalance', 'Male', 'No'), 208)
+(('Better_WorkLifeBalance', 'Research & Development', 'No'), 225)
+(('High_JobInv', 'Male', 'No'), 206)
+(('High_JobInv', 'Research & Development', 'No'), 213)
+(('Male', 'Research & Development', 'No'), 230)
