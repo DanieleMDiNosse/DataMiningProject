@@ -32,3 +32,15 @@ Number of interest itemsets s > 200 and shape=3: 5
 (('High_JobInv', 'Male', 'No'), 206)
 (('High_JobInv', 'Research & Development', 'No'), 213)
 (('Male', 'Research & Development', 'No'), 230)
+
+
+===================== LIFT ITEMSETS ========================
+Number of rules with lift > 3.9: 6
+
+RULE 1 = ('Research Director', (3.0, 'Research & Development', 'No'), 22, 0.03492063492063492, 0.3384615384615385, 4.02322206095791)
+RULE 2 = ('Manager', (4.0,), 26, 0.04126984126984127, 0.4, 4.271186440677966)
+RULE 3 = ('Research Scientist', (1.0, 'Life Sciences', 'Research & Development'), 39, 0.06190476190476191, 0.6190476190476191, 3.9393939393939394)
+RULE 4 = ('Sales Executive', ('Sales', 2.0000000000000004, 'Better_WorkLifeBalance'), 67, 0.10634920634920635, 1.0, 4.012738853503185)
+RULE 5 = ('Sales Executive', ('Sales', 2.0000000000000004, 'No'), 96, 0.1523809523809524, 0.9896907216494846, 3.971370411714492)
+RULE 6 = ('Sales Executive', ('Sales', 2.0000000000000004), 111, 0.1761904761904762, 0.9823008849557522, 3.941716926892509)
+
