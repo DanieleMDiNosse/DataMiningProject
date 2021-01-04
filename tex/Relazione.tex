@@ -737,7 +737,11 @@ Di seguito è riportato il risultato del modello selezionato sul test set, trami
 Si può notare come, sebbene l'approccio dell'oversampling abbia sanato parzialmente lo squilibrio fra i due valori di Attrition, resta comunque un bias in favore dei 'No'.
 
 \section{Association Rules}
-
+Lo scopo è quello di ricavare le $Association Rules$ più interessanti nei dati disponibili. Poichè il numero degli itemsets e di consegeuenza il numero delle regole cresce esponenzialmente al variare dei valori, sono stati scartati gli attributi considerati meno importanti, ovvero:\\
+'PerformanceRating', 'TrainingTimesLastYear', 'StockOptionLevel',  'YearsInCurrentRole',  'NumCompaniesWorked','PercentSalaryHike',  'OverTime',  'RateIncome', 'FractionYearsAtCompany'.\\
+L'unico attributo numerico continuo sopravvissuto, 'DistanceFromHome', è stato categorizzato in $10$ valori tramite la suddivisione in intervalli.
+Parte della suddivisione dei data frame.
+Come prima cosa sono stati determinati gli itemsets più frequenti tra tutti quelli possibili al variare del tr
 
 
 
