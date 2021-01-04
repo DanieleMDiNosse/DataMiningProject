@@ -14,6 +14,9 @@
 \usepackage{siunitx}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{array}
+\usepackage{color}
+\usepackage{colortbl}
 \captionsetup{tableposition=top,figureposition=bottom,font=footnotesize}
 \renewcommand{\vec}{\mathbf}
 \usepackage{upgreek}
@@ -118,10 +121,42 @@ Le frequenze degli attributi categorici e le relative mode sono riportate nelle 
 \end{center}
 
 \begin{center}
-\includegraphics[scale=1]{modacategoriciordinali.png}
+\begin{tabular}{lc}
+\toprule
+ &\bfseries Moda \\
+\hline
+\hline
+\rowcolor[gray]{0.9}
+Attriction & No\\
+Educational Field & Life Science\\
+\rowcolor[gray]{0.9}
+Departement & Research and Development\\
+Gender & Male\\
+\rowcolor[gray]{0.9}
+Over Time & No\\
+Business Travel & Travel Rarely\\
+\rowcolor[gray]{0.9}
+Job Rule & Sales Executive\\
+Marital Status & Married \\
+\rowcolor[gray]{0.9}
+Over 18 & Yes\\ 
+Education & Bachelor\\
+\rowcolor[gray]{0.9}
+Envirorment Satisfaction & High\\
+Job Involvement & High\\
+\rowcolor[gray]{0.9}
+Job Satisfaction & Very High\\
+Performance Rating & Excellent\\
+\rowcolor[gray]{0.9}
+Relationship Satisfaction & High\\
+Job Level & 1\\
+\rowcolor[gray]{0.9}
+Work Life Balace & Better\\
+Stock Option Level & 0\\
+\bottomrule 
+\end{tabular}
 \captionof{figure}{Mode}
 \end{center}
- 
  
 Le distribuzioni degli attributi ordinali e numerici con alcuni indici statistici sono rappresentate di seguito.
 Si può notare la forte asimmetria di molte distribuzioni ed un varianza molto grande in alcuni attributi. Tali problematiche dovranno essere sanate con opportune trasformazioni.
