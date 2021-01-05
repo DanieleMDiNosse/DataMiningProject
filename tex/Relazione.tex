@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
 \usepackage{graphicx}
+\usepackage{changepage}
 \usepackage{subcaption}
 \usepackage{caption}
 \usepackage{gensymb}
@@ -18,17 +19,19 @@
 \usepackage{color}
 \usepackage{colortbl}
 \usepackage{amsmath}
+\usepackage{frontespizio}
 \captionsetup{tableposition=top,figureposition=bottom,font=footnotesize}
 \renewcommand{\vec}{\mathbf}
 \usepackage{upgreek}
 \usepackage[a4paper, total={7.7in, 10.5in}]{geometry}
 \begin{document}
-\title{Relazione del Progetto di Data Mining}
+
 \title{%
   Relazione del Progetto di Data Mining \\
   \large Corso di Laurea Magistrale in Fisica \\
     Esame di Data Mining A.A. 2020/2021}
 \author{Gruppo 33: Daniele Maria Di Nosse, Angelo Lasala, Raffaele Paradiso}
+
 \maketitle
 \newpage
 
@@ -116,8 +119,8 @@ Per quanto riguarda il range di valori degli attributi risulta essere molto più
 \subsection{Analisi statistica}
 Le frequenze degli attributi categorici e le relative mode sono riportate nelle seguenti tabelle.
 
-\begin{center}
-\begin{table}\footnotesize
+
+\begin{center}\footnotesize
 \begin{tabular}{lllll}
 \toprule
 \bfseries Attriction &\bfseries  Educational Field & \bfseries Departement &\bfseries  Gender & \bfseries Over Time\\
@@ -154,11 +157,10 @@ Le frequenze degli attributi categorici e le relative mode sono riportate nelle 
 \bottomrule
 \end{tabular}
 \captionof{figure}{Frequenze degli attributi categorici}
-\end{table}
 \end{center}
 
 
-\begin{center}
+\begin{center}\footnotesize
 \begin{tabular}{lc}
 \toprule
  &\bfseries Moda \\
@@ -200,8 +202,8 @@ Le distribuzioni degli attributi ordinali e numerici con alcuni indici statistic
 Si può notare la forte asimmetria di molte distribuzioni ed un varianza molto grande in alcuni attributi. Tali problematiche dovranno essere sanate con opportune trasformazioni.
 
 
-\begin{center}
-\begin{table}\footnotesize
+
+\begin{center}\scriptsize
 \begin{tabular}{l|ccccc}
 \toprule
 &\bfseries Age&\bfseries DailyRate&\bfseries DistanceFromHome&\bfseries HourlyRate&\bfseries MonthlyIncome\\
@@ -256,7 +258,6 @@ max&40&18&15&17&80\\
 \bottomrule
 \end{tabular}
 \captionof{figure}{Indici statistici per gli attributi numerici}
-\end{table}
 \end{center}
 
 
@@ -817,11 +818,11 @@ Di seguito è riportato il risultato del modello selezionato sul test set, trami
 Si può notare come, sebbene l'approccio dell'oversampling abbia sanato parzialmente lo squilibrio fra i due valori di Attrition, resta comunque un bias in favore dei 'No'.
 
 \section{Association Rules}
-Lo scopo è quello di ricavare le $Association Rules$ più interessanti nei dati disponibili. Poichè il numero degli itemsets e di consegeuenza il numero delle regole cresce esponenzialmente al variare dei valori, sono stati scartati gli attributi considerati meno importanti, ovvero:
+Lo scopo è quello di ricavare le $Association Rules$ più interessanti nei dati disponibili. Poiché il numero degli itemsets e di consegeuenza il numero delle regole cresce esponenzialmente al variare dei valori, sono stati scartati gli attributi considerati meno importanti, ovvero:
 'PerformanceRating', 'TrainingTimesLastYear', 'StockOptionLevel',  'YearsInCurrentRole',  'NumCompaniesWorked','PercentSalaryHike',  'OverTime',  'RateIncome', 'FractionYearsAtCompany'.\\
 L'unico attributo numerico continuo sopravvissuto, 'DistanceFromHome', è stato categorizzato in $10$ valori tramite la suddivisione in intervalli.
-Parte della suddivisione dei data frame.
-Come prima cosa sono stati determinati gli itemsets più frequenti, i massimali e i chiusi al variare del valore minimo del supporto. Come si può osservare dal grafico in Figura XXXXX all'aumentare del supporto minimo il numero degli itemset descresce velocemente, in particalore seguono un andamento esponenziale decrescente.
+Ai fini dell'utilizzo delle regole di associazione che verranno determinate per la predizione di determinati target class e della conseguenza valutazione della loro bontà, è stato suddiviso il data frame in due sottoinsiemi: uno di train ($630$ elementi) ed uno di test ($269$ elementi).
+Come prima cosa sono stati determinati gli itemsets più frequenti, i massimali e i chiusi al variare del valore minimo del supporto. Come si può osservare dal grafico in Figura XXXXX all'aumentare del supporto minimo il numero degli itemset decresce velocemente, in particolare seguono un andamento esponenziale decrescente.
 
 \begin{figure}[H]
     \centering
@@ -849,7 +850,7 @@ Come misura di interesse per ciascuna regola è stato utilizzato l'$Interest Fac
     \label{fig:my_label}
 \end{figure}
 
-Di conseguenza le regole più interessanti scelte risultano essere quelle con lift maggiore di $3$ siccome il numero di regolore significativamente  minore di $1$ è nullo. Le regole selezionate risultano essere:
+Di conseguenza le regole più interessanti scelte risultano essere quelle con lift maggiore di $3$ siccome il numero di regolare significativamente  minore di $1$ è nullo. Le regole selezionate risultano essere:
 
 \begin{enumerate}
 \item ($3.0$, 'Research and Development', 'No') $\longrightarrow$ 'Research Director'
@@ -858,7 +859,7 @@ Di conseguenza le regole più interessanti scelte risultano essere quelle con li
 \item ('Sales', $2.0$, 'No') $\longrightarrow$ 'Sales Executive'
 \end{enumerate}
 
-Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$ aventi le lift più alte, utilizzate per predire la class label dell'attributo Department. Il tutto è stato applicato sul test set ed i risultati sono mostrati nelle seuenti tabelle di contingenza in cui \textbf {A}  ($\bar{\textbf {A}}$) e \textbf {B}  ($\bar{\textbf {B}}$) rappresentano precedente (precedente negato) ed antecedente (antecedente negato). 
+Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$ aventi le lift più alte, utilizzate per predire la class label dell'attributo Department. Il tutto è stato applicato sul test set ed i risultati sono mostrati nelle segenti tabelle di contingenza in cui \textbf {A}  ($\bar{\textbf {A}}$) e \textbf {B}  ($\bar{\textbf {B}}$) rappresentano precedente (precedente negato) ed antecedente (antecedente negato). 
 
 \begin{figure}[H]
   \centering
@@ -872,7 +873,7 @@ Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$ aventi le l
 \hline
 & 3&37&40\\
 \end{tabular}
-    \caption{tabella di contingenza regola 1. Accuratezza$=10\%$}
+    \caption{Tabella di contingenza regola 1. Accuratezza$=10\%$}
   \end{minipage}
   \begin{minipage}{.45\textwidth}
     \centering
@@ -884,7 +885,7 @@ Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$ aventi le l
 \hline
 & 28&58&86\\
 \end{tabular}
-    \caption{tabella di contigenza regola 3.  Accuratezza$=93.3\%$}
+    \caption{Tabella di contingenza regola 3.  Accuratezza$=93.3\%$}
   \end{minipage}
   \end{figure}
 
@@ -894,15 +895,15 @@ Utilizzando un procedimento analogo è possibile determinare regole per selezion
 Le regole determinate, aventi i lift più alti, sono:
 
 \begin{enumerate}
-\item ('Low\_EnvirormentSatisfaction', 'Better\_WorkLifeBalance') $\longrightarrow$ 'Yes'
-\item ('Low\_EnvirormentSatisfaction', 'Male') $\longrightarrow$ 'Yes'
-\item ($2.0$, 'Life Sciences') $\longrightarrow$ 'Yes'
-\item ($2.0$, 'High\_JobEnvolvement', 'Researh and Development') $\longrightarrow$ 'Yes'
-\item ('High\_RelationshipSatisfaction', 'Sales') $\longrightarrow$ 'Yes'
+\item ('Low\_EnvirormentSatisfaction', 'Better\_WorkLifeBalance') $\longrightarrow$ 'Yes'; Lift=$1.86$
+\item ('Low\_EnvirormentSatisfaction', 'Male') $\longrightarrow$ 'Yes'; Lift=$1.96$
+\item ($1.0$, 'Life Sciences') $\longrightarrow$ 'Yes'; Lift=$1.84$
+\item ($1.0$, 'High\_JobEnvolvement', 'Researh and Development') $\longrightarrow$ 'Yes'; Lift=$1.86$
+\item ('High\_RelationshipSatisfaction', 'Sales') $\longrightarrow$ 'Yes'; Lift=$1.96$
 \end{enumerate}
 
-La prima regola suggerisce che questi impiegati, sebbene abbiano un buon equilibrio tra la vita privata e quella lavorativa, la bassa soddisfazione dell'ambiente di lavoro, aumenta la probabilità di essere logorati. Discorso analoro per l'ultima, dove si evince che il dipartimento 'Sales' è particolarmente stressante per idipendenti nonostate esistano buoni rapporti tra colleghi.
-Per le predizioni sono state usate le regole $1$ e $5$, di seguito sono riportate le tabelle di contigenza.
+La prima regola suggerisce che questi impiegati, sebbene abbiano un buon equilibrio tra la vita privata e quella lavorativa, la bassa soddisfazione dell'ambiente di lavoro, aumenta la probabilità di essere logorati. Discorso analogo per l'ultima, dove si evince che il dipartimento 'Sales' è particolarmente stressante per indipendenti nonostante esistano buoni rapporti tra colleghi.
+Per le predizioni sono state usate le regole $1$ e $5$, di seguito sono riportate le tabelle di contingenza.
 
 \begin{figure}[H]
   \centering
@@ -916,7 +917,7 @@ Per le predizioni sono state usate le regole $1$ e $5$, di seguito sono riportat
 \hline
 & 13&105&118\\
 \end{tabular}
-    \caption{tabella di contingenza regola 1. Accuratezza$=13.5\%$}
+    \caption{Tabella di contingenza regola 1. Accuratezza$=13.5\%$}
   \end{minipage}
   \begin{minipage}{.45\textwidth}
     \centering
@@ -928,9 +929,10 @@ Per le predizioni sono state usate le regole $1$ e $5$, di seguito sono riportat
 \hline
 & 14&143&157\\
 \end{tabular}
-    \caption{tabella di contigenza regola 5.  Accuratezza$=10.5\%$}
+    \caption{Tabella di contingenza regola 5.  Accuratezza$=10.5\%$}
   \end{minipage}
   \end{figure}
+L'accuratezza delle regole ricavate non è molto significativa (rispettivamente $13.5\%$ e $10.5\%$), il che comporta quindi che le prestazioni ottenute sul test set sono basse: utilizzare tali associations rules non porta a predizioni soddisfacenti.
 
 	
 %\section{Conclusioni}
