@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from fim import apriori
 import tqdm
+from scipy.optimize import curve_fit
 '''
 Rapresentative set of frequent itemsets:
 Maxiaml Frequent Itemset --> An itemset is said to be maximal frequent if none of its immediate supersets are frequent.
@@ -45,7 +46,7 @@ test = df.iloc[630:]
 
 # ======================================================================================================================================================================
 association_rule=False
-itemsets_gen = False
+itemsets_gen = True
 
 # ======================================================================================================================================================================
 
@@ -69,8 +70,21 @@ if itemsets_gen:
     plt.plot(np.linspace(1,25,50), itemsets_tot, label='Frequent')
     plt.plot(np.linspace(1,25,50), itemsets_maximal, label='Maximal')
     plt.plot(np.linspace(1,25,50), itemsets_closed, label='Closed')
-    plt.legend()
+    # plt.plot(np.linspace(1,25,50), 219226*np.exp(-1.14722*np.linspace(1,25,50)), linestyle = '--', c='k',alpha = 0.4, label = r'Exponential fit: $Ae^{bs}$')
+    # plt.legend()
+    plt.xlabel('Support')
+    plt.ylabel('Number of itemsets')
     plt.grid(True)
+    
+    
+      
+    # t1=np.linspace(1,25,50)
+    # dist1=itemsets_tot
+    # def model(t1,m,q):
+    #     return m*np.exp(q*t1)
+    # popt,pocov=curve_fit(model,t1,dist1)
+    
+    
     
     itemsets_10 = apriori(basket, supp=10, zmin=2, target='c')
     interest_itemsets = []
