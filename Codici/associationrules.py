@@ -46,7 +46,7 @@ test = df.iloc[630:]
 
 # ======================================================================================================================================================================
 association_rule=False
-itemsets_gen = True
+itemsets_gen = False
 
 # ======================================================================================================================================================================
 
@@ -70,7 +70,7 @@ if itemsets_gen:
     plt.plot(np.linspace(1,25,50), itemsets_tot, label='Frequent')
     plt.plot(np.linspace(1,25,50), itemsets_maximal, label='Maximal')
     plt.plot(np.linspace(1,25,50), itemsets_closed, label='Closed')
-    # plt.plot(np.linspace(1,25,50), 219226*np.exp(-1.14722*np.linspace(1,25,50)), linestyle = '--', c='k',alpha = 0.4, label = r'Exponential fit: $Ae^{bs}$')
+    plt.plot(np.linspace(1,25,50), 72483*(np.linspace(1,25,50)**1.875), linestyle = '--', c='k',alpha = 0.4, label = r'Exponential fit: $Ae^{bs}$')
     # plt.legend()
     plt.xlabel('Support')
     plt.ylabel('Number of itemsets')
@@ -78,11 +78,11 @@ if itemsets_gen:
     
     
       
-    # t1=np.linspace(1,25,50)
-    # dist1=itemsets_tot
-    # def model(t1,m,q):
-    #     return m*np.exp(q*t1)
-    # popt,pocov=curve_fit(model,t1,dist1)
+    t1=np.linspace(1,25,50)
+    dist1=itemsets_tot
+    def model(t1,m,q):
+        return m*(1/t1**q)
+    popt,pocov=curve_fit(model,t1,dist1)
     
     
     
@@ -106,8 +106,8 @@ if association_rule:
         lunghezza_conf = []
         for c in np.linspace(1,100,200):
             rules = apriori(basket, supp=s, zmin=2, target='r', conf=c, report='ascl')
-            # plt.hist(len(rules), color='k')
-            plt.plot(np.linspace(1,100,200), lunghezza_conf, label = f'min_supp = {s}')
+            lunghezza_conf.append(len(rules))
+        plt.plot(np.linspace(1,100,200), lunghezza_conf, label = f'min_supp = {s}')
         plt.xlabel('Confidence')
         plt.ylabel('Number of rules')
         plt.grid(True)
@@ -132,20 +132,18 @@ if association_rule:
         lift_list.append(r[-1])
     plt.hist(lift_list, bins=np.arange(0,6,1), alpha=0.4, label='Confidence=50',color='blue')
     
-    rules = apriori(basket, supp=10, zmin=2, target='r', conf=30, report='ascl')
+    rules = apriori(basket, supp=80, zmin=2, target='r', conf=30, report='ascl')
     print(f'Number of rules with c=30: {len(rules)}')
     interesting_rules = []
     for r in rules: 
         # print(f'lift:{r[-1]}')
         lift_list.append(r[-1])
-        if r[-1]>3.9:
+        lift_thr = 2
+        if (r[-1]>lift_thr):
             interesting_rules.append(r)
             print(r)
-    print(f'Number of rules with lift > 3.9: {len(interesting_rules)}')
+    print(f'Number of rules with lift > {lift_thr}: {len(interesting_rules)}')
     
-        
-
-        
     plt.hist(lift_list, bins=np.arange(0,6,1), alpha=0.2, label='Confidence=30')
     plt.grid(True)
     plt.xlabel('Lift')
@@ -177,7 +175,191 @@ for item in basket_test:
         f01.append(item)
     if (item[0] != 'No') and (item[1] != 'Research & Development') and (item[7] != 3.0) and (item[8] != 'Research Director'):
         f00.append(item)
+# print(f'f11: {len(f11)}')
+# print(f'f01: {len(f01)}')
+# print(f'f10: {len(f10)}')
+# print(f'f00: {len(f00)}')
+
+# RULE 4
+f11 = []
+f01 = []
+f10 = []
+f00 = []
+for item in basket_test:
+    if (item[0] == 'No') and (item[1] == 'Sales') and (item[7] == 2.0000000000000004) and (item[8] == 'Sales Executive'):
+        f11.append(item)
+    if (item[0] == 'No') and (item[1] == 'Sales') and (item[7] == 2.0000000000000004) and (item[8] != 'Sales Executive'):
+        f10.append(item)
+    if (item[0] != 'No') and (item[1] != 'Sales') and (item[7] != 2.0000000000000004) and (item[8] == 'Sales Executive'):
+        f01.append(item)
+    if (item[0] != 'No') and (item[1] != 'Sales') and (item[7] != 2.0000000000000004) and (item[8] != 'Sales Executive'):
+        f00.append(item)
 print(f'f11: {len(f11)}')
 print(f'f01: {len(f01)}')
 print(f'f10: {len(f10)}')
 print(f'f00: {len(f00)}')
+
+print('======== Predicting Attrition ======== ')
+rules = apriori(basket, supp=10, zmin=2, target='r', conf=20, report='ascl')
+print(f'Number of rules with c=30: {len(rules)}')
+inter_rulesYesUP = []
+inter_rulesNoUP = []
+inter_rulesYesDOWN = []
+inter_rulesNoDOWN = []
+lift_list = []
+i = 0
+for r in rules: 
+    lift_list.append(r[-1])
+    lift_thrUP = 1.8
+    if (r[-1]>lift_thrUP) and (r[0] == 'Yes'):
+        inter_rulesYesUP.append(r)
+        i += 1
+        print(f'Rule {i}: {r}')
+    if (r[-1]>lift_thrUP) and (r[0] == 'No'):
+        inter_rulesNoUP.append(r)
+        # print(r)
+    lift_thrDOWN = 0.8
+    if (r[-1]<lift_thrDOWN) and (r[0] == 'Yes'):
+        inter_rulesYesDOWN.append(r)
+        # print(r)
+    if (r[-1]<lift_thrDOWN) and (r[0] == 'No'):
+        inter_rulesNoDOWN.append(r)
+        # print(r)
+print()
+print('--- Report ---')
+print(f'Number of rules with lift > {lift_thrUP}: Yes --> {len(inter_rulesYesUP)}, No --> {len(inter_rulesNoUP)}')
+print(f'Number of rules with lift < {lift_thrDOWN}: Yes --> {len(inter_rulesYesDOWN)}, No --> {len(inter_rulesNoDOWN)}')
+
+print()
+print('------ Contingecy Tabel Rule 1 ------')
+f11 = []
+f01 = []
+f10 = []
+f00 = []
+for item in basket_test:
+    if (item[0] == 'Yes') and (item[4] == 'Low_EnvSat') and (item[12] == 'Better_WorkLifeBalance'):
+        f11.append(item)
+    if (item[0] != 'Yes') and (item[4] == 'Low_EnvSat') and (item[12] == 'Better_WorkLifeBalance'):
+        f10.append(item)
+    if (item[0] == 'Yes') and (item[4] != 'Low_EnvSat') and (item[12] != 'Better_WorkLifeBalance'):
+        f01.append(item)
+    if (item[0] != 'Yes') and (item[4] != 'Low_EnvSat') and (item[12] != 'Better_WorkLifeBalance'):
+        f00.append(item)
+print(f'f11: {len(f11)}')
+print(f'f01: {len(f01)}')
+print(f'f10: {len(f10)}')
+print(f'f00: {len(f00)}')
+acc = len(f11) / (len(f11)+len(f10))
+print(f'Accuracy: {acc}')
+
+print()
+print('------ Contingecy Tabel Rule 2 ------')
+f11 = []
+f01 = []
+f10 = []
+f00 = []
+for item in basket_test:
+    if (item[0] == 'Yes') and (item[4] == 'Low_EnvSat') and (item[5] == 'Male'):
+        f11.append(item)
+    if (item[0] != 'Yes') and (item[4] == 'Low_EnvSat') and (item[5] == 'Male'):
+        f10.append(item)
+    if (item[0] == 'Yes') and (item[4] != 'Low_EnvSat') and (item[5] != 'Male'):
+        f01.append(item)
+    if (item[0] != 'Yes') and (item[4] != 'Low_EnvSat') and (item[5] != 'Male'):
+        f00.append(item)
+print(f'f11: {len(f11)}')
+print(f'f01: {len(f01)}')
+print(f'f10: {len(f10)}')
+print(f'f00: {len(f00)}')
+acc = len(f11) / (len(f11)+len(f10))
+print(f'Accuracy: {acc}')
+
+print()
+print('------ Contingecy Tabel Rule 3 ------')
+f11 = []
+f01 = []
+f10 = []
+f00 = []
+for item in basket_test:
+    if (item[0] == 'Yes') and (item[4] == 'Low_EnvSat'):
+        f11.append(item)
+    if (item[0] != 'Yes') and (item[4] == 'Low_EnvSat'):
+        f10.append(item)
+    if (item[0] == 'Yes') and (item[4] != 'Low_EnvSat'):
+        f01.append(item)
+    if (item[0] != 'Yes') and (item[4] != 'Low_EnvSat'):
+        f00.append(item)
+print(f'f11: {len(f11)}')
+print(f'f01: {len(f01)}')
+print(f'f10: {len(f10)}')
+print(f'f00: {len(f00)}')
+acc = len(f11) / (len(f11)+len(f10))
+print(f'Accuracy: {acc}')
+
+print()
+print('------ Contingecy Tabel Rule 4 ------')
+f11 = []
+f01 = []
+f10 = []
+f00 = []
+for item in basket_test:
+    if (item[0] == 'Yes') and (item[7] == 1.0) and (item[3] == 'Life Sciences'):
+        f11.append(item)
+    if (item[0] != 'Yes') and (item[7] == 1.0) and (item[3] == 'Life Sciences'):
+        f10.append(item)
+    if (item[0] == 'Yes') and (item[7] != 1.0) and (item[3] != 'Life Sciences'):
+        f01.append(item)
+    if (item[0] != 'Yes') and (item[7] != 1.0) and (item[3] != 'Life Sciences'):
+        f00.append(item)
+print(f'f11: {len(f11)}')
+print(f'f01: {len(f01)}')
+print(f'f10: {len(f10)}')
+print(f'f00: {len(f00)}')
+acc = len(f11) / (len(f11)+len(f10))
+print(f'Accuracy: {acc}')
+
+print()
+print('------ Contingecy Tabel Rule 5 ------')
+f11 = []
+f01 = []
+f10 = []
+f00 = []
+for item in basket_test:
+    if (item[0] == 'Yes') and (item[1] == 'Research & Development') and (item[7] == 1) and (item[6] == 'High_JobInv'):
+        f11.append(item)
+    if (item[0] != 'Yes') and (item[1] == 'Research & Development') and (item[7] == 1) and (item[6] == 'High_JobInv'):
+        f10.append(item)
+    if (item[0] == 'Yes') and (item[1] != 'Research & Development') and (item[7] != 1) and (item[6] != 'High_JobInv'):
+        f01.append(item)
+    if (item[0] != 'Yes') and (item[1] != 'Research & Development') and (item[7] != 1) and (item[6] != 'High_JobInv'):
+        f00.append(item)
+print(f'f11: {len(f11)}')
+print(f'f01: {len(f01)}')
+print(f'f10: {len(f10)}')
+print(f'f00: {len(f00)}')
+acc = len(f11) / (len(f11)+len(f10))
+print(f'Accuracy: {acc}')
+
+print()
+print('------ Contingecy Tabel Rule 8 ------')
+f11 = []
+f01 = []
+f10 = []
+f00 = []
+for item in basket_test:
+    if (item[0] == 'Yes') and (item[1] == 'Sales') and (item[11] == 'High'):
+        f11.append(item)
+    if (item[0] != 'Yes') and (item[1] == 'Sales') and (item[11] == 'High'):
+        f10.append(item)
+    if (item[0] == 'Yes') and (item[1] != 'Sales') and (item[11] != 'High'):
+        f01.append(item)
+    if (item[0] != 'Yes') and (item[1] != 'Sales') and (item[11] != 'High'):
+        f00.append(item)
+print(f'f11: {len(f11)}')
+print(f'f01: {len(f01)}')
+print(f'f10: {len(f10)}')
+print(f'f00: {len(f00)}')
+acc = len(f11) / (len(f11)+len(f10))
+print(f'Accuracy: {acc}')
+
+
