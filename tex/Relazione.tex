@@ -198,10 +198,67 @@ Stock Option Level & 0\\
 Le distribuzioni degli attributi ordinali e numerici con alcuni indici statistici sono rappresentate di seguito.
 Si può notare la forte asimmetria di molte distribuzioni ed un varianza molto grande in alcuni attributi. Tali problematiche dovranno essere sanate con opportune trasformazioni.
 
+
 \begin{center}
-\includegraphics[scale=1.1]{statistica.png}
+\begin{table}\footnotesize
+\begin{tabular}{l|ccccc}
+\toprule
+&\bfseries Age&\bfseries DailyRate&\bfseries DistanceFromHome&\bfseries HourlyRate&\bfseries MonthlyIncome\\
+\hline
+\hline
+\rowcolor[gray]{0.9}
+count &  1258 & 1470  & 1470   & 1470  &1190\\
+mean& 37.1& 802.5&9.2&65.9&6549.0\\
+\rowcolor[gray]{0.9}
+std&9.1&403.5&8.1&20.3&4732.8\\
+min&18&102&1&30&1009\\
+\rowcolor[gray]{0.9}
+25$\%$&30&465&2&48&2973.3\\
+50$\%$&36&802&7&66&4907.5\\
+\rowcolor[gray]{0.9}
+75$\%$&43&1157&14&83.7&8437.5\\
+max&60&1499&29&100&19999\\
+&&&&&\\
+\hline
+&\bfseries MonthlyRate&\bfseries NumCompaniesWorked&\bfseries PerentSalaryHikee&\bfseries TotalWorkingYear&\bfseries TraningTimeLastYears\\
+\hline
+\hline
+\rowcolor[gray]{0.9}
+count &  1470 & 1470  & 1470   & 1470  &1178\\
+mean& 14313.1& 2.7&15.2&11.3&2.8\\
+\rowcolor[gray]{0.9}
+std&7117.8&2.5&3.6&7.8&1.3\\
+min&2094&0&11&0&0\\
+\rowcolor[gray]{0.9}
+25$\%$&8047&1&12&6&2\\
+50$\%$&14235.5&2&14&10&3\\
+\rowcolor[gray]{0.9}
+75$\%$&20461.5&4&18&15&3\\
+max&26999&9&25&40&6\\
+&&&&&\\
+\hline
+&\bfseries YearsAtCompany&\bfseries YearsInCurrentRole&\bfseries YearSinceLastPromotion&\bfseries YarsWithCurrManager&\bfseries StandardHours\\
+\hline
+\hline
+\rowcolor[gray]{0.9}
+count &  1396 & 1470  & 1470   & 1470  &753\\
+mean& 6.9& 4.2&2.2&4.1&80\\
+\rowcolor[gray]{0.9}
+std&6.0&3.6&3.2&3.6&0\\
+min&0&0&11&0&80\\
+\rowcolor[gray]{0.9}
+25$\%$&3&2&0&2&80\\
+50$\%$&5&3&1&3&80\\
+\rowcolor[gray]{0.9}
+75$\%$&9&7&3&7&80\\
+max&40&18&15&17&80\\
+\bottomrule
+\end{tabular}
+\end{table}
 \captionof{figure}{Indici statistici per gli attributi numerici}
 \end{center}
+
+
 
 \begin{center}
 \includegraphics[scale=0.82,trim=0cm 0 0 0cm]{Istogrammi1.png}
@@ -800,39 +857,81 @@ Di conseguenza le regole più interessanti scelte risultano essere quelle con li
 \item ('Sales', $2.0$, 'No') $\longrightarrow$ 'Sales Executive'
 \end{enumerate}
 
-Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$.
-Di seguito sono mostrate le tabelle di contigenza relatice alle due regole usate per la sostituzione dei missing value
+Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$ aventi le lift più alte, utilizzate per predire la class label dell'attributo Department. Il tutto è stato applicato sul test set ed i risultati sono mostrati nelle seuenti tabelle di contingenza in cui \textbf {A}  ($\bar{\textbf {A}}$) e \textbf {B}  ($\bar{\textbf {B}}$) rappresentano precedente (precedente negato) ed antecedente (antecedente negato). 
 
 \begin{figure}[H]
   \centering
   \begin{minipage}{.45\textwidth}
     \centering
     \begin{tabular}{l|cc|r}
-& \bfseries B & \bfseries nonB &\\
+& \bfseries B & $\bar{\textbf {B}}$ &\\
 \hline
 \bfseries A & 3 & 27 &30\\
-\bfseries nonA & 0&10&10\\
+ $\bar{\textbf {A}}$ & 0&10&10\\
 \hline
 & 3&37&40\\
 \end{tabular}
-    \caption{tabella di contingenza regola 1}
+    \caption{tabella di contingenza regola 1. Accuratezza$=10\%$}
   \end{minipage}
   \begin{minipage}{.45\textwidth}
     \centering
     \begin{tabular}{l|cc|r}
-& \bfseries B & \bfseries nonB &\\
+& \bfseries B &  $\bar{\textbf {B}}$ &\\
 \hline
 \bfseries A & 28& 2 &30\\
-\bfseries nonA & 0&56&56\\
+ $\bar{\textbf {A}}$ & 0&56&56\\
 \hline
 & 28&58&86\\
 \end{tabular}
-    \caption{tabella di contigenza regola 3.}
+    \caption{tabella di contigenza regola 3.  Accuratezza$=93.3\%$}
   \end{minipage}
   \end{figure}
 
+Dal valore delle accuratezze è evidente che la regola numero $3$ è più performante della $1$.\\
 
+Utilizzando un procedimento analogo è possibile determinare regole per selezionare il valore di 'Attriction', sfruttando in questo caso non più gli attributi numerici, ma attributi categorici (non ordinali) non utilizzati nella costruzione dei modelli di classificazione.
+Le regole determinate, aventi i lift più alti, sono:
 
+\begin{enumerate}
+\item ('Low\_EnvirormentSatisfaction', 'Better\_WorkLifeBalance') $\longrightarrow$ 'Yes'
+\item ('Low\_EnvirormentSatisfaction', 'Male') $\longrightarrow$ 'Yes'
+\item ($2.0$, 'Life Sciences') $\longrightarrow$ 'Yes'
+\item ($2.0$, 'High\_JobEnvolvement', 'Researh and Development') $\longrightarrow$ 'Yes'
+\item ('High\_RelationshipSatisfaction', 'Sales') $\longrightarrow$ 'Yes'
+\end{enumerate}
+
+La prima regola suggerisce che questi impiegati, sebbene abbiano un buon equilibrio tra la vita privata e quella lavorativa, la bassa soddisfazione dell'ambiente di lavoro, aumenta la probabilità di essere logorati. Discorso analoro per l'ultima, dove si evince che il dipartimento 'Sales' è particolarmente stressante per idipendenti nonostate esistano buoni rapporti tra colleghi.
+Per le predizioni sono state usate le regole $1$ e $5$, di seguito sono riportate le tabelle di contigenza.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \begin{tabular}{l|cc|r}
+& \bfseries B & $\bar{\textbf {B}}$ &\\
+\hline
+\bfseries A & 4 & 27 &31\\
+ $\bar{\textbf {A}}$ & 9&78&87\\
+\hline
+& 13&105&118\\
+\end{tabular}
+    \caption{tabella di contingenza regola 1. Accuratezza$=13.5\%$}
+  \end{minipage}
+  \begin{minipage}{.45\textwidth}
+    \centering
+    \begin{tabular}{l|cc|r}
+& \bfseries B &  $\bar{\textbf {B}}$ &\\
+\hline
+\bfseries A & 2& 17 &19\\
+ $\bar{\textbf {A}}$ & 12&126&138\\
+\hline
+& 14&143&157\\
+\end{tabular}
+    \caption{tabella di contigenza regola 5.  Accuratezza$=10.5\%$}
+  \end{minipage}
+  \end{figure}
+
+	
 %\section{Conclusioni}
 \end{document}
 
