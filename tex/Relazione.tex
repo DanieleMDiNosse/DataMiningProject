@@ -218,9 +218,30 @@ La qualità dei dati è fortemente influenzata negativamente dalla presenza di o
 Nel data frame utilizzato la loro presenza è evidente, infatti si ha che:
 
 \begin{center}
-\includegraphics[scale=1.5]{missingvalues.png}
+\begin{tabular}{lc}
+\toprule
+ &\bfseries Missing Values \\
+\hline
+\hline
+\rowcolor[gray]{0.9}
+Age & 212\\
+Business Travel & 131\\
+\rowcolor[gray]{0.9}
+Gender & 75\\
+MonthlyIncome & 280\\
+\rowcolor[gray]{0.9}
+Over 18 & 468\\
+PerformanceRating & 172\\
+\rowcolor[gray]{0.9}
+Standard Hours & 717\\
+Traning Time Last Years & 292\\
+\rowcolor[gray]{0.9}
+Years at Company & 74\\
+\bottomrule
+\end{tabular}
 \captionof{figure}{Count dei missing values}
 \end{center}
+
 Gli attributi StandardHours ed Over18 presentano una qualità molto scarsa: nel primo circa la metà dei records sono mancanti e la restante parte ha un unico valore, mentre il secondo, oltre a contenere anch'esso una quantità significativa di missing values, non rappresenta in ogni caso un attributo di grande importanza, considerando che la stragrande maggioranza dei dipendenti di un'azienda sono maggiorenni. Per tali motivi, si è deciso di eliminare questi due attributi.
 
 Per la determinazione degli outliers sono stati utilizzati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot, Principal Component Analysis e scatter plot). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
