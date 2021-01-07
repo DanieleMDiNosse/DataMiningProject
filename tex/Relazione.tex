@@ -19,27 +19,35 @@
 \usepackage{color}
 \usepackage{colortbl}
 \usepackage{amsmath}
-\usepackage{frontespizio}
+\usepackage [svgnames]{xcolor}
+\usepackage[nowrite,infront,standard]{frontespizio}
+\usepackage[document]{ragged2e}
 \captionsetup{tableposition=top,figureposition=bottom,font=footnotesize}
 \renewcommand{\vec}{\mathbf}
 \usepackage{upgreek}
 \usepackage[a4paper, total={7.7in, 10.5in}]{geometry}
-\begin{document}
 
-\title{%
-  Relazione del Progetto di Data Mining \\
-  \large Corso di Laurea Magistrale in Fisica \\
-    Esame di Data Mining A.A. 2020/2021}
-\author{Gruppo 33: Daniele Maria Di Nosse, Angelo Lasala, Raffaele Paradiso}
 
-\maketitle
-\newpage
+\nofiles 
+\fontoptionnormal 
+\Istituzione {Università di Pisa}
+\Logo [4cm]{Stemma_unipi}
+\Dipartimento {Fisica}
+\Corso [Laurea Magistrale]{Fisica}
+\Annoaccademico {2020-2021}
+\Titolo {Relazione progetto di Data Mining}
+\Sottotitolo {Gruppo 33: Daniele Maria Di Nosse, Angelo Lasala, Raffaele Paradiso}
+\begin {document}
+\preparefrontpagestandard
 
-\maketitle
+
+
+
+
 \tableofcontents{}
 
 \newpage
-
+\justify
 \section{Introduzione}
 Determinare le possibili relazioni che intercorrono fra le caratteristiche dei dipendenti di un'azienda può risultare di grande utilità per predire i possibili scenari lavorativi che posso verificarsi e gestire di conseguenza l'organizzazione del personale in maniera ottimale. Nel presente progetto ci si è posto l'obiettivo di valutare tali legami tramite un approccio di data mining. Le informazioni che si sono utilizzate sono relative ad un data frame fittizio (leggermente modificato) generato da IBM e presente sul portale Kaggle(URL \url{https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset}). Non ci si è posto un obiettivo principale, ovvero la determinazione di legami, correlazioni e classificazioni relativi ad un singolo attributo rispetto a tutti gli altri, ma si è proceduto in maniera più generale ricoprendo uno spettro più ampio di possibili relazioni fra tutte le variabili.
 \section{Data Understanding}
