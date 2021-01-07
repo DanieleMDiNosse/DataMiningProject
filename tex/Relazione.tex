@@ -25,7 +25,7 @@
 \captionsetup{tableposition=top,figureposition=bottom,font=footnotesize}
 \renewcommand{\vec}{\mathbf}
 \usepackage{upgreek}
-\usepackage[a4paper, total={7.7in, 10.5in}]{geometry}
+\usepackage[a4paper, total={7.0in, 10.5in}]{geometry}
 
 
 \nofiles 
@@ -41,13 +41,11 @@
 \preparefrontpagestandard
 
 
-
-
-
-\tableofcontents{}
-
-\newpage
 \justify
+\newpage
+\tableofcontents{}
+\newpage
+
 \section{Introduzione}
 Determinare le possibili relazioni che intercorrono fra le caratteristiche dei dipendenti di un'azienda può risultare di grande utilità per predire i possibili scenari lavorativi che posso verificarsi e gestire di conseguenza l'organizzazione del personale in maniera ottimale. Nel presente progetto ci si è posto l'obiettivo di valutare tali legami tramite un approccio di data mining. Le informazioni che si sono utilizzate sono relative ad un data frame fittizio (leggermente modificato) generato da IBM e presente sul portale Kaggle(URL \url{https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset}). Non ci si è posto un obiettivo principale, ovvero la determinazione di legami, correlazioni e classificazioni relativi ad un singolo attributo rispetto a tutti gli altri, ma si è proceduto in maniera più generale ricoprendo uno spettro più ampio di possibili relazioni fra tutte le variabili.
 \section{Data Understanding}
@@ -282,7 +280,7 @@ max&40&18&15&17&80\\
 
 \subsection{Data Quality : Outliers e Missing values}
 La qualità dei dati è fortemente influenzata negativamente dalla presenza di outliers e di missing values. Algoritmi di clustering e correlazioni fra gli attributi possono restituire risultati falsificati se non si gestiscono in maniera appropriata tali valori. 
-Nel data frame utilizzato la loro presenza è evidente, infatti si ha che:
+Nel data frame utilizzato la loro presenza è evidente.
 
 \begin{center}
 \begin{tabular}{lc}
@@ -312,7 +310,7 @@ Years at Company & 74\\
 Gli attributi StandardHours ed Over18 presentano una qualità molto scarsa: nel primo circa la metà dei records sono mancanti e la restante parte ha un unico valore, mentre il secondo, oltre a contenere anch'esso una quantità significativa di missing values, non rappresenta in ogni caso un attributo di grande importanza, considerando che la stragrande maggioranza dei dipendenti di un'azienda sono maggiorenni. Per tali motivi, si è deciso di eliminare questi due attributi.
 
 Per la determinazione degli outliers sono stati utilizzati sia test puramente statistici (Grubbs's test) che metodi di visualizzazione (Box Plot, Principal Component Analysis e scatter plot). Come è noto, per utilizzare approcci del primo tipo bisogna fare delle assunzioni sulla distribuzione sottostante dei valori esaminati. In particolare, il Grubbs's test, applicabile singolarmente agli attributi, richiede che i dati siano distribuiti normalmente, cosa non vera in questo caso. Di conseguenza, tale metodo è stato scartato. 
-Il Principal Component Analysis, d'altro canto, è uno dei metodi maggiormente utilizzati nella ricerca di outliers in situazioni alto-dimensionali. Proiettando lo spazio n-dimensionale in uno spazio q-dimensionale ($q<n$), costruito tramite i vettori normalizzati della matrice di correlazione, si cerca di mantenere il più intatta possibile la varianza negli attributi. Nel caso in esame, la frazione di varianza conservata non risulta essere significativa (circa $0.4$), inficiando inevitabilmente i risultati ottenuti.
+La Principal Component Analysis, d'altro canto, è uno dei metodi maggiormente utilizzati nella ricerca di outliers in situazioni alto-dimensionali. Proiettando lo spazio $n$-dimensionale in uno spazio $q$-dimensionale ($q<n$), costruito tramite i vettori normalizzati della matrice di correlazione, si cerca di mantenere il più intatta possibile la varianza negli attributi. Nel caso in esame, la frazione di varianza conservata non risulta essere significativa (circa $0.4$), inficiando inevitabilmente i risultati ottenibili.
 Anche la visualizzazione degli scatter plot confrontati con gli attributi categorici non ha evidenziato alcun punto identificabile come outlier.
 L'unico metodo che ha avuto successo per la loro determinazione è stata la visualizzazione dei Box Plot per i singoli attributi. Si è proceduto quindi alla loro rimozione tramite eliminazione delle righe corrispondenti.
 
@@ -320,35 +318,34 @@ L'unico metodo che ha avuto successo per la loro determinazione è stata la visu
 In questa fase del lavoro ci si è posto l'obiettivo di trasformare e preparare il set di dati all'analisi successiva. I problemi precedentemente evidenziati sono stati qui risolti.\\
 
 Come primo task sono stati gestiti i missing values.
-L'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi nel data frame. Per quanto riguarda quella con i numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p value > 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
+L'attributo BusinessTravel presenta una frequenza di NaN pari al circa $9\%$, confrontabile con le frequenze degli altri valori . Siccome la granulosità dell'attributo ricopre in maniera completa lo spettro delle classi plausibilmente ad esso associabili, si è deciso di valutare se ci fosse dipendenza con gli altri attributi nel data frame. Per quanto riguarda quella con i numerici, sono stati utilizzati gli scatter plot, mentre per quelli nominali è stato eseguito il test di indipendenza del chi quadro. In entrambi i casi non si sono evinte dipendenze significative ($p-value > 0.05$ sempre). Di conseguenza tale attributo è stato scartato.\\
 Per quanto riguarda PerformanceRating, si è aggiunta una nuova classe 'MISSING', poiché si è notato che la granulosità dell'attributo in questo caso non ricopre tutto lo spettro plausibile. Si presuppone che i valori `MISSING' possano appartenere ad una classe di ordine inferiore ad `Excellent'.\\
 Queste due considerazioni non sono applicabili all'attributo Gender per il quale si è scelto semplicemente di sostituire ai missing values valori estratti dalla distibuzione del campione.\\
 Procedimento analogo è stato applicato a tutti gli attributi numerici che presentano valori mancanti, l'unica differenza è che in questo caso i valori sostitutivi sono le medie degli intervalli dei bins degli istogrammi.\\ %(che al mercato mio padre comprò, nda).\\
-Come secondo task sono stati valutati gli outliers.\\
-Il metodo di visualizzazione grafica dei Box Plot evidenzia la presenza di outliers solo in tre attributi numerici: TrainingTimeLastYear, TotalWorkingYears, YearsAtCompany
+Come secondo task sono state applicate funzioni di trasformazione ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni, quali l'asimettrie e un valore spropositato della deviazione standar. In particolare è stata applicata la radice quadrata a DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece a MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . In Figura 7 sono riportate alcune distribuzioni delle variabili trasformate.\\
+Sono stati poi trattati gli outliers tramite il metodo di visualizzazione grafica dei Box Plot, che evidenzia la presenza di outliers solo in tre attributi numerici: TrainingTimeLastYear, TotalWorkingYears, YearsAtCompany
 \begin{center}
 \includegraphics[scale=1]{boxplot.png}
 \captionof{figure}{Box Plot degli attributi che presentano outliers}
 \end{center}
  Il data frame dopo questa prima preparazione risulta contenere il $36\%$ di dati in meno rispetto a quello di partenza.\\
-Funzioni di trasformazione sono state applicate ad attributi numerici con lo scopo di rimediare ad alcune caratteristiche delle loro distribuzioni, quali l'asimettrie e un valore spropositato della deviazione standar. In particolare è stata applicata la radice quadrata a DistanceFromHome (skew da 0.95 a 0.40), NumCompaniesWorked (skew da 1.03 a 0.03), PercentSalaryHike (skew da 0.82 a 0.65), TotalWorkingYears (skew da 1.12 a 0.18), YearsAtCompany (skew da 1.76 a 0.43), YearsInCurrentRole(skew da 0.92 a $-$0.25), YearsSinceLastPromotion (skew da 1.98 a 0.74) e YearsWithCurrManager (skew da 0.83 a $-$0.25); invece a MonthlyIncome è stato applicato il logaritmo naturale (varianza da 4710 a 0.67) . Di seguito sono riportate alcune distribuzioni delle variabili trasformate.\\
 
 \begin{center}
 \includegraphics[scale=0.35]{trasformer.png}
 \captionof{figure}{Distribuzione di alcune variabili trasformate}
 \end{center}
 
-Come terzo task sono stati eliminati ed aggiunti nuovi attributi.\\
+Successivamente sono stati eliminati ed aggiunti nuovi attributi.\\
 In luogo di TotalWorkingYears e YearsAtCompany si è scelto di introdurre il loro rapporto, denominato FractionAtCompany che rappresenta la frazione di anni lavorativi del singolo dipendente nell'azienda. Tramite l'introduzione di tale attributo è stato possibile notare l'inconsistenza di alcuni records per cui tale rapporto risultava essere maggiore di 1. Tali valori sono stati eliminati. Analogamente si è proceduto per MonthlyIncome e MonthlyRate sostituiti da RateIncome, indice di quanto l'azienda spende per un impiegato in rapporto al suo stipendio. Anche in questo caso sono stati eliminati i valori inconsistenti.\\ 
 DailyRate e HourlyRate contengono la stessa informazione di MonthlyRate, quindi sono stati eliminati.\\
 Inoltre, YearsInCurrentRole, YearInCurrManager e YearsSinceLastPromotion sono caratterizzati da una correlazione significativa e quindi si è deciso di mantenere solamente YearsInCurrentRole nell'analisi a seguire.\\
-Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del $p $ $value$  ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.\\
-Si può notare come il $p$ $ value$ per la maggioranza dei casi è maggiore di $0.05$, valore scelto come soglia; questo significa che l'ipotesi nulla (non c'è relazione tra i due attributi) non può essere scartata. Nell'altra situazione invece l'evidenza empirica è fortemente contraria all'ipotesi nulla, ciò significa che la presenza di una dipendenza tra gli attributi è statisticamente plausibile, come ad esempio avviene tra Attrition (quanto un impiegato è "logorato") e MaritialStatus (condizione sentimentale dell'impiegato).\\
-Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono presenti corelazioni significative.
+Infine è stata calcolata la matrice di correlazione lineare fra gli attributi numerici e i valori del $p$-$value$  ottenuti tramite test del chi quadro per l'interdipendenza fra gli attributi categorici.\\
+Si può notare come il $p$-$value$ per la maggioranza dei casi è maggiore di $0.05$, valore scelto come soglia; questo significa che l'ipotesi nulla (non c'è relazione tra i due attributi) non può essere scartata. Nell'altra situazione invece l'evidenza empirica è fortemente contraria all'ipotesi nulla, ciò significa che la presenza di una dipendenza tra gli attributi è statisticamente plausibile, come ad esempio avviene tra Attrition (quanto un impiegato è "logorato") e MaritialStatus (condizione sentimentale dell'impiegato).\\
+Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono presenti correlazioni significative.
 
 \begin{center}
 \includegraphics[scale=1.2]{mccat.png}
-\captionof{figure}{Matrice dei $p$ $value$ per gli attributi categorici}
+\captionof{figure}{Matrice dei $p$-$value$ per gli attributi categorici}
 \end{center}
 
 \begin{center}
@@ -357,12 +354,12 @@ Per gli attributi numerici, in seguito alle trasformazione effettuate, non sono 
 \end{center}
 
 \section{Clustering}
-Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means, DB Scan e Hierarchical. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 3-5 dimensionali alla ricerca un qualche tipo di clusterizzazione. 
-Come metrica è stata usata la distanza euclidea, i dati sono stati inoltre normalizzati tra $0$ e $1$.\\
-Si vuole precisare che per la visualizzazione dei clusters ottenuti tramite K-Means e DB Scan è stato utilizzato uno spazio tridimensionale poichè, soprattutto nel primo caso, una visualizzazione bidimensionale portava ad un mixing eccesivo dei clusters stessi.
+Preparato il data frame si è proceduto all'analisi degli algoritmi di clustering: K-Means, DB Scan e Hierarchical. La dimensionalità del data frame ($10$) è stata considerata troppo elevata per ottenere risultati consistenti, quindi sono stati indagati sottoinsiemi 3-5 dimensionali alla ricerca di un qualche tipo di clusterizzazione. 
+Come metrica è stata usata la distanza euclidea ed i dati sono stati inoltre normalizzati tra $0$ e $1$.
+Si vuole precisare che per la visualizzazione dei clusters ottenuti tramite K-Means e DB Scan è stato utilizzato uno spazio tridimensionale poiché, soprattutto nel primo caso, una visualizzazione bidimensionale portava ad un mixing eccessivo dei clusters stessi.
 
 \subsection{K-Means}
-Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati migliori sono:\\
+Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati migliori sono:
 
 \begin{enumerate}
 \item PercentSalaryHike, FractionYearsAtCompany, YearsInCurrentRole, RateIncome, NumCompaniesWorked
@@ -377,8 +374,8 @@ Per quanto riguarda il K-Means i sottoinsiemi che hanno mostrato i risultati mig
 \captionof{figure}{SSE in funzione di $K$}
 \end{center}
 
-La scelta del numero di cluster $K$ è stata presa osservando l'andamento del SSE in funzione di $K$ (Figura $12$), simile in tutti e quattro i casi esaminati; con lo scopo di aver un buon compromesso fra i due l'algoritmo è stato eseguito per $K$ uguale a 3, 4 e 5. Dai risultati ottenuti si evince che, sebbene con $K=5$ il valore delle SSE è minore rispetto agli altri due casi, non si apprezzano cluster evidenti: ve ne sono sempre due eccessivamente mescolati. Con $K=3$ la divisione fra i clusters è sicuramente ben evidente ma, con $K=4$, si ottengono comunque buoni risultati con il vantaggio di un SSE minore. \\
-Nei seguenti grafici sono mostrati i risultati ottenuti e per redendere più chiara la posizione dei centroidi, sono riportate anche le loro cordinate organizzate in parallelo per ciascun sottoinsieme usato.
+La scelta del numero di cluster $K$ è stata presa osservando l'andamento del SSE in funzione di $K$ (Figura $10$), simile in tutti e quattro i casi esaminati; con lo scopo di aver un buon compromesso fra i due l'algoritmo è stato eseguito per $K$ uguale a 3, 4 e 5. Dai risultati ottenuti si evince che, sebbene con $K=5$ il valore delle SSE è minore rispetto agli altri due casi, non si apprezzano cluster evidenti: ve ne sono sempre due eccessivamente mescolati. Con $K=3$ la divisione fra i clusters è sicuramente ben evidente ma, con $K=4$, si ottengono comunque buoni risultati con il vantaggio di un SSE minore. \\
+Nei seguenti grafici sono mostrati i risultati ottenuti e per rendere più chiara la posizione dei centroidi, sono riportate anche le loro coordinate organizzate in parallelo per ciascun sottoinsieme usato.
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.47\textwidth}
@@ -405,7 +402,7 @@ Nei seguenti grafici sono mostrati i risultati ottenuti e per redendere più chi
 \hfill
 \begin{minipage}[b]{0.55\textwidth}
 \includegraphics[scale=0.6]{rate_fraction_distance2.png}
-\caption{Cluster sottoinsime 2: SSE$=177$; silhouette$=0.21$}
+\caption{Cluster sottoinsieme 2: SSE$=177$; silhouette$=0.21$}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -441,8 +438,8 @@ Nei seguenti grafici sono mostrati i risultati ottenuti e per redendere più chi
 \end{figure}
 
 Dalla divisione in cluster è possibile classificare gli impiegati in base ad alcune caratteristiche comuni.
-Ad esempio il cluster giallo nella Figura $13$  esprime l'irrilevanza dell'esperienza lavorativa al di fuori dell'azienda relativamente all'aumento di stipendio. Infatti chi è stato assunto da poco (rispetto alla vita lavorativa), sebbene abbia maturato esperienza in altre aziende, ha un percent salary hike basso.
-D'altro canto, al cluster viola è plausibile associare i lavoratori la cui esperienza è costituita quasi esclusivamente da ruoli indipendenti da compagnie. Anche in questo caso, il percent salary hike è relativamente basso.
+Ad esempio il cluster giallo nella Figura $12$  esprime l'irrilevanza dell'esperienza lavorativa al di fuori dell'azienda relativamente all'aumento di stipendio. Infatti chi è stato assunto da poco (rispetto alla vita lavorativa), sebbene abbia maturato esperienza in altre aziende, ha un PercentSalaryHike basso.
+D'altro canto, al cluster viola è plausibile associare i lavoratori la cui esperienza è costituita quasi esclusivamente da ruoli indipendenti da compagnie. Anche in questo caso, il PercentSalaryHike è relativamente basso.
 Il cluster blu può essere considerato il gruppo di lavoratori la cui esperienza non è stata influenzata da altri impieghi nel passato. Infatti si nota che in questo caso l'aumento percentuale dello stipendio è indipendente dal numero di compagnie precedenti.
 Infine il cluster verde può essere visto come il gruppo di persone che hanno acquisito competenze utili all'azienda (ciò è evidente dalla percentuale di aumento di stipendio molto alta rispetto a tutti gli altri gruppi) in altri ambienti.\\
 La classificazione fatta non è certamente da considerarsi assoluta, poiché dai valori della silhouette non elevati, si capisce che la distinzione tra i cluster non è netta: mescolamenti tra di essi sono molto plausibili.
@@ -534,7 +531,7 @@ La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata r
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Figure_24.png}
-\caption{Sottoinsieme 1. eps = 0.750 , silhoutte = 0.26 }
+\caption{Sottoinsieme 1. eps = 0.750 , silhouette = 0.26 }
 \label{etichetta2}
 \end{minipage}
 \end{figure}
@@ -555,19 +552,19 @@ La sensibilità dell'algoritmo alla scelta dei parametri è molto più elevata r
 \begin{minipage}[b]{0.45\textwidth}
 \centering
 \includegraphics[width=\textwidth]{22.png}
-\caption{Sottoinsieme 2. eps = 0.950, silhoutte = 0.12 }
+\caption{Sottoinsieme 2. eps = 0.950, silhouette = 0.12 }
 \label{etichetta2}
 \centering
 \includegraphics[width=\textwidth]{5 (2).png}
-\caption{Sottoinsieme 3. eps = 1.20, silhoutte = 0.02}
+\caption{Sottoinsieme 3. eps = 1.20, silhouette = 0.02}
 \label{etichetta2}
 \end{minipage}
 \end{figure}
 
-Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un diverso numero di cluster ed un certo numero di noise points (punti viola). Questo è essenzialmente dovuto alla distribuzione dei valori nello spazio tridimensionale: essi formano infatti delle slices molto dense a valori fissati di uno dei tre attributi, come si può ad esempio osservare nella Figura 33. In questo caso inoltre si nota che il valore della silhoutte è praticamente nullo e ciò implica che la divisione ottenuta è totalmente inconsistente. Per tali motivi non è stato possibile associare ai cluster alcun significato.
+Come si può notare dai grafici l'algoritmo è riuscito ad evidenziare un diverso numero di cluster ed un certo numero di noise points (punti viola). Questo è essenzialmente dovuto alla distribuzione dei valori nello spazio tridimensionale: essi formano infatti delle slices molto dense a valori fissati di uno dei tre attributi, come si può ad esempio osservare nella Figura $26$. In questo caso inoltre si nota che il valore della silhouette è praticamente nullo e ciò implica che la divisione ottenuta è totalmente inconsistente. Per tali motivi non è stato possibile associare ai cluster alcun significato.
 
 \subsubsection{Validazione}
-La validazione è stata eseguita anche in questo caso tramite la costruzione di $N_1=35000$ e $N_2=10^3$ distribuzioni random su cui si è valutata la silhouette. La clusterizzazione è stata considerata non random se il valore ottenuto della silhouette è al di fuori di quattro deviazioni standard dal valor medio, quindi esterno al $99.994\%$ della distribuzione.
+La validazione è stata eseguita anche in questo caso tramite la costruzione di $N_1=3.5x10^4$ e $N_2=10^6$ distribuzioni random su cui si è valutata la silhouette. La clusterizzazione è stata considerata non random se il valore ottenuto della silhouette è al di fuori di quattro deviazioni standard dal valor medio, quindi esterno al $99.994\%$ della distribuzione.
 Come si può notare dal secondo grafico i risultati otteneuti sono da scartare.
 \begin{figure}[H]
 \begin{minipage}[b]{0.45\textwidth}
@@ -670,8 +667,8 @@ Anche in questo caso per validare i risultati ottenuti, sono stati generati $N=5
 
 \subsection{Confronto fra gli algoritmi}
 Alla luce di quanto ottenuto dai diversi algoritmi è possibile confrontare la bontà dei risultati ottenuti.\\
-Sicuramente il DB-Scan è quello che ha avuto la resa peggiore, in quanto, come già precisato, soffre a causa della mancanza di variazioni significative di densità.\\
-I risultati migliori in termini della silhouette sono relativi al K-Means e al Hierarchical. Inoltre, tramite quest'ultimo, è possibile scegliere il numero di clusters da utilizzare nel primo in modo da ottimizzare i risultati. Questo metodo è stato applicato per il seguente sottoinsieme 2 usato nel Hierarchical.
+Sicuramente il DB-Scan è quello che ha avuto la resa peggiore, in quanto, come già precisato, soffre a causa della distribuzione dei dati all'interno dello spazio $m$-dimensionale.\\
+I risultati migliori in termini della silhouette sono relativi al K-Means e al Hierarchical. Inoltre, tramite quest'ultimo, è possibile scegliere il numero di clusters da utilizzare nel primo in modo da ottimizzarne i risultati. Questo metodo è stato applicato per il sottoinsieme 2 usato nel Hierarchical.
 Ne è riportato lo scatter plot ricavato dal K-Means con $K=4$.
 \begin{figure}[H]
     \centering
@@ -684,7 +681,7 @@ I risultati sono nettamente migliori in termini dell'SSE.
 
 \section{Classification}
 Lo scopo in questo caso è quello di determinare modelli capaci di classificare i records presenti nel data frame in funzione dell'attributo Attrition. Sono stati usati due algoritmi differenti: Decision Tree e K-Nearest Neighbors. Per il primo il data frame considerato è stato quello precedente alla trasformazioni delle variabili, quindi senza missing values e con l'eliminazione del maggior numero di incongruenze possibili fra i dati. Ciò è stato fatto poiché la classificazione tramite Decision Tree non soffre se le distribuzioni dei dati sono sbilanciate e/o molto sparse. Per il secondo, invece, si è utilizzato il data frame con le variabili trasformate. 
-In entrambi gli algoritmi i valori degli attributi categorici ordinali maggiormente correlati con Attrition (Tabella XXXX) sono stati stati sostituiti con valori numerici in maniera tale da ottenere una divisione binaria mantenendo l'ordinamento:
+In entrambi gli algoritmi i valori degli attributi categorici ordinali maggiormente correlati con Attrition (Figura $8$) sono stati stati sostituiti con valori numerici in maniera tale da ottenere una divisione binaria mantenendo l'ordinamento:
 
 \begin{itemize}
 \item Gender: 'Female'=0, 'Male'=1.
@@ -695,7 +692,7 @@ In entrambi gli algoritmi i valori degli attributi categorici ordinali maggiorme
 \item MaritalStatus: 'Single'=0, 'Divorced'=0, 'Married'=1.
 \end{itemize}
 
-Siccome i valori dell'attributo Attrition sono fortemente sbilanciati a favore dei 'No' ($84\%$), si è deciso di effettuare un  random oversampling delle istanze relative al valore 'Yes' in modo da ridurre il bias presente nei dati. In particolare la frequenta del valore 'Yes' è passata dal $16\%$ al $23\%$ nel Decision Tree, mentre nel KNN dal $16\%$ al $20\%$.
+Siccome i valori dell'attributo Attrition sono fortemente sbilanciati a favore dei 'No' ($84\%$), si è deciso di effettuare un random oversampling delle istanze relative al valore 'Yes' in modo da ridurre il bias presente nei dati. In particolare la frequenta del valore 'Yes' è passata dal $16\%$ al $23\%$ nel Decision Tree, mentre nel KNN dal $16\%$ al $20\%$.
 Il data frame è stato suddiviso in train set ($70\%$) e test set ($30\%$). Inoltre ai fini della selezione del modello migliore è stata utilizzata la cross validation, in cui il train set è ulteriormente diviso in tre blocchi di cui due vengono usati per l'effettivo training ed uno, ciclicamente, per la validazione.
 
 \subsection{Decision Tree}
@@ -706,7 +703,7 @@ I parametri scelti e il relativo range sono i seguenti:
 \item min impurity decrease $ \in [0,0.2]$: il minimo gain dell'impurità affinché il nodo venga splittato;
 \item max depth $ \in [2,8]$: massima profondità dell' albero;
 \item min samples split $ \in [2,8]$: numero minimo di valori di un nodo affinché esso venga splittato;
-\item min samples leaf $ \in [2,8]$ :numero minimo di valori di un nodo affinché esso sia un  nodo leaf;
+\item min samples leaf $ \in [2,8]$: numero minimo di valori di un nodo affinché esso sia un  nodo leaf;
 \item $\alpha$ $ \in [0,1]$: peso della complessità.
 \end{itemize}
 
@@ -725,14 +722,14 @@ I modelli ottenuti sono:
 \item Modello 4: min impurity decrease$=0.003$; max depth$=6$; min samples split$=2$; min samples leaf$=1$; 
 \end{itemize}
 
-Di questi modelli sono state calcolate le rispettive ROC curve mostrate in Figura.NNNN
+Di questi modelli sono state calcolate le rispettive ROC curves, mostrate in Figura $36$.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.65]{ROC_CURVE.png}
     \caption{ROC curve dei quattro modelli selezionati.}
     \label{fig:my_label}
 \end{figure}
-Fra i quattro modelli, quello scelto è stato quello che ha presentato il valore dell'AUC maggiore, ovvero il Modello 4. Il corrispondente albero generato è il seguente
+Fra i quattro modelli, quello scelto è stato quello che ha presentato il valore dell'AUC (Area Under the Curve) maggiore, ovvero il Modello 4. Il corrispondente albero generato è il seguente
 
 \begin{figure}[H]
     \centering
@@ -740,8 +737,8 @@ Fra i quattro modelli, quello scelto è stato quello che ha presentato il valore
     \caption{Decision tree generato dal Modello 4.}
     \label{fig:my_label}
 \end{figure}
-
-Applicando tale modello sul test set si sono ottenuti ricavati risultati che suggeriscono una buona performance del $Decision Tree$ selezionato.
+Si può vedere come gli attributi che maggiormente contribuiscono alla divisione dello spazio $n$-dimensionale sono quelli relativi vita lavorativa dei dipendenti: molto probabilmente aver lavorato per diverse aziende in passato influenza marcatamente lo stato motivazionale degli impiegati, così come la quantità di tempo passata nell'azienda rispetto agli anni totali di lavoro. Ancor più evidente è il ruolo di JobInvolvement, al quale consegue la divisione fra i dipendenti più e meno coinvolti nel proprio lavoro.\\
+\\Applicando tale modello sul test set si sono ottenuti ricavati risultati che suggeriscono una buona performance del $Decision Tree$ selezionato.
 
 \begin{figure}[H]
     \centering
@@ -757,7 +754,7 @@ Applicando tale modello sul test set si sono ottenuti ricavati risultati che sug
 \caption{Confusion Matrix del test set. 'No': Precision$=0.88$,\\ \qquad \qquad Recall$=0.90$; 'Yes': Precision$=0.60$, Recall$=0.54$}
 \end{figure}
 
-Come precedentemente detto, l'approccio dell'oversampling è stato utilizzato per ridurre il bias che il set di dati presentava a favore dei 'No' nell'attributo Attrition. Si verifica, infatti, che applicando le stesse procedure sul data frame originale i risultati che si ottengono sono nettamente peggiori, come si può notare dalla Confusion Matrix in Figura BOOOH.
+Come precedentemente detto, l'approccio dell'oversampling è stato utilizzato per ridurre il bias che il set di dati presentava a favore dei 'No' nell'attributo Attrition. Si verifica, infatti, che applicando le stesse procedure sul data frame originale i risultati che si ottengono sono nettamente peggiori, come si può notare dalla Confusion Matrix in Figura $39$. \\ Si vuole precisare che in un primo momento, in luogo dell'oversampling, è stato applicato un peso alla classe 'Yes' ad ogni nodo dell'albero, sempre con l'idea di bilanciare i dati. Seguendo questa strada, comunque, non sono stati ottenuti grandi miglioramenti: l'oversampling è risultato quindi il metodo migliore ai fini dell'ottimizzazione.
 
 
 \begin{figure}[H]
@@ -791,8 +788,8 @@ Come precedentemente detto, l'approccio dell'oversampling è stato utilizzato pe
 
 \subsection{K-Nearest Neighbors}
 A differenza del caso precedente i dati sono stati normalizzati conservando la deviazione standard dei valori di partenza.
-Gli unici parametri da dover scegliere in maniera opportuna sono il numero di primi vicini $k$ ed il peso da assegnare a ciascuno di essi relativamente alla loro distanza. Con lo scopo di ridurre l'impatto di $k$ sui risultati si è deciso di utilizzare come peso l'inverso del quadrato della distanza. Infatti, in tal modo, si da maggior importanza ai primi vicini più vicini.
-Il range in cui si è fatto variare $k$ ai fini della massimizzazione delle performance del modello è stato $k \in [1,150]$. In seguito alla cross-validation, il miglior valore è risultato essere, come si può intuire dai grafici che seguono, $k=9$.
+Gli unici parametri da dover scegliere in maniera opportuna sono il numero di primi vicini $k$ ed il peso da assegnare a ciascuno di essi relativamente alla loro distanza. Con lo scopo di ridurre l'impatto di $k$ sui risultati si è deciso di utilizzare come peso l'inverso del quadrato della distanza. Infatti, in tal modo, si dà maggior importanza ai primi vicini più vicini.
+Il range in cui è stato fatto variare $k$ ai fini della massimizzazione delle performance del modello è stato $k \in [1,150]$. In seguito alla cross-validation, il miglior valore è risultato essere, come si può intuire dai grafici che seguono, $k=9$.
 
 \begin{figure}[H]
   \centering
@@ -807,7 +804,7 @@ Il range in cui si è fatto variare $k$ ai fini della massimizzazione delle perf
     \caption{Andamento dell'error rate sul train set e sul validation set. Si può notare l'overfitting del modello per piccoli valori di $k$.}
   \end{minipage}
   \end{figure}
-In Figura XXXsx si evince come il compromesso migliore fra i tre scores risulta essere $k=8$, dove si nota il massimo dell'F1-Score che quindi rappresenta un buon bilanciamento fra Precision e Recall. Questo valore corrisponde anche al minimo del validation error rate in Figura XXXdx.
+In Figura $41$ si evince come il compromesso migliore fra i tre scores risulta essere $k=8$, dove si nota il massimo dell'F1-Score che rappresenta quindi un buon bilanciamento fra Precision e Recall. Questo valore corrisponde anche al minimo del validation error rate in Figura $42$.
 Di seguito è riportato il risultato del modello selezionato sul test set, tramite la Confusion Matrix.\\
 
 \begin{figure}[H]
@@ -821,21 +818,21 @@ Di seguito è riportato il risultato del modello selezionato sul test set, trami
 \bfseries Class &\bfseries Yes & 21 & 29  \\
 \bottomrule
 \end{tabular}
-\caption{Confusion Matrix del test set. Precision=0.91, Recall=0.58}
+\caption{Confusion Matrix del test set. 'No': Precision=0.92, Recall=0.98; 'Yes': Precision=0.91, Recall=0.58}
 \end{figure}
 Si può notare come, sebbene l'approccio dell'oversampling abbia sanato parzialmente lo squilibrio fra i due valori di Attrition, resta comunque un bias in favore dei 'No'.
 
 \section{Association Rules}
-Lo scopo è quello di ricavare le $Association Rules$ più interessanti nei dati disponibili. Poiché il numero degli itemsets e di consegeuenza il numero delle regole cresce esponenzialmente al variare dei valori, sono stati scartati gli attributi considerati meno importanti, ovvero:
+Lo scopo è quello di ricavare le $Association Rules$ più interessanti nei dati disponibili. Poiché il numero degli itemsets e di conseguenza il numero delle regole cresce esponenzialmente al variare dei valori, sono stati scartati gli attributi considerati meno importanti, ovvero:
 'PerformanceRating', 'TrainingTimesLastYear', 'StockOptionLevel',  'YearsInCurrentRole',  'NumCompaniesWorked','PercentSalaryHike',  'OverTime',  'RateIncome', 'FractionYearsAtCompany'.\\
-L'unico attributo numerico continuo sopravvissuto, 'DistanceFromHome', è stato categorizzato in $10$ valori tramite la suddivisione in intervalli.
+L'unico attributo numerico continuo sopravvissuto, 'DistanceFromHome', è stato categorizzato in $10$ valori tramite la suddivisione in intervalli uguali.
 Ai fini dell'utilizzo delle regole di associazione che verranno determinate per la predizione di determinati target class e della conseguenza valutazione della loro bontà, è stato suddiviso il data frame in due sottoinsiemi: uno di train ($630$ elementi) ed uno di test ($269$ elementi).
-Come prima cosa sono stati determinati gli itemsets più frequenti, i massimali e i chiusi al variare del valore minimo del supporto. Come si può osservare dal grafico in Figura XXXXX all'aumentare del supporto minimo il numero degli itemset decresce velocemente, in particolare seguono un andamento esponenziale decrescente.
+Come prima cosa sono stati determinati gli itemsets più frequenti, i massimali ed i chiusi al variare del valore minimo del supporto. Come si può osservare dal grafico in Figura $44$ all'aumentare del supporto minimo il numero degli itemsets decresce velocemente, in particolare seguono un andamento esponenziale decrescente.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.65]{Frequen,_maximal_and_closed_itemsets da inserire.png}
-    \caption{Numero dei diversi tipi di itemsets in funzione del supporto minimo.\\Valori del fit: $A=219226$ ; $s=-1.15$. }
+    \caption{Numero dei diversi tipi di itemsets in funzione del supporto minimo.\\Valori del fit: $A=219226$ ; $b=-1.15$. }
     \label{fig:my_label}
 \end{figure}
 
@@ -858,7 +855,7 @@ Come misura di interesse per ciascuna regola è stato utilizzato l'$Interest Fac
     \label{fig:my_label}
 \end{figure}
 
-Di conseguenza le regole più interessanti scelte risultano essere quelle con lift maggiore di $3$ siccome il numero di regolare significativamente  minore di $1$ è nullo. Le regole selezionate risultano essere:
+Di conseguenza le regole più interessanti scelte risultano essere quelle con lift maggiore di $3$, siccome il numero di regole significativamente  minore di $1$ è nullo. Le regole selezionate risultano essere:
 
 \begin{enumerate}
 \item ($3.0$, 'Research and Development', 'No') $\longrightarrow$ 'Research Director'
@@ -867,7 +864,7 @@ Di conseguenza le regole più interessanti scelte risultano essere quelle con li
 \item ('Sales', $2.0$, 'No') $\longrightarrow$ 'Sales Executive'
 \end{enumerate}
 
-Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$ aventi le lift più alte, utilizzate per predire la class label dell'attributo Department. Il tutto è stato applicato sul test set ed i risultati sono mostrati nelle segenti tabelle di contingenza in cui \textbf {A}  ($\bar{\textbf {A}}$) e \textbf {B}  ($\bar{\textbf {B}}$) rappresentano precedente (precedente negato) ed antecedente (antecedente negato). 
+Fra queste, quelle ulteriormente indagate sono state la $1$ e la $3$ aventi i lift più alti, utilizzate per predire la class label dell'attributo Department. Il tutto è stato applicato sul test set ed i risultati sono mostrati nelle seguenti tabelle di contingenza in cui \textbf {A}  ($\bar{\textbf {A}}$) e \textbf {B}  ($\bar{\textbf {B}}$) rappresentano precedente (precedente negato) ed antecedente (antecedente negato). 
 
 \begin{figure}[H]
   \centering
@@ -942,7 +939,11 @@ Per le predizioni sono state usate le regole $1$ e $5$, di seguito sono riportat
   \end{figure}
 L'accuratezza delle regole ricavate non è molto significativa (rispettivamente $13.5\%$ e $10.5\%$), il che comporta quindi che le prestazioni ottenute sul test set sono basse: utilizzare tali associations rules non porta a predizioni soddisfacenti.
 
-	
-%\section{Conclusioni}
+
+\section{Conclusioni}
+L'obiettivo iniziale della trattazione era studiare in maniera generale i dati disponibili al fine di ricavare informazioni interessanti da essi. Nella prima fase è stato studiato il dataframe in generale, analizzando la tipologia degli attributi ed il loro significato. Valutate poi le distribuzioni dei dati, si è proceduto alla loro manipolazione ai fini di migliorare le successive indagini effettuate. 
+Dagli algoritmi di clustering utilizzati sono emerse, sebbene non in maniera ottimale, partizionamenti dei dati che hanno suggerito prime relazioni fra gli attributi. I risultati maggiormente incoraggianti sono stati quelli ottenuti tramite un approccio gerarchico, sopratutto quando sono stati poi utilizzati per l'inizializzazione dell'algoritmo K-Means.
+Ulteriori relazioni sono stante evinte per mezzo di classificatori eager learn (Decision Tree) e lazy learn (KNN), che hanno indagato più dettagliatamente i valori degli attributi, con lo scopo di predire ora lo stato di logoramento dei dipendenti descritti dai dati: il KNN è risultato il più capace fra i due, ottenendo quindi risultati migliori su dati esterni al training. 
+In conclusione, attraverso le Association Rules e con il medesimo scopo, patterns frequenti e regole interessanti sono risultate sensibilmente meno opportune.
 \end{document}
 
