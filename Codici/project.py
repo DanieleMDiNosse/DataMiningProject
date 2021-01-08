@@ -11,8 +11,8 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-df=pd.read_csv('/home/danielemdn/Documenti/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome.csv',index_col = 0)
-print(df.columns)
+df=pd.read_csv('C:/Users/lasal/Desktop/UNIPI notes/Data Mining/DataMiningProject/Excel/TrasfAttributeFraction_RateIncome.csv',index_col = 0)
+# print(df.columns)
 # print(df.describe())
 # print(df.head())
 # df['RateIncome']=np.sqrt(df['RateIncome'])
@@ -43,7 +43,8 @@ print(df.columns)
 #_____________________________________________________________________________________
 KM=False
 knee=False
-kM_3d=True
+kM_3d=False
+silhouette_plot=True
 
 correlazione=False
 #_____________________________________________________________________________________
@@ -62,6 +63,25 @@ df = df[['PercentSalaryHike', 'TrainingTimesLastYear', 'MonthlyIncome', 'Age']]
 numeric = df.select_dtypes('number')
 scaler = MinMaxScaler()
 X = scaler.fit_transform(numeric.values)
+
+if silhouette_plot:
+    scaler = MinMaxScaler()
+    X = scaler.fit_transform(df.values)
+    
+    sil_list=list()
+    k_list=list()
+    for k in np.arange(2,25):
+        kmeans = KMeans(init = 'k-means++', n_clusters = k, n_init = 100, max_iter=300)
+        kmeans.fit(X)
+        print(f'k: {k}, sil: {silhouette_score(X, kmeans.labels_)}')
+        sil_list.append(silhouette_score(X, kmeans.labels_))
+        k_list.append(k)
+
+    plt.figure('Silouette plot')
+    plt.plot(k_list,sil_list, color='coral')
+    plt.xticks(np.linspace(2,24,23))
+    plt.grid()
+    plt.show()
 
 
 if kM_3d:
